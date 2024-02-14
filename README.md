@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Hey everyone! So, for my Projet de Fin d'Étude (PFE), I'm diving into the world of game development. I'm creating a Maintenance Simulator Game using Unity – you know, the cool software that lets you make awesome games! 🎮 I'm also using Blender for 3D modeling because, well, we need some sleek vehicles for our game.
+Hey everyone! So, for my Final Year Project (PFE), I'm diving into the world of game development. I'm creating a Maintenance Simulator Game using Unity – you know, the cool software that lets you make awesome games! 🎮 I'm also using Blender for 3D modeling because, well, we need some sleek vehicles for our game.
 
 ## Features
 
