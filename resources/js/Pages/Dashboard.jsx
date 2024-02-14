@@ -13,12 +13,19 @@ import PriorityCustomerSupport from './PriorityCustomerSupport/Index';
 import AdvancedMaintenanceReports from './AdvancedMaintenanceReports/Index';
 import DashboardElements from './mainElements/DashboardElements';
 
+import {clientSocket} from './client.cjs';
+import { useEffect, useState } from 'react';
+import AlertDialog from '@/Components/AlertDialog';
 export default function Dashboard({ auth }) {
-
-
-
-
-
+  const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [messageObject,setUserMessage]=useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
+  useEffect(()=>{
+    clientSocket(messageObject);
+    setAlertDialogOpen(!isAlertDialogOpen)
+  },[messageObject])
+const handlinputchange=(e)=>{
+  setUserMessage({ message: e.target.value })
+}
   const chartData = {
     series: [{
       name: 'Sales',
@@ -39,14 +46,9 @@ export default function Dashboard({ auth }) {
       },
     },
   };
-
-
-
-
-
-
-
-
+  const onClose=()=>{
+    setAlertDialogOpen(!isAlertDialogOpen)
+    }
   return (
     <>
 
@@ -55,7 +57,7 @@ export default function Dashboard({ auth }) {
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}</h2>}
       >
         <Head title="Dashboard" />
-
+        {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
           <div class="sm:flex side-menu">
             <div className="flex h-screen bg-gray-200">
@@ -82,7 +84,7 @@ export default function Dashboard({ auth }) {
               </div>
               </aside>
             </div>
-            <div class="relative bg-gray-100 menu-content">
+            <div className="relative bg-gray-100 menu-content">
               <DashboardElements/>
             </div>
           </div>

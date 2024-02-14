@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 import React from 'react';
+import DefaultPlan from '../defaultPlan';
 
 const AdvancedMaintenanceReportsIndex = ({auth}) => {
     // Your JSX content for the Advanced Maintenance Reports view
@@ -13,6 +14,7 @@ const AdvancedMaintenanceReportsIndex = ({auth}) => {
                 header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Advanced Maintenance Reports Page</h2>}
             >
                 <Head title="Advanced Maintenance Reports Page" />
+                <DefaultPlan param={auth}/>
             </AuthenticatedLayout>
         </div>
     );

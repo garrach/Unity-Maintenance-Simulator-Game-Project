@@ -8,7 +8,7 @@ const DashboardCard = ({ number, icon, children ,span,margin}) => {
         <>
         {span ? (<> <div className={`bg-white p-4 rounded-md shadow py-3 dark:bg-gray-900  border-indigo-500 border-b-4 border-l-4  dark:text-white   ${margin}`}>
             <div className="flex items-center mb-4  mx-auto dark:border-gray-100 ">
-            {icon && <span className="text-xl"><img src={icon} alt=".." srcset="" /></span>}
+            {icon && <span className="text-xl"><img alt=".." /></span>}
             <span className="text-3xl">{number}</span>
             </div>
 
@@ -16,7 +16,7 @@ const DashboardCard = ({ number, icon, children ,span,margin}) => {
             <div>{children}</div>
         </div></>):(<> <div className="bg-white p-4 rounded-md dark:bg-gray-900 dark:text-white shadow py-3">
             <div className="flex items-center mb-4  mx-auto dark:border-gray-100">
-            {icon && <span className="text-xl"><img src={icon} alt=".." srcset="" /></span>}
+            {icon && <span className="text-xl"><img alt=".."/></span>}
             <span className="text-3xl">{number}</span>
             </div>
             <h2>new items</h2>
@@ -48,6 +48,7 @@ const MainContent = ({ children }) => {
               <DashboardCard number="302.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2"/>
               <DashboardCard number="92.5k" icon="ic_glass_buy.png" span={false} />
               <DashboardCard number="57.5k" icon="ic_glass_buy.png" span={false} />
+              { children }
             </div>
         </main>
     );
@@ -56,7 +57,7 @@ const MainContent = ({ children }) => {
 const DashboardElements = ({ children }) => {
     return (
             <MainContent>
-               
+               { children }
             </MainContent>
     );
 };
