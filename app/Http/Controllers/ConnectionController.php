@@ -13,9 +13,17 @@ class ConnectionController extends Controller
     public function index()
     {
         $connections = Connection::all();
-        
+        $vehicles=[];
+        $devices=[];
+        for ($i=0; $i < count($connections) ; $i++) { 
+           $vehicles[$i]=$connections[$i]->vehicle;
+           $devices[$i]=$connections[$i]->devices;
+        }
+       // $vehicles = $connections->vehicle;
         return Inertia::render('connections/Index', [
             'connections' => $connections,
+            'vehicles' => $vehicles,
+            'devices' => $devices,
         ]);
     }
 

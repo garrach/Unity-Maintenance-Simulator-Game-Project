@@ -29,16 +29,15 @@ class CarMaintenanceSeeder extends Seeder
         ];
 
         // Seed Services
-        /*foreach ($services as $name => $description) {
+        foreach ($services as $name => $description) {
             Service::create([
                 'name' => $name,
                 'description' => $description,
             ]);
-        }*/
+        }
 
       
         foreach ($plans as $planName => $servicesInPlan) {
-           //$plan = PaymentPlan::where('name', $planName)->first();
            $plan = PaymentPlan::create(['name' => $planName]);
             foreach ($servicesInPlan as $serviceName) {
                 $service = Service::where('name', $serviceName)->first();

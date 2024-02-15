@@ -7,7 +7,7 @@
         "php": "php artisan serve",
         "express": "nodemon server.cjs",
         "vite:client": "nodemon /resources/js/Pages/client.cjs",
-        "start": "npx concurrently \"npm run laravel\" \"npm run express\" \"npm run build\"",
+        "start": "npx concurrently \"npm run laravel\" \"npm run express\" \"npm run dev\"",
         "laravel": "npm-run-all --parallel php vite:client",
         "pro": "npm-run-all --parallel build start:laravel start:express start:vite",
         "start:laravel": "npm-run-all --parallel php vite:client",

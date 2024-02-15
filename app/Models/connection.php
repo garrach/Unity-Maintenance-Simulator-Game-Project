@@ -6,20 +6,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Connection extends Model
 {
-    use HasFactory;
-
     protected $fillable = ['vehicle_id', 'device_id', 'connection_date'];
+
+    protected $table="connections";
 
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
     }
 
-    public function device()
+    public function devices()
     {
-        return $this->belongsTo(Device::class);
+        return $this->BelongsToMany(Device::class,"connections");
     }
 }

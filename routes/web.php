@@ -20,7 +20,7 @@ use App\Http\Controllers\AdvancedMaintenanceReportsController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ConnectionController;
-
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentPlanController;
 
 /*
@@ -42,8 +42,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/aboutUs',function(){return Inertia::render('About');});
-Route::get('/contact',function(){return Inertia::render('Contact');});
+Route::get('/aboutUs',function(){return Inertia::render('About');})->name('about');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
