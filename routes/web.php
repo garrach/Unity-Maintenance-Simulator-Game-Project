@@ -16,6 +16,13 @@ use App\Http\Controllers\CustomizableMaintenanceSchedulesController;
 use App\Http\Controllers\ExclusiveDiscountsController;
 use App\Http\Controllers\PriorityCustomerSupportController;
 use App\Http\Controllers\AdvancedMaintenanceReportsController;
+
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\ConnectionController;
+
+use App\Http\Controllers\PaymentPlanController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +42,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/aboutUs',function(){return Inertia::render('About');});
+Route::get('/contact',function(){return Inertia::render('Contact');});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -45,9 +54,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/paymentPlans', [paymentPlansController::class, 'create'])->name('paymentPlan.create');
-    Route::get('/services', [ServicesController::class, 'create'])->name('services.create');    
 
+
+
+// Services Routes
+
+Route::resource('/services', ServicesController::class);   
+
+// PaymentPlans Routes
+Route::resource('paymentPlans', PaymentPlanController::class);
+
+// Vehicle Routes
+Route::resource('vehicles', VehicleController::class);
+
+// Device Routes
+Route::resource('devices', DeviceController::class);
+
+// Connection Routes
+Route::resource('connections', ConnectionController::class);
 
 
 

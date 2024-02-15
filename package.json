@@ -7,7 +7,7 @@
         "php": "php artisan serve",
         "express": "nodemon server.cjs",
         "vite:client": "nodemon /resources/js/Pages/client.cjs",
-        "start": "npx concurrently \"npm run laravel\" \"npm run express\" \"npm run dev\"",
+        "start": "npx concurrently \"npm run laravel\" \"npm run express\" \"npm run build\"",
         "laravel": "npm-run-all --parallel php vite:client",
         "pro": "npm-run-all --parallel build start:laravel start:express start:vite",
         "start:laravel": "npm-run-all --parallel php vite:client",
@@ -51,6 +51,7 @@
     "dependencies": {
         "apexcharts": "^3.45.2",
         "dat.gui": "^0.7.9",
+        "date-fns": "^3.3.1",
         "react-apexcharts": "^1.4.1",
         "react-router-dom": "^6.22.0",
         "three": "^0.161.0",

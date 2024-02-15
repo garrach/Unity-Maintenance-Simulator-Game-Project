@@ -6,7 +6,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 const DashboardCard = ({ number, icon, children ,span,margin}) => {
     return (
         <>
-        {span ? (<> <div className={`bg-white p-4 rounded-md shadow py-3 dark:bg-gray-900  border-indigo-500 border-b-4 border-l-4  dark:text-white   ${margin}`}>
+        {span ? (<> <div className={`bg-white p-4 rounded-md shadow py-3 dark:bg-gray-800  border-indigo-500 border-b-4 border-l-4  dark:text-white   ${margin}`}>
             <div className="flex items-center mb-4  mx-auto dark:border-gray-100 ">
             {icon && <span className="text-xl"><img alt=".." /></span>}
             <span className="text-3xl">{number}</span>
@@ -14,7 +14,7 @@ const DashboardCard = ({ number, icon, children ,span,margin}) => {
 
             <h2>new items</h2>
             <div>{children}</div>
-        </div></>):(<> <div className="bg-white p-4 rounded-md dark:bg-gray-900 dark:text-white shadow py-3">
+        </div></>):(<> <div className="bg-white p-4 rounded-md dark:bg-gray-800 dark:text-white shadow py-3">
             <div className="flex items-center mb-4  mx-auto dark:border-gray-100">
             {icon && <span className="text-xl"><img alt=".."/></span>}
             <span className="text-3xl">{number}</span>
@@ -36,7 +36,7 @@ const MainContent = ({ children }) => {
     return (
         <main className="flex-2 p-4">
             <div className="grid grid-cols-4 gap-4 content-center m-md-n4">
-              <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-2">
+              <DashboardCard  number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-2">
                 <div className='py-12'>00000000000000000000000000000</div>
               </DashboardCard>
               <DashboardCard number="2" icon="ic_glass_users.png" span={false} />

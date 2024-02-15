@@ -1,24 +1,24 @@
 <?php
-// database/migrations/YYYY_MM_DD_create_services_table.php
+
+// database/migrations/2022_01_01_create_payment_plans_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServicesTable extends Migration
+class CreatePaymentPlansTable extends Migration
 {
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('payment_plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('payment_plans');
     }
 }

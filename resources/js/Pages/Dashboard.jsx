@@ -21,7 +21,7 @@ export default function Dashboard({ auth }) {
   const [messageObject,setUserMessage]=useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
   useEffect(()=>{
     clientSocket(messageObject);
-    setAlertDialogOpen(!isAlertDialogOpen)
+    //setAlertDialogOpen(!isAlertDialogOpen)
   },[messageObject])
 const handlinputchange=(e)=>{
   setUserMessage({ message: e.target.value })
@@ -59,7 +59,7 @@ const handlinputchange=(e)=>{
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
-          <div class="sm:flex side-menu">
+          <div class="sm:flex side-menu dark:bg-gray-900">
             <div className="flex h-screen bg-gray-200">
               {/* Sidebar */}
               <aside className="bg-gray-800 text-white md:w-64 w-full">
@@ -76,7 +76,7 @@ const handlinputchange=(e)=>{
                     <li><Link href={route('advanced-maintenance-reports')}>Advanced Reports</Link></li>
                   </ul>
                 </nav>
-              <div className='really-idk flex bg-gray-200'>
+              <div className='really-idk mx-auto flex bg-gray-800'>
                 <span>
                   <img src="" alt="" />
                 </span>
@@ -98,7 +98,6 @@ const handlinputchange=(e)=>{
           width: inherit;
           position: absolute;
           height: 5rem;
-          background-color: dimgray;
           bottom: 0;
         }
           .menu-content{

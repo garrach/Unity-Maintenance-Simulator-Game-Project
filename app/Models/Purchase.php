@@ -10,7 +10,9 @@ class Purchase extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'service_plan', 'purchase_date'];
+    protected $table="payment_plan_service";
+
+    protected $fillable = ['user_id', 'service_plan', 'purchase_date' , 'payment_plan_id'];
 
     // Define a relationship to the User model
     public function user()
@@ -18,6 +20,11 @@ class Purchase extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Relationship to the PaymentPlan model
+    public function paymentPlan()
+    {
+        return $this->belongsTo(PaymentPlan::class);
+    }
     // Define a relationship to the Service model (assuming you have a services table)
     public function service()
     {

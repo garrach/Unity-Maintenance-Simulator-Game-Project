@@ -11,12 +11,11 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price'];
+    protected $fillable = ['name', 'description'];
 
-    // Define a relationship to the Purchase model
-    public function purchases()
+    public function paymentPlans()
     {
-        return $this->hasMany(Purchase::class);
+        return $this->belongsToMany(PaymentPlan::class);
     }
 }
 

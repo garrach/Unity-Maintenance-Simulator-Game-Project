@@ -40,19 +40,19 @@ const CarAnalyticsIndex = ({ auth }) => {
         horsepower: '180 hp',
     };
     return (
-        <div>
+        <div className='dark:text-white dark:bg-gray-900'>
 
             <AuthenticatedLayout
                 user={auth.user}
                 header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Car Analytics</h2>}
             >
                 <Head title="Car Analytics" />
-                <div className="bg-gray-100 p-4">
+                <div className="bg-gray-100 p-4 dark:bg-gray-900">
                     <h1 className="text-3xl font-bold mb-4">Car Analytics</h1>
 
                     <div className='grid md:grid-cols-3 gap-4'>
                         {/* Display Car Details */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Car Details</h2>
                             <ul>
                                 <li className="mb-2"><span className="font-bold">Make:</span> {carDetails.make}</li>
@@ -68,7 +68,7 @@ const CarAnalyticsIndex = ({ auth }) => {
                         </div>
 
                         {/* Display Analytics Data */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Analytics Data</h2>
                             <p className="mb-2"><span className="font-bold">Fuel Efficiency:</span> {analyticsData.fuelEfficiency}</p>
                             <p className="mb-2"><span className="font-bold">Maintenance Cost:</span> {analyticsData.maintenanceCost}</p>
@@ -77,7 +77,7 @@ const CarAnalyticsIndex = ({ auth }) => {
                         </div>
 
                         {/* Display Connected Devices */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Connected Devices</h2>
                             <ul>
                                 {connectedDevices.map((device, index) => (
@@ -87,7 +87,7 @@ const CarAnalyticsIndex = ({ auth }) => {
                         </div>
 
                         {/* Display Interior Devices */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Interior Devices</h2>
                             <ul>
                                 {interiorDevices.map((device, index) => (
@@ -97,7 +97,7 @@ const CarAnalyticsIndex = ({ auth }) => {
                         </div>
 
                         {/* Display Safety Features */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Safety Features</h2>
                             <ul>
                                 {safetyFeatures.map((feature, index) => (
@@ -107,7 +107,7 @@ const CarAnalyticsIndex = ({ auth }) => {
                         </div>
 
                         {/* Display Performance Metrics */}
-                        <div className="bg-white p-4 rounded-md shadow">
+                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow">
                             <h2 className="text-xl font-bold mb-2">Performance Metrics</h2>
                             <p className="mb-2"><span className="font-bold">Top Speed:</span> {performanceMetrics.topSpeed}</p>
                             <p className="mb-2"><span className="font-bold">Acceleration:</span> {performanceMetrics.acceleration}</p>
