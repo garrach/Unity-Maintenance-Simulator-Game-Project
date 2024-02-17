@@ -49,6 +49,7 @@ const db = mongoose.connection;
 
 wss.on('connection', (ws) => {
   console.log('User connected');
+  
   ws.on('open',()=>{
     console.log('User data');
   })

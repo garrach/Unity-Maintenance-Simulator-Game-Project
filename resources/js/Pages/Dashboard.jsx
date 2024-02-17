@@ -13,19 +13,18 @@ import PriorityCustomerSupport from './PriorityCustomerSupport/Index';
 import AdvancedMaintenanceReports from './AdvancedMaintenanceReports/Index';
 import DashboardElements from './mainElements/DashboardElements';
 
-import {clientSocket} from './client.cjs';
+import { clientSocket } from './client.cjs';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
+import Sidebar from './sideBar';
 export default function Dashboard({ auth }) {
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
-  const [messageObject,setUserMessage]=useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
-  useEffect(()=>{
-    clientSocket(messageObject);
-    //setAlertDialogOpen(!isAlertDialogOpen)
-  },[messageObject])
-const handlinputchange=(e)=>{
-  setUserMessage({ message: e.target.value })
-}
+  const [WebSocketOn, setWebSocketOn] = useState(false);
+  const [webSocketHost, setwebSocketHost] = useState('');
+  const [messageObject, setUserMessage] = useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
+  const handlinputchange = (e) => {
+    setUserMessage({ message: e.target.value })
+  }
   const chartData = {
     series: [{
       name: 'Sales',
@@ -46,9 +45,16 @@ const handlinputchange=(e)=>{
       },
     },
   };
-  const onClose=()=>{
+  const onClose = () => {
     setAlertDialogOpen(!isAlertDialogOpen)
-    }
+  }
+  const handlewebSocket = () => {
+   const webSocket= clientSocket(messageObject);
+    setWebSocketOn(true);
+    setAlertDialogOpen(!isAlertDialogOpen)
+    const host = new URL(webSocket.url).host;
+    setwebSocketHost(host);
+  }
   return (
     <>
 
@@ -60,70 +66,50 @@ const handlinputchange=(e)=>{
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
           <div class="sm:flex side-menu dark:bg-gray-900">
-            <div className="flex h-screen bg-gray-200">
-              {/* Sidebar */}
-              <aside className="bg-gray-800 text-white md:w-64 w-full">
-                <nav>
-                  <ul className="py-4 mmLi">
-                    <li><Link href={route('basic-maintenance')}>Basic Maintenance</Link></li>
-                    <li><Link href={route('car-analytics')}>Car Analytics</Link></li>
-                    <li><Link href={route('connected-services')}>Connected Services</Link></li>
-                    <li><Link href={route('reminder-notifications')}>Reminder Notifications</Link></li>
-                    <li><Link href={route('full-maintenance-suite')}>Full Maintenance Suite</Link></li>
-                    <li><Link href={route('customizable-maintenance-schedules')}>Customizable Schedules</Link></li>
-                    <li><Link href={route('exclusive-discounts')}>Exclusive Discounts</Link></li>
-                    <li><Link href={route('priority-customer-support')}>Priority Support</Link></li>
-                    <li><Link href={route('advanced-maintenance-reports')}>Advanced Reports</Link></li>
-                  </ul>
-                </nav>
-              <div className='really-idk mx-auto flex bg-gray-800'>
-                <span>
-                  <img src="" alt="" />
-                </span>
-                <h3>{auth.user.name}</h3>
-              </div>
-              </aside>
+            <div className="flex bg-gray-200"> 
+            <Sidebar auth={auth} expand={false}></Sidebar>
             </div>
             <div className="relative bg-gray-100 menu-content">
-              <DashboardElements/>
+              <DashboardElements />
             </div>
           </div>
         </div>
 
       </AuthenticatedLayout>
 
+      <div className="fixed bottom-4 right-4"
+        onClick={handlewebSocket}
+      >
+        {!WebSocketOn ? (<>
+          <span className="bg-red-500 cursor-pointer text-white px-4 py-2 rounded-full hover:bg-blue-600 inline-block">
+            <span className='websocket'></span>
+            <span>pokeWebSocket</span>
+          </span>
+        </>) : (<>
+          <span className="bg-green-500 cursor-pointer dispp text-white px-4 py-2 rounded-full hover:bg-blue-600 inline-block">
+          <span className='websocket'>ws://{webSocketHost}</span>
+          <span>WebSocket-ON</span>
+          </span>
+        </>)}
+      </div>
       <style>
         {` 
-        .really-idk{
-          width: inherit;
-          position: absolute;
-          height: 5rem;
-          bottom: 0;
+        .websocket{
+          display:none;
+          padding:20px;
+          width: 15rem;
+          height: 4rem;
+          bottom:3rem;
+          right: 10%;
+          color:black;
         }
-          .menu-content{
-            width:100%;
-            height:auto;
-            background-color:transparent;
-
-          }
-          .mmLi li{
-            display:flex;
-            width:100%;
-            height:auto;
-            padding:20px;
-            background-color:transparent;
-            transition: all 300ms ease;
-          }
-          .mmLi ul{
-            width:100%;
-            height:auto;
-          }
+        .dispp:hover .websocket{
+          display:block;
+          position:absolute;
+          border-radius:0.3rem;
+          background-color: white;
          
-          .mmLi li:hover{
-            background-color:black;
-            color:white;
-            cursor:pointer;
-          }
+        }
           `}
       </style>
     </>

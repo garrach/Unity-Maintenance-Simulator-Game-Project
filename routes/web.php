@@ -16,23 +16,12 @@ use App\Http\Controllers\CustomizableMaintenanceSchedulesController;
 use App\Http\Controllers\ExclusiveDiscountsController;
 use App\Http\Controllers\PriorityCustomerSupportController;
 use App\Http\Controllers\AdvancedMaintenanceReportsController;
-
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentPlanController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\AssetBundlesController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -58,21 +47,24 @@ Route::middleware('auth')->group(function () {
 
 
 
-// Services Routes
 
-Route::resource('/services', ServicesController::class);   
+    // AssetBundles Routes
+    Route::resource('assetBundles', AssetBundlesController::class);   
 
-// PaymentPlans Routes
-Route::resource('paymentPlans', PaymentPlanController::class);
+    // Services Routes
+    Route::resource('services', ServicesController::class);   
 
-// Vehicle Routes
-Route::resource('vehicles', VehicleController::class);
+    // PaymentPlans Routes
+    Route::resource('paymentPlans', PaymentPlanController::class);
 
-// Device Routes
-Route::resource('devices', DeviceController::class);
+    // Vehicle Routes
+    Route::resource('vehicles', VehicleController::class);
 
-// Connection Routes
-Route::resource('connections', ConnectionController::class);
+    // Device Routes
+    Route::resource('devices', DeviceController::class);
+
+    // Connection Routes
+    Route::resource('connections', ConnectionController::class);
 
 
 

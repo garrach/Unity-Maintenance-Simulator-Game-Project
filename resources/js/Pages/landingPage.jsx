@@ -6,8 +6,8 @@ const LandingPage = ({ auth }) => {
     const [st, setSt] = useState(null);
     return (
         <>
-            <div class="bg-gray-800 text-white py-20 h-large wider">
-                <div className='absolute anima'>
+            <div class="bg-gray-800 text-white py-20 wider">
+                <div className='relative anima'>
                     <div className='canvas' onClick={(e) => {
                         e.preventDefault()
                         setSt(e.target);
@@ -16,12 +16,21 @@ const LandingPage = ({ auth }) => {
                         {st && (<ThreeCar container={st} />)}
                     </div>
                 </div>
-                <div class="container mt-12 text-left ml-12 z-40">
-                    <h1 class="text-6xl  lg:text-46 z-10 relative">Revamp Your Ride with Car Maintain</h1>
-                    <p class="text-2xl mt-3 text-gray-300 para" >an innovative automotive service dedicated to enhancing the performance and aesthetics of your vehicle. With a team of skilled professionals and state-of-the-art technology, Car Maintain offers a comprehensive range of services, from routine maintenance to advanced customization. Whether you're looking to optimize your car's engine efficiency, upgrade its interior features, or give it a fresh exterior look, Car Maintain has you covered. The company is committed to delivering top-notch craftsmanship, using high-quality materials and cutting-edge techniques. Revitalize your driving experience and ensure your vehicle stands
-                        out on the road by trusting Car Maintain for all your automotive needs.</p>
+                <div class="container mt-12 text-left ml-12 z-40 landing">
+                    <h1 class="text-6xl font-bold md:font-sans-serif lg:text-46 z-10 relative">Revamp Your Ride with <br /> Car Maintain</h1>
+                    <p class="text-1xl mt-3 text-gray-100 para" >an innovative automotive service dedicated to enhancing the
+                     performance and aesthetics of your vehicle. With a team of skilled professionals and state-of-the-art 
+                     technology, Car Maintain offers a comprehensive range of services.</p>
                     <div class="mt-6 z-10">
-                        <Link href={route('login')} class="bg-blue-500 relative text-white px-6 py-3 rounded-full hover:bg-blue-600">Get Started</Link>
+                        <Link href={route('login')} class="bg-blue-500 relative text-white px-6 py-3 font-bold rounded-full hover:bg-blue-600">Get Started</Link>
+                        <span className='relative flex mt-12'>Available For</span>
+                        <div className='relative flex mt-5'>
+
+                        <img src="https://minimals.cc/assets/icons/platforms/ic_js.svg" alt=""  className='ml-4'/>
+                        <img src="https://minimals.cc/assets/icons/platforms/ic_vite.svg" alt=""  className='ml-4'/>
+                        <img src="unity-69.svg" alt=""  className='ml-4 w-6'/>
+                        <img src="laravel-2.svg" alt=""  className='ml-4 w-6'/>
+                        </div>
                     </div>
 
                 </div>
@@ -138,9 +147,19 @@ const LandingPage = ({ auth }) => {
 
            
             <style>{`
+            .landing{
+                display: block;
+                position: absolute;
+                text-align: center;
+                margin-left:10rem;
+                top:7rem;
+                width: 40%;
+            }
   .anima{
+    display:block;
     width:100%;
-    height:45rem;
+    height:100%;
+    background-color:red;
     right:0;
     top:0;
     z-index:0;
@@ -155,13 +174,15 @@ const LandingPage = ({ auth }) => {
     z-index:2;
   }
   .wider{
+    display:block;
+    position:relative;
     width:100%;
+    height:60rem;
+    padding:0;
   }
   .para{
     display:block;
     position:relative;
-    width:70rem;
-    text-align:justify;
     z-index:20;
   }
   .display-pnl{

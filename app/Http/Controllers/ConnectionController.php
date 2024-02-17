@@ -7,29 +7,46 @@ namespace App\Http\Controllers;
 use App\Models\Connection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use App\Models\Vehicle;
+use App\Models\Device;
 class ConnectionController extends Controller
 {
     public function index()
     {
-        $connections = Connection::all();
         $vehicles=[];
+        $connections = Connection::all();
         $devices=[];
-        for ($i=0; $i < count($connections) ; $i++) { 
-           $vehicles[$i]=$connections[$i]->vehicle;
-           $devices[$i]=$connections[$i]->devices;
+        /*for ($i=0; $i < count($connections); $i++) { 
+            $V_id=$connections[$i]->vehicle_id;
+            $vehicles[$i]=Vehicle::find($V_id);
+        }*/
+        
+        $connections = Connection::with('vehicle')->get();
+        $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
+        $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
+
+        $deviceIds = $connections->pluck('device_id')->toArray();
+        for ($i=0; $i < count($deviceIds) ; $i++) { 
+            $devices = Device::whereIn('id', $deviceIds)->get();
         }
-       // $vehicles = $connections->vehicle;
+        
         return Inertia::render('connections/Index', [
-            'connections' => $connections,
             'vehicles' => $vehicles,
             'devices' => $devices,
+            'connections' => $connections,
         ]);
     }
 
     public function create()
     {
-        return Inertia::render('connections/Create');
+        $Vehicle_z = Vehicle::all();
+        $Devices_z = Device::all();
+        $connections_z = Connection::all();
+        return Inertia::render('connections/Create',[
+            'vehicles'=>$Vehicle_z,
+            'devices'=>$Devices_z,
+            'connections'=>$connections_z,
+        ]);
     }
 
     public function store(Request $request)

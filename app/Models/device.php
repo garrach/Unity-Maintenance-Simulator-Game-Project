@@ -1,5 +1,4 @@
 <?php
-// app/Models/Device.php
 
 namespace App\Models;
 
@@ -11,4 +10,9 @@ class Device extends Model
     use HasFactory;
 
     protected $fillable = ['serial_number', 'type', 'installation_date'];
+
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class,'connections');
+    }
 }

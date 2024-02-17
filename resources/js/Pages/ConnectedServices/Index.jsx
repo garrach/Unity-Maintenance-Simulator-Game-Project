@@ -1,41 +1,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ConnectedServicesIndex = ({ auth }) => {
+const ConnectedServicesIndex = ({ connections, vehicles, devices, auth }) => {
     // Static connected services data
     const interiorDevices = ['Infotainment System', 'Climate Control', 'Heated Seats'];
     const connectedDevices = ['GPS Tracker', 'Bluetooth OBD-II Scanner', 'Smartphone Integration'];
-    const connectedServicesData = {
-        autoRepairShops: 8,
-        exclusiveDiscounts: 4,
-        priorityService: 6,
-    };
-
-    const chartOptions = {
-        chart: {
-            height: 200,
-            width: 200,
-            type: 'bar',
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-            },
-        },
-        dataLabels: {
-            enabled: false,
-        },
-        xaxis: {
-            categories: Object.keys(connectedServicesData),
-        },
-    };
-
-    const chartSeries = [{
-        name: 'Connected Services Data',
-        data: Object.values(connectedServicesData),
-    }];
+    const [deviceChart, setDeviceChart] = useState();
+    const handlDeviceChart = (device) => {
+        setDeviceChart(device);
+        console.log(device);
+    }
+    useEffect(() => {
+    }, [deviceChart])
     return (
         <div className='dark:text-white dark:bg-gray-100 '>
 
@@ -48,40 +26,30 @@ const ConnectedServicesIndex = ({ auth }) => {
                 <div className="bg-gray-100 dark:bg-gray-900 p-4">
                     <h1 className="text-3xl font-bold mb-4">Connected Services</h1>
 
-                    {/* Display Connected Services Chart */}
-                 
-
                     <div className='grid md:grid-cols-2 gap-4'>
 
-                    <div className="bg-white p-4 rounded-md shadow mb-4  dark:bg-gray-800">
-                        <h2 className="text-xl font-bold mb-2">Connected Services Chart</h2>
-                        <Chart className='dark:bg-white' options={chartOptions} series={chartSeries} type="bar" height={200} />
-                    </div>
-                        {/* Display Additional Connected Services Details */}
-                        <div className="bg-white p-4 rounded-md shadow mb-4 dark:bg-gray-800">
-                            <h2 className="text-xl font-bold mb-2">Additional Details</h2>
-                            <p className="mb-2">Auto Repair Shops: {connectedServicesData.autoRepairShops}</p>
-                            <p className="mb-2">Exclusive Discounts: {connectedServicesData.exclusiveDiscounts}</p>
-                            <p className="mb-2">Priority Service: {connectedServicesData.priorityService}</p>
-                            {/* Add other connected services details as needed */}
+                        <div className="bg-white p-4 rounded-md shadow mb-4  dark:bg-gray-800">
+                            <h2 className="text-xl font-bold mb-2">Connected Services Chart</h2>
+                            {deviceChart}
                         </div>
-                        <div className="bg-white p-4 rounded-md shadow mb-4 dark:bg-gray-800">
-                            <h2 className="text-xl font-bold mb-2">Connected Devices</h2>
-                            <ul>
-                                {connectedDevices.map((device, index) => (
-                                    <li key={index} className="mb-2">{device}</li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div className="bg-white p-4 rounded-md shadow dark:bg-gray-800">
-                            <h2 className="text-xl font-bold mb-2">Interior Devices</h2>
-                            <ul>
-                                {interiorDevices.map((device, index) => (
-                                    <li key={index} className="mb-2">{device}</li>
-                                ))}
-                            </ul>
-                        </div>
+                        <ul className="space-y-2">
+                            {connections.map((connection, index) => (
+                                <li key={index} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
+                                    <p className="text-lg font-semibold mb-2">
+                                        <span className='relative ml-4'>{connection.connection_id}</span>
+                                        <span className='relative ml-4'>{connection.device_id} </span>
+                                        <span className='relative ml-4'>{connection.vehicle_id}</span>
+                                        <span className='relative ml-4'>{connection.rate}</span>
+                                    </p>
+                                    <ul>
+                                        <ul>
+                                            {vehicles[index] && <li>{vehicles[index].make}</li>}
+                                            {devices.map((device, index) => (<li key={index}>{device.serial_number}</li>))}
+                                        </ul>
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </AuthenticatedLayout>
@@ -90,3 +58,6 @@ const ConnectedServicesIndex = ({ auth }) => {
 };
 
 export default ConnectedServicesIndex;
+
+
+{/**{connection.devices.map((device,index) => (<li key={index}>{device}</li>))} */ }

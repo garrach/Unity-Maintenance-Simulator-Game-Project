@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Vehicle.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,8 +11,8 @@ class Vehicle extends Model
 
     protected $fillable = ['make', 'model', 'year', 'license_plate'];
 
-    public function maintenanceRecords()
+    public function devices()
     {
-        return $this->hasMany(MaintenanceRecord::class);
+        return $this->belongsToMany(Device::class,'connections');
     }
 }

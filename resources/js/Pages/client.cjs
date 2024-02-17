@@ -17,5 +17,6 @@ socket.addEventListener('close', () => {
 socket.addEventListener('error', (error) => {
   console.error('WebSocket error:', error.message);
 });
+return socket;
 }
 export { clientSocket };

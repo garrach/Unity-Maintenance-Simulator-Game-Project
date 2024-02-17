@@ -28,7 +28,7 @@ const Account = () => {
 
             <div className="flex flex-wrap">
               {roles.map((role, index) => (
-                <div key={index} className={`bg-${colors[index].toLowerCase()}-500 text-white px-2 py-1 rounded-full mr-2 mb-2`}>
+                <div key={index} className={`bg-${colors[index].toLowerCase()}-500 text-white px-12 py-1 rounded-full mr-2 mb-2`}>
                   {role}
                 </div>
               ))}
