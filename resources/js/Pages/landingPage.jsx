@@ -6,7 +6,7 @@ const LandingPage = ({ auth }) => {
     const [st, setSt] = useState(null);
     return (
         <>
-            <div class="bg-gray-800 text-white py-20 wider">
+            <div className="bg-gray-800 text-white py-20 wider">
                 <div className='relative anima'>
                     <div className='canvas' onClick={(e) => {
                         e.preventDefault()
@@ -16,28 +16,34 @@ const LandingPage = ({ auth }) => {
                         {st && (<ThreeCar container={st} />)}
                     </div>
                 </div>
-                <div class="container mt-12 text-left ml-12 z-40 landing">
-                    <h1 class="text-6xl font-bold md:font-sans-serif lg:text-46 z-10 relative">Revamp Your Ride with <br /> Car Maintain</h1>
-                    <p class="text-1xl mt-3 text-gray-100 para" >an innovative automotive service dedicated to enhancing the
-                     performance and aesthetics of your vehicle. With a team of skilled professionals and state-of-the-art 
-                     technology, Car Maintain offers a comprehensive range of services.</p>
-                    <div class="mt-6 z-10">
-                        <Link href={route('login')} class="bg-blue-500 relative text-white px-6 py-3 font-bold rounded-full hover:bg-blue-600">Get Started</Link>
+                <div className="container mt-12 text-left ml-12 z-40 landing">
+                    <h1 className="text-6xl font-bold md:font-sans-serif lg:text-46 z-10 relative">Revamp Your Ride with <br /> Car Maintain</h1>
+                    <p className="text-1xl mt-3 text-gray-100 para" >an innovative automotive service dedicated to enhancing the
+                        performance and aesthetics of your vehicle. With a team of skilled professionals and state-of-the-art
+                        technology, Car Maintain offers a comprehensive range of services.</p>
+                    <div className="mt-6 z-10">
+                        <Link href={route('login')} className="bg-blue-500 relative text-white px-6 py-3 font-bold rounded-full hover:bg-blue-600">Get Started</Link>
                         <span className='relative flex mt-12'>Available For</span>
                         <div className='relative flex mt-5'>
 
-                        <img src="https://minimals.cc/assets/icons/platforms/ic_js.svg" alt=""  className='ml-4'/>
-                        <img src="https://minimals.cc/assets/icons/platforms/ic_vite.svg" alt=""  className='ml-4'/>
-                        <img src="unity-69.svg" alt=""  className='ml-4 w-6'/>
-                        <img src="laravel-2.svg" alt=""  className='ml-4 w-6'/>
+                            <img src="https://minimals.cc/assets/icons/platforms/ic_js.svg" alt="" className='ml-4' />
+                            <img src="https://minimals.cc/assets/icons/platforms/ic_vite.svg" alt="" className='ml-4' />
+                            <img src="unity-69.svg" alt="" className='ml-4 w-6' />
+                            <img src="laravel-2.svg" alt="" className='ml-4 w-6' />
                         </div>
+                        <div className='absolute grid grid-cols-3 gap-8'>
+                            <div className='someGlass'></div>
+                            <div className='someGlass'></div>
+                            <div className='someGlass'></div>
+                        </div>
+
                     </div>
 
                 </div>
             </div>
 
-            <div class="container mx-auto mt-12 mb-12">
-                <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
+            <div className="container mx-auto mt-12 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
                     <div className="p-6 bg-white rounded-lg shadow-md">
                         <h2 className="text-xl font-bold mb-4">Infotainment System</h2>
 
@@ -66,7 +72,7 @@ const LandingPage = ({ auth }) => {
                     <div className="p-6 bg-white rounded-lg shadow-md">
                         <h2 className="text-xl text-right font-bold mb-4">Air Conditioning System</h2>
 
-                        <p class="text-right">Experience a new level of comfort with our advanced Air Conditioning System. Designed to keep you cool and relaxed in any driving conditions, our system goes beyond basic temperature control.</p>
+                        <p className="text-right">Experience a new level of comfort with our advanced Air Conditioning System. Designed to keep you cool and relaxed in any driving conditions, our system goes beyond basic temperature control.</p>
                         <div className="sm:flex">
                             <div className="display-pnl mb-3">
                                 <img src="air.gif" alt="Infotainment System" />
@@ -75,14 +81,14 @@ const LandingPage = ({ auth }) => {
 
                                 <p className="text-left">Key Features:</p>
 
-                                <ul class="list-disc pl-6">
+                                <ul className="list-disc pl-6">
                                     <li><b>Perfect Temperature:</b> Our system ensures the perfect interior temperature, providing a comfortable environment for every journey.</li>
                                     <li><b>Adaptive Cooling:</b> Whether it's scorching heat or a chilly day, our adaptive cooling system adjusts to external conditions for optimal comfort.</li>
                                     <li><b>Air Quality:</b> Breathe fresh air with our built-in air filtration system, ensuring a clean and allergen-free cabin environment.</li>
                                     <li><b>Efficient Ventilation:</b> Enjoy efficient and customizable ventilation options for personalized airflow throughout the car.</li>
                                 </ul>
 
-                                <p class="text-left">Say goodbye to the discomfort of extreme temperatures and welcome a pleasant drive every time. Our Air Conditioning System is designed to make your journey enjoyable, regardless of the weather outside.</p>
+                                <p className="text-left">Say goodbye to the discomfort of extreme temperatures and welcome a pleasant drive every time. Our Air Conditioning System is designed to make your journey enjoyable, regardless of the weather outside.</p>
                             </div>
 
 
@@ -145,8 +151,39 @@ const LandingPage = ({ auth }) => {
                 </div>
             </div>
 
-           
+
             <style>{`
+            .absolute.grid{
+                width:80rem;
+                left:50%;
+            }
+            .someGlass{
+                width: 20rem;
+                height: 30rem;
+                position: relative;
+                background: rgba(47, 47, 47, 0);
+                border-radius: 16px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(9.7px);
+                -webkit-backdrop-filter: blur(3.7px);
+                border: 1px solid rgba(91, 91, 91, 0.4);
+            }
+            .someGlass:nth-child(1){
+                margin-top:-5rem;
+             
+              
+            }
+           
+            .someGlass:nth-child(2){
+                margin-top:-10rem;
+             
+              
+            }
+            .someGlass:nth-child(3){
+                margin-top:-15rem;
+             
+              
+            }
             .landing{
                 display: block;
                 position: absolute;

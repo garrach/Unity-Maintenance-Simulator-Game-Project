@@ -13,6 +13,6 @@ class Device extends Model
 
     public function vehicles()
     {
-        return $this->belongsToMany(Vehicle::class,'connections');
+        return $this->belongsTo(Vehicle::class);
     }
 }

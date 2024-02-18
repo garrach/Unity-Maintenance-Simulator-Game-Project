@@ -17,10 +17,11 @@ import { clientSocket } from './client.cjs';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth ,usersList}) {
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');
+  const [currentwebSocket, setcurrentwebSocket] = useState(null);
   const [messageObject, setUserMessage] = useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
   const handlinputchange = (e) => {
     setUserMessage({ message: e.target.value })
@@ -50,6 +51,7 @@ export default function Dashboard({ auth }) {
   }
   const handlewebSocket = () => {
    const webSocket= clientSocket(messageObject);
+    setcurrentwebSocket(webSocket)
     setWebSocketOn(true);
     setAlertDialogOpen(!isAlertDialogOpen)
     const host = new URL(webSocket.url).host;
@@ -57,7 +59,7 @@ export default function Dashboard({ auth }) {
   }
   return (
     <>
-
+{webSocketHost && (<><h1>It's ready to get Data</h1></>)}
       <AuthenticatedLayout
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}</h2>}
@@ -65,12 +67,13 @@ export default function Dashboard({ auth }) {
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
-          <div class="sm:flex side-menu dark:bg-gray-900">
+      
+          <div className="sm:flex side-menu dark:bg-gray-900">
             <div className="flex bg-gray-200"> 
             <Sidebar auth={auth} expand={false}></Sidebar>
             </div>
             <div className="relative bg-gray-100 menu-content">
-              <DashboardElements />
+              <DashboardElements usersList={usersList} currentwebSocket={setwebSocketHost} />
             </div>
           </div>
         </div>

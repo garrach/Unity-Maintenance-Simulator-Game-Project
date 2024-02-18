@@ -11,6 +11,7 @@ export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
+        websocket:null,
         remember: false,
     });
 
@@ -22,7 +23,7 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
+        setData('websocket',new WebSocket("ws://localhost:3004"))
         post(route('login'));
     };
 

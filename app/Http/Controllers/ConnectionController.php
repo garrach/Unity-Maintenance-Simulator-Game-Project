@@ -11,25 +11,28 @@ use App\Models\Vehicle;
 use App\Models\Device;
 class ConnectionController extends Controller
 {
+    public function getDevicesForVehicle($vehicleId)
+    {
+
+        $vehicle = Vehicle::all()->where('id',$vehicleId)->first();
+
+        if (!$vehicle) {
+            return [];
+        }
+        return $vehicle->devices;
+    }
+
     public function index()
     {
-        $vehicles=[];
-        $connections = Connection::all();
-        $devices=[];
-        /*for ($i=0; $i < count($connections); $i++) { 
-            $V_id=$connections[$i]->vehicle_id;
-            $vehicles[$i]=Vehicle::find($V_id);
-        }*/
-        
-        $connections = Connection::with('vehicle')->get();
-        $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
-        $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
-
-        $deviceIds = $connections->pluck('device_id')->toArray();
-        for ($i=0; $i < count($deviceIds) ; $i++) { 
-            $devices = Device::whereIn('id', $deviceIds)->get();
+        $devices=[[]];
+        $vehicles=Vehicle::all()->toArray();
+        for ($i=0; $i < count($vehicles) ; $i++) { 
+            $dvs=$this->getDevicesForVehicle($i);
+            for ($j=0; $j < count($dvs) ; $j++) { 
+                $devices[$i][$j]=$dvs[$j];
+            }
         }
-        
+        $connections=Connection::all()->toArray();
         return Inertia::render('connections/Index', [
             'vehicles' => $vehicles,
             'devices' => $devices,
@@ -52,6 +55,7 @@ class ConnectionController extends Controller
     public function store(Request $request)
     {
         Connection::create($request->all());
+        
         return redirect()->route('connections.index')->with('success', 'Connection created successfully.');
     }
 

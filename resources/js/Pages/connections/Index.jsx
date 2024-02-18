@@ -17,21 +17,19 @@ const Index = ({ connections, vehicles, devices, auth }) => {
         <div className="my-4 max-w-7xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Connection List</h1>
           <ul className="space-y-2">
-            {connections.map((connection,Index) => (
+            {(connections && vehicles && devices) && connections.map((connection,Index) => (
               <li key={connection.id} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
                 <p className="text-lg font-semibold mb-2">{connection.id}:{connection.name}</p>
                 <ul>
                 <ul>
-                    {vehicles.map((vehicle) => (
-                       <li key={vehicle.id}>{vehicle.make}</li>
-                    ))}
-                  </ul>
-                </ul>
-                <ul>
-                      {devices.map((device,Index) => (
-                        <li key={Index}>{device.serial_number}</li>
-                      ))}
+                    <li className='text-2xl' key={vehicles[Index].id}>{vehicles[Index].make}</li>
+                    {console.log(Index)}
+                    <ul>
+                      {console.log(devices)}
                     </ul>
+                </ul>
+                </ul>
+                
                 <div className="flex space-x-2">
                   <Link
                     href={route('connections.show', { connection: connection.id })}

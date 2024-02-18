@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
+let fps=0;
 async function retriveUser(id,client){
 const coll = client.collection('users');
 const cursor = coll.find({_id: new ObjectId(id)});
@@ -44,36 +44,51 @@ mongoose.connect('mongodb://localhost:27017/vr-project', {
 });
 
 const db = mongoose.connection;
+const clients = new Set();
 
 
-
-wss.on('connection', (ws) => {
-  console.log('User connected');
-  
+wss.on('connection', (ws,req) => {
+  clients.add(ws);
+  const clientAddress = req.connection.remoteAddress;
+  const clientPort = req.connection.remotePort;
+  ws.on('message', (message) => {
+    let parsedMessage = message; 
+    try {
+      parsedMessage = JSON.parse(message);
+     if(parsedMessage.type==="greet"){
+       fps+=1;
+       console.log(parsedMessage.type)
+     }
+    if(parsedMessage.type==="web"){
+      fps+=2;
+    }  
+    if(parsedMessage.type==="running"){
+      fps+=10;
+    }  
+    broadcast(JSON.stringify({message:parsedMessage.data}))
+    } catch (error) {
+      fps=0;
+    }
+    console.log('User message');
+  });
   ws.on('open',()=>{
     console.log('User data');
   })
   logger.info('User connected');
-  ws.on('message', (message) => {
-    let parsedMessage = message;
-    try {
-      parsedMessage = JSON.parse(message);
-      console.log(parsedMessage)
-      ws.send(JSON.stringify({message:'message msg recived thanks'}));
-      logger.info('Received message:', parsedMessage);
-    } catch (error) {
-      logger.error('Message error JSON parse:', parsedMessage);
-    }
-    handleVehicleMessages(parsedMessage, wss, db);
-    handleDeviceMessages(parsedMessage, wss, db);
-    handleConnectionMessages(parsedMessage, wss, db);
-  });
-
   ws.on('close', () => {
     logger.info('User disconnected');
+    broadcast(JSON.stringify({message:'disconnected'}))
+    clients.delete(ws);
   });
 });
-
+function broadcast(message) {
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+      //console.log(message)
+    }
+  });
+}
 
 
 

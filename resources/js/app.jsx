@@ -6,16 +6,17 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import Navbar from './Pages/Navbar';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import { Link, usePage } from '@inertiajs/react';
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
-
-        root.render(<><Navbar auth={props}/><App  {...props} /></>);
+        root.render(<><Navbar auth={props} anything={usePage.props} /><App  {...props} /></>);
     },
     progress: {
         color: '#4B5563',
     },
-});
+},);
 

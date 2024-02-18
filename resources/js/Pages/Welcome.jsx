@@ -38,35 +38,35 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
             </div>
 
-            <footer class="bg-gray-800 text-white py-8">
-                <div class="container mx-auto flex justify-between items-center">
+            <footer className="bg-gray-800 text-white py-8">
+                <div className="container mx-auto flex justify-between items-center">
 
                     <div>
-                        <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
-                        <p class="text-gray-300">123 Main Street, Cityville</p>
-                        <p class="text-gray-300">Email: info@example.com</p>
-                        <p class="text-gray-300">Phone: (555) 123-4567</p>
+                        <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+                        <p className="text-gray-300">123 Main Street, Cityville</p>
+                        <p className="text-gray-300">Email: info@example.com</p>
+                        <p className="text-gray-300">Phone: (555) 123-4567</p>
                     </div>
 
-                    <div class="text-center">
-                        <h2 class="text-2xl font-bold mb-4">Quick Links</h2>
-                        <a href="/" class="block text-gray-300 hover:text-gray-400 mb-2">Home</a>
-                        <a href="#" class="block text-gray-300 hover:text-gray-400 mb-2">About</a>
-                        <a href="#" class="block text-gray-300 hover:text-gray-400 mb-2">Services</a>
-                        <a href="#" class="block text-gray-300 hover:text-gray-400 mb-2">Contact</a>
+                    <div className="text-center">
+                        <h2 className="text-2xl font-bold mb-4">Quick Links</h2>
+                        <a href="/" className="block text-gray-300 hover:text-gray-400 mb-2">Home</a>
+                        <a href="#" className="block text-gray-300 hover:text-gray-400 mb-2">About</a>
+                        <a href="#" className="block text-gray-300 hover:text-gray-400 mb-2">Services</a>
+                        <a href="#" className="block text-gray-300 hover:text-gray-400 mb-2">Contact</a>
                     </div>
 
                     <div>
-                        <h2 class="text-2xl font-bold mb-4">Connect with Us</h2>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-300 hover:text-gray-400"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-300 hover:text-gray-400"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-300 hover:text-gray-400"><i class="fab fa-instagram"></i></a>
+                        <h2 className="text-2xl font-bold mb-4">Connect with Us</h2>
+                        <div className="flex space-x-4">
+                            <a href="#" className="text-gray-300 hover:text-gray-400"><i className="fab fa-facebook"></i></a>
+                            <a href="#" className="text-gray-300 hover:text-gray-400"><i className="fab fa-twitter"></i></a>
+                            <a href="#" className="text-gray-300 hover:text-gray-400"><i className="fab fa-instagram"></i></a>
                         </div>
                     </div>
 
                 </div>
-                <div class="text-center mt-8">
+                <div className="text-center mt-8">
                     &copy; 2024 Your Company. All rights reserved.
                 </div>
             </footer>

@@ -22,6 +22,7 @@ use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentPlanController;
 use App\Http\Controllers\AssetBundlesController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -35,9 +36,7 @@ Route::get('/aboutUs',function(){return Inertia::render('About');})->name('about
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');

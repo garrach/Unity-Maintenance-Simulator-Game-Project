@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Connection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['vehicle_id','device_id', 'connection_date'];
+    protected $fillable = ['vehicle_id','device_id'];
 
-    public function vehicle()
+    public function vehicles()
     {
-        return $this->belongsTo(Vehicle::class,'connections','vehicle_id');
+        return $this->hasManyThrough(Vehicle::class,Device::class,'id','id');
     }
 }

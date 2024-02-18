@@ -13,6 +13,7 @@ import DeviceList from '../Dashboard/DeviceList';
 import NotificationCenter from '../Dashboard/NotificationCenter';
 import MaintenanceReminders from '../Dashboard/MaintenanceReminders';
 import PaymentPlanOverview from '../Dashboard/PaymentPlanOverview';
+import UsersList from '../Dashboard/UsersList';
 
 const DashboardCard = ({ number, icon, children, span, margin }) => {
     return (
@@ -45,16 +46,16 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
 
 
 
-const MainContent = ({ children }) => {
+const MainContent = ({ children , usersList,currentwebSocket}) => {
     return (
         <main className="flex-2 p-4">
             <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4 content-center m-md-n4">
                 <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions /></DashboardCard>
-                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities /></DashboardCard>
+                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities currentwebSocket={currentwebSocket}/></DashboardCard>
                 <DashboardCard number="15m" icon="ic_glass_message.png" span={false} ><RecentConnections /></DashboardCard>
-                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus /></DashboardCard>
+                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus  /></DashboardCard>
                 <DashboardCard number="71.9k" icon="ic_glass_buy.png" span={false} ><Analytics /></DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={false} ><NotificationCenter /></DashboardCard>
+                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={false} ><UsersList usersList={usersList} /></DashboardCard>
                 <DashboardCard number="41.5k" icon="ic_glass_buy.png" span={false} ><MaintenanceReminders/></DashboardCard>
                 <DashboardCard number="302.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2" ><VehicleList/></DashboardCard>
                 <DashboardCard number="92.5k" icon="ic_glass_buy.png" span={false} ><SearchFilters/></DashboardCard>
@@ -65,9 +66,9 @@ const MainContent = ({ children }) => {
     );
 };
 
-const DashboardElements = ({ children }) => {
+const DashboardElements = ({ children ,usersList,currentwebSocket}) => {
     return (
-        <MainContent>
+        <MainContent usersList={usersList} currentwebSocket={currentwebSocket}>
             {children}
         </MainContent>
     );

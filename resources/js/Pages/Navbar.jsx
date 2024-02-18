@@ -1,9 +1,14 @@
 // Navbar.jsx
 
-import React from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react';
+import { Link, usePage } from '@inertiajs/react';
 
-const Navbar = ({ auth }) => {
+const Navbar = ({ auth, anything}) => {
+  const [currentUser,setCurrentUser]=useState(null); 
+ console.log({anything});
+  useEffect(()=>{
+    setCurrentUser(auth.initialPage.props.auth.user) ;
+  },currentUser)
   return (
     <nav className="bg-gray-800 p-4 text-white fixed top-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center">
@@ -11,8 +16,7 @@ const Navbar = ({ auth }) => {
         <div className="space-x-4">
           <Link href="/aboutUs" className="hover:text-gray-400">About</Link>
           <Link href="/contact" className="hover:text-gray-400">Contact</Link>
-          {console.log(auth.initialPage.props.auth)}
-          {auth.initialPage.props.auth !== null ? (
+          {currentUser !== null ? (
           <Link href="/dashboard" className="hover:text-gray-400">Dashboard</Link>
           ) : (<>
            <Link href="/login" className="hover:text-gray-400">login</Link>

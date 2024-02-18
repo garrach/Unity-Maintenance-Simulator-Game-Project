@@ -3,7 +3,7 @@ const clientSocket=({message})=>{
 const socket = new WebSocket('ws://localhost:3004');
 socket.addEventListener('open', () => {
   console.log('Connected to WebSocket server');
-  socket.send(JSON.stringify({message:message}));
+  socket.send(JSON.stringify({type:'poke',data:'Api WebClient'}));
 });
 
 socket.addEventListener('message', (event) => {

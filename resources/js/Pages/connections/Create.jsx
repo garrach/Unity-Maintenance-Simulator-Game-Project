@@ -6,22 +6,23 @@ import { Link, useForm } from '@inertiajs/react';
 const Create = ({ auth, vehicles, devices, connections }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     // Your form fields here
-    vehicle_id: '',
-    device_id: '',
+    vehicle_id: 1,
+    device_id: 1,
     connection_date: '',
   });
-
+  const [socket,setSocket]=useState(new WebSocket("ws://localhost:3004"));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: value.replace('/','-'),
     }));
-  };
-
+  }; 
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route('connections.store'));
+    confirm("Data : "+data);
+    socket.send(JSON.stringify({type:'web', data:data}));
   };
 
   return (
@@ -50,7 +51,7 @@ const Create = ({ auth, vehicles, devices, connections }) => {
                 className="mt-1 p-2 border rounded-md w-full"
               >
                 {vehicles.map((vehicle) => (
-                  <option key={vehicle.id} value={vehicle.id}>
+                  <option key={vehicle.id} value={vehicle.id} >
                     {vehicle.make}
                   </option>
                 ))}
@@ -61,10 +62,10 @@ const Create = ({ auth, vehicles, devices, connections }) => {
               <label htmlFor="device_id" className="block text-sm font-medium text-gray-700">
                 Device:
               </label>
-              <select
+              <select multiple size='4'
                 id="device_id"
                 name="device_id"
-                value={data.device_id}
+                
                 onChange={handleChange}
                 className="mt-1 p-2 border rounded-md w-full"
               >
@@ -84,7 +85,7 @@ const Create = ({ auth, vehicles, devices, connections }) => {
                 type="date"
                 id="connection_date"
                 name="connection_date"
-                defaultValue='2024-02-15'
+                value={data.connection_date}
                 onChange={handleChange}
                 className="mt-1 p-2 border rounded-md w-full"
               />

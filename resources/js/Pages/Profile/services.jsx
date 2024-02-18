@@ -75,7 +75,7 @@ const Services = ({ auth }) => {
     >
     <Head title="Services" />
 
-      <div class="container mx-auto py-12">
+      <div className="container mx-auto py-12">
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-bold mb-4"> Services</h1>
 
@@ -101,8 +101,8 @@ const Services = ({ auth }) => {
               </>
             ))}
             <div className="bg-white p-4 group rounded shadow-md mb-4 rounded-lg">
-              <label htmlFor='neew' class="hover:border-blue-500 hover:bg-white hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3">
-                <svg class="mb-1 text-slate-400" width="20" height="20" fill="currentColor" aria-hidden="true">
+              <label htmlFor='neew' className="hover:border-blue-500 hover:bg-white hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3">
+                <svg className="mb-1 text-slate-400" width="20" height="20" fill="currentColor" aria-hidden="true">
                   <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                 </svg>
                 New project
