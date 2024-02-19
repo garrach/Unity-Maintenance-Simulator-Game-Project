@@ -50,12 +50,15 @@ export default function Dashboard({ auth ,usersList}) {
     setAlertDialogOpen(!isAlertDialogOpen)
   }
   const handlewebSocket = () => {
-   const webSocket= clientSocket(messageObject);
+   const webSocket = clientSocket(messageObject);
     setcurrentwebSocket(webSocket)
     setWebSocketOn(true);
     setAlertDialogOpen(!isAlertDialogOpen)
     const host = new URL(webSocket.url).host;
     setwebSocketHost(host);
+    webSocket.addEventListener('open',(event)=>{
+      
+    })
   }
   return (
     <>
@@ -73,7 +76,7 @@ export default function Dashboard({ auth ,usersList}) {
             <Sidebar auth={auth} expand={false}></Sidebar>
             </div>
             <div className="relative bg-gray-100 menu-content">
-              <DashboardElements usersList={usersList} currentwebSocket={setwebSocketHost} />
+              <DashboardElements auth={auth} usersList={usersList} currentwebSocket={setwebSocketHost} />
             </div>
           </div>
         </div>

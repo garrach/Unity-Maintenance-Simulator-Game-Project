@@ -1,7 +1,7 @@
 // DashboardElements.jsx
 
 import React from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm,usePage } from '@inertiajs/react';
 import RecentConnections from '../Dashboard/RecentConnections';
 import RecentActivities from '../Dashboard/RecentActivities';
 import Analytics from '../Dashboard/Analytics';
@@ -22,20 +22,19 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
                 <>
                     <div className={`bg-white p-4 rounded-md shadow py-3 dark:bg-gray-800  border-indigo-500 border-b-4 border-l-4 dark:text-white   ${margin}`}>
                         <div className="flex items-center mb-4  mx-auto dark:border-gray-100 ">
-                            {icon && <span className="text-xl"><img alt=".." /></span>}
-                            <span className="text-3xl">{number}</span>
+                            {/*icon && <span className="text-xl"><img alt=".." /></span>
+                            <span className="text-3xl">{number}</span>*/}
                         </div>
 
-                        <h2>new items</h2>
+                       
                         <div>{children}</div>
                     </div>
                 </>) : (<>
                     <div className="bg-white p-4 rounded-md dark:bg-gray-800 dark:text-white shadow py-3">
                         <div className="flex items-center mb-4  mx-auto dark:border-gray-100">
-                            {icon && <span className="text-xl"><img alt=".." /></span>}
-                            <span className="text-3xl">{number}</span>
+                            {/*icon && <span className="text-xl"><img alt=".." /></span>
+                            <span className="text-3xl">{number}</span>*/}
                         </div>
-                        <h2>new items</h2>
                         <div>{children}</div>
                     </div>
                 </>)}
@@ -46,29 +45,31 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
 
 
 
-const MainContent = ({ children , usersList,currentwebSocket}) => {
+const MainContent = ({ children,auth , usersList,currentwebSocket}) => {
+    const {props}=usePage();
     return (
         <main className="flex-2 p-4">
             <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4 content-center m-md-n4">
-                <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions /></DashboardCard>
-                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities currentwebSocket={currentwebSocket}/></DashboardCard>
-                <DashboardCard number="15m" icon="ic_glass_message.png" span={false} ><RecentConnections /></DashboardCard>
-                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus  /></DashboardCard>
-                <DashboardCard number="71.9k" icon="ic_glass_buy.png" span={false} ><Analytics /></DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={false} ><UsersList usersList={usersList} /></DashboardCard>
-                <DashboardCard number="41.5k" icon="ic_glass_buy.png" span={false} ><MaintenanceReminders/></DashboardCard>
-                <DashboardCard number="302.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2" ><VehicleList/></DashboardCard>
-                <DashboardCard number="92.5k" icon="ic_glass_buy.png" span={false} ><SearchFilters/></DashboardCard>
-                <DashboardCard number="57.5k" icon="ic_glass_buy.png" span={false} ><PaymentPlanOverview/></DashboardCard>
+                <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions auth={auth} /></DashboardCard>
+                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities auth={auth} currentwebSocket={currentwebSocket}/></DashboardCard>
+                <DashboardCard number="15m" icon="ic_glass_message.png" span={false} ><RecentConnections auth={auth} /></DashboardCard>
+                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus  auth={auth} /></DashboardCard>
+                <DashboardCard number="71.9k" icon="ic_glass_buy.png" span={false} ><Analytics auth={auth} /></DashboardCard>
+                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={false} ><UsersList auth={auth} usersList={usersList} /></DashboardCard>
+                <DashboardCard number="41.5k" icon="ic_glass_buy.png" span={false} ><MaintenanceReminders auth={auth}/></DashboardCard>
+                <DashboardCard number="302.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2" ><VehicleList auth={auth}/></DashboardCard>
+                <DashboardCard number="92.5k" icon="ic_glass_buy.png" span={false} ><SearchFilters auth={auth}/></DashboardCard>
+                <DashboardCard number="57.5k" icon="ic_glass_buy.png" span={false} ><NotificationCenter auth={auth} notifications={props}/></DashboardCard>
+                <DashboardCard number="57.5k" icon="ic_glass_buy.png" span={false} ><PaymentPlanOverview auth={auth}/></DashboardCard>
                 {children}
             </div>
         </main>
     );
 };
 
-const DashboardElements = ({ children ,usersList,currentwebSocket}) => {
+const DashboardElements = ({ children, auth,usersList,currentwebSocket}) => {
     return (
-        <MainContent usersList={usersList} currentwebSocket={currentwebSocket}>
+        <MainContent auth={auth} usersList={usersList} currentwebSocket={currentwebSocket}>
             {children}
         </MainContent>
     );

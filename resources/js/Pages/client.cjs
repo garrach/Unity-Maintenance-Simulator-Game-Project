@@ -1,5 +1,5 @@
 
-const clientSocket=({message})=>{
+const clientSocket=()=>{
 const socket = new WebSocket('ws://localhost:3004');
 socket.addEventListener('open', () => {
   console.log('Connected to WebSocket server');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" className="dark scroll-smooth md:scroll-auto overflow-auto will-change-scroll">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" className="dark-mode">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

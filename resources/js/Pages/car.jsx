@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { TextureLoader } from 'three';
 import * as dat from 'dat.gui';
@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
 
 const ThreeCar = ({ container }) => {
   const mount = useRef(null);
-
+  const [cammm,setCamm]=useState(null);
   const setupGUI = (cam,ground, groundMaterial,camP,camR) => {
     const gui = new dat.GUI();
 
@@ -33,16 +33,16 @@ const ThreeCar = ({ container }) => {
   };
   useEffect(() => {
     let scene, camera, renderer, car, light;
-    let PlayState=false;
+    let PlayState=true;
     const init = () => {
       // Scene
       scene = new THREE.Scene();
 
       // Camera
-      camera = new THREE.PerspectiveCamera(70, container.clientWidth / container.clientHeight, 0.1, 10000);
+      camera = new THREE.PerspectiveCamera(90, container.clientWidth / container.clientHeight, 0.1, 10000);
       camera.position.set(0,-(Math.PI/2)*3, (Math.PI));
       camera.rotation.set(Math.PI/3,0, 0);
-
+      setCamm(camera);
       // Renderer
       renderer = new THREE.WebGLRenderer();
       renderer.setSize(container.clientWidth, container.clientHeight);
@@ -134,8 +134,10 @@ const ThreeCar = ({ container }) => {
       renderer.render(scene, camera);
     };
 
-    window.addEventListener('mousedown',()=>{
-      PlayState=!PlayState;
+    container.addEventListener('mousemove',(ev)=>{
+     /* camera.position.set(0,
+      Math.PI*( 0),0);
+      console.log(ev.clientX)*/
     })
     window.addEventListener('resize', () => {
       camera.aspect = container.clientWidth / container.clientHeight;

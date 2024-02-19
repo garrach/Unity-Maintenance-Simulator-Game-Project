@@ -22,6 +22,8 @@ const RecentActivities = ({ activities }) => {
   },[message])
   useEffect(()=>{
     setActs((prevActs) => [...prevActs, message]);
+    
+    
   },[message])
   return (
     <div className="bg-white h-56 overflow-y-scroll dark:bg-gray-800 p-4 rounded-md shadow-md">

@@ -13,7 +13,7 @@ const LandingPage = ({ auth }) => {
                         setSt(e.target);
                         console.log(st)
                     }}>
-                        {st && (<ThreeCar container={st} />)}
+                        {document.querySelector('.canvas') && (<ThreeCar container={document.querySelector('.canvas')} />)}
                     </div>
                 </div>
                 <div className="container mt-12 text-left ml-12 z-40 landing">
@@ -43,7 +43,7 @@ const LandingPage = ({ auth }) => {
             </div>
 
             <div className="container mx-auto mt-12 mb-12">
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     <div className="p-6 bg-white rounded-lg shadow-md">
                         <h2 className="text-xl font-bold mb-4">Infotainment System</h2>
 
@@ -167,6 +167,8 @@ const LandingPage = ({ auth }) => {
                 backdrop-filter: blur(9.7px);
                 -webkit-backdrop-filter: blur(3.7px);
                 border: 1px solid rgba(91, 91, 91, 0.4);
+                margin-left:10rem;
+            
             }
             .someGlass:nth-child(1){
                 margin-top:-5rem;
@@ -202,7 +204,7 @@ const LandingPage = ({ auth }) => {
     z-index:0;
   }
   .canvas{
-    background-color:black;
+    background-color:#a6a6a6;
     position:absolute;
     width:100%;
     height:100%;
