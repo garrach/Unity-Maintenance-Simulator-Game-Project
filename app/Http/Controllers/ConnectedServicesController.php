@@ -13,18 +13,17 @@ class ConnectedServicesController extends Controller
     {
         $user = Auth::user();
         $vehicles=[];
+        $devices=[];
         $connections = Connection::all();
-        /*for ($i=0; $i < count($connections); $i++) { 
-            $V_id=$connections[$i]->vehicle_id;
-            $vehicles[$i]=Vehicle::find($V_id);
-        }*/
-        
-        $connections = Connection::with('vehicle')->get();
+
         $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
         $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
 
-        $deviceIds = $connections->pluck('device_id')->unique()->toArray();
-        $devices = Device::whereIn('id', $vehicleIds)->get();
+        $deviceIds = $connections->pluck('device_id')->toArray();
+
+        for ($i=0; $i < count($vehicleIds) ; $i++) { 
+            $devices[$i] = $vehicles[$i]->devices;
+        }
         
         return Inertia::render('ConnectedServices/Index', [
             'user' => $user,

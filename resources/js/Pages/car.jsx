@@ -5,7 +5,7 @@ import * as dat from 'dat.gui';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
 
 
-const ThreeCar = ({ container }) => {
+const ThreeCar = ({ container,moveDirection }) => {
   const mount = useRef(null);
   const [cammm,setCamm]=useState(null);
   const setupGUI = (cam,ground, groundMaterial,camP,camR) => {
@@ -91,7 +91,7 @@ const ThreeCar = ({ container }) => {
         loader.load('cyberpunk_car.glb', (gltf) => {
             // Success callback
             const modelMesh = gltf.scene;
-            modelMesh.position.set(0, 0, 0); 
+            modelMesh.position.set(0, 0, -1); 
             modelMesh.rotation.set(Math.PI/2,Math.PI/2,0); 
             modelMesh.scale.set(0.02, 0.02, 0.02);
             car.add(modelMesh)
@@ -109,6 +109,7 @@ const ThreeCar = ({ container }) => {
       const carMaterial = new THREE.MeshPhongMaterial({ color: 0x3498db });
       car = new THREE.Mesh(carGeometry, carMaterial);
       car.position.set(0, 0, Math.PI/30);
+      car.scale.set(1,1,1);
       car.castShadow = true;
       scene.add(car);
 
@@ -134,11 +135,11 @@ const ThreeCar = ({ container }) => {
       renderer.render(scene, camera);
     };
 
-    container.addEventListener('mousemove',(ev)=>{
-     /* camera.position.set(0,
-      Math.PI*( 0),0);
-      console.log(ev.clientX)*/
+    window.addEventListener('mousemove',(ev)=>{
+      camera.position.set(0,(-(Math.PI/2)*3)+moveDirection.y,(Math.PI)+moveDirection.x);
     })
+
+ 
     window.addEventListener('resize', () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();

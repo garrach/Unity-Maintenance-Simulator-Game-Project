@@ -17,7 +17,7 @@ import { clientSocket } from './client.cjs';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth ,usersList}) {
+export default function Dashboard({ auth , usersList}) {
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');

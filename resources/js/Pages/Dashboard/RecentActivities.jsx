@@ -11,7 +11,6 @@ const RecentActivities = ({ activities }) => {
   useEffect(()=>{
     socket.addEventListener('open',(event)=>{
     socket.send('');
-    console.log('ready to send');   
   })
   },[])
   

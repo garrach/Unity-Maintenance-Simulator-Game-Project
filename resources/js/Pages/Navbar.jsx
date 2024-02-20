@@ -3,12 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 
-const Navbar = ({ auth, anything}) => {
+const Navbar = ({ auth }) => {
   const [currentUser,setCurrentUser]=useState(null); 
- console.log({anything});
   useEffect(()=>{
     setCurrentUser(auth.initialPage.props.auth.user) ;
-  },currentUser)
+  })
   return (
     <nav className="bg-gray-800 p-4 text-white fixed top-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center">

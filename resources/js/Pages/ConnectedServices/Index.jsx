@@ -33,22 +33,25 @@ const ConnectedServicesIndex = ({ connections, vehicles, devices, auth }) => {
                             {deviceChart}
                         </div>
                         <ul className="space-y-2">
-                            {connections.map((connection, index) => (
-                                <li key={index} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
-                                    <p className="text-lg font-semibold mb-2">
-                                        <span className='relative ml-4'>{connection.connection_id}</span>
-                                        <span className='relative ml-4'>{connection.device_id} </span>
-                                        <span className='relative ml-4'>{connection.vehicle_id}</span>
-                                        <span className='relative ml-4'>{connection.rate}</span>
-                                    </p>
-                                    <ul>
-                                        <ul>
-                                            {vehicles[index] && <li>{vehicles[index].make}</li>}
-                                            {devices.map((device, index) => (<li key={index}>{device.serial_number}</li>))}
-                                        </ul>
-                                    </ul>
-                                </li>
-                            ))}
+                            <li className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
+
+                                <ul>
+                                    {vehicles && vehicles.map((vehicle, index) => (
+                                        <li key={index}>
+                                            <ul>
+                                                <li key={index} className='font-bold uppercase'>{vehicle.make}</li>
+                                                <li>
+                                                    <ul>
+                                                        {
+                                                            vehicle.devices && vehicle.devices.map((device, index) => (
+                                                                <li key={index} className='text-gray-200  hover:text-gray-900'>{device.serial_number}</li>))
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>))}
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>

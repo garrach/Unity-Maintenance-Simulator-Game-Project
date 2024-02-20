@@ -24,15 +24,18 @@ class ConnectionController extends Controller
 
     public function index()
     {
-        $devices=[[]];
-        $vehicles=Vehicle::all()->toArray();
-        for ($i=0; $i < count($vehicles) ; $i++) { 
-            $dvs=$this->getDevicesForVehicle($i);
-            for ($j=0; $j < count($dvs) ; $j++) { 
-                $devices[$i][$j]=$dvs[$j];
-            }
+        $vehicles=[];
+        $devices=[];
+        $connections = Connection::all();
+
+        $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
+        $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
+
+        $deviceIds = $connections->pluck('device_id')->toArray();
+
+        for ($i=0; $i < count($vehicleIds) ; $i++) { 
+            $devices[$i] = $vehicles[$i]->devices;
         }
-        $connections=Connection::all()->toArray();
         return Inertia::render('connections/Index', [
             'vehicles' => $vehicles,
             'devices' => $devices,

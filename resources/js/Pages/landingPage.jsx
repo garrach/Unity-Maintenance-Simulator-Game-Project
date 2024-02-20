@@ -4,16 +4,40 @@ import { useEffect, useRef, useState } from 'react';
 
 const LandingPage = ({ auth }) => {
     const [st, setSt] = useState(null);
+    let mouseDirectionY=0;
+    let mouseDirectionX=0;
+    let prev=0;
+    let elemnt={
+        x:0,
+        y:0,
+    }
+    
+    const handlMouseEvent=(event)=>{
+        window.addEventListener('mousemove',(ev)=>{
+            if(ev){
+                mouseDirectionY=ev.clientY-prev;
+                mouseDirectionX=ev.clientX-prev;
+                elemnt.x=(-mouseDirectionY*0.005);
+                elemnt.y=(-mouseDirectionX*0.001);
+            }
+          
+        })
+        window.addEventListener('mouseenter',(ev)=>{
+            if(ev){
+                prev=ev.clientX;         
+            }
+        })
+        return elemnt;
+    }
+    useEffect(()=>{
+        setSt(document.querySelector('.canvas'));
+    },[])
     return (
         <>
             <div className="bg-gray-800 text-white py-20 wider">
                 <div className='relative anima'>
-                    <div className='canvas' onClick={(e) => {
-                        e.preventDefault()
-                        setSt(e.target);
-                        console.log(st)
-                    }}>
-                        {document.querySelector('.canvas') && (<ThreeCar container={document.querySelector('.canvas')} />)}
+                    <div className='canvas'>
+                        {st && (<ThreeCar container={document.querySelector('.canvas')} moveDirection={handlMouseEvent(document.querySelector('.canvas'),elemnt)}/>)}
                     </div>
                 </div>
                 <div className="container mt-12 text-left ml-12 z-40 landing">
@@ -31,10 +55,18 @@ const LandingPage = ({ auth }) => {
                             <img src="unity-69.svg" alt="" className='ml-4 w-6' />
                             <img src="laravel-2.svg" alt="" className='ml-4 w-6' />
                         </div>
-                        <div className='absolute grid grid-cols-3 gap-8'>
-                            <div className='someGlass'></div>
-                            <div className='someGlass'></div>
-                            <div className='someGlass'></div>
+                        
+                        <div className='preview-media'></div>
+                        <div className='absolute grid grid-cols-3 gap-4'>
+                            <div className='someGlass'>
+                                <div className='absolute -ml-5 mt-5 w-20 h-10 rounded bg-red-600 py-2'><p className='mx-auto'>New</p></div>
+                            </div>
+                            <div className='someGlass'>
+                            <div className='absolute -ml-5 mt-5 w-20 h-10 rounded bg-red-700 py-2'><p className='mx-auto'>New</p></div>
+                            </div>
+                            <div className='someGlass'>
+                            <div className='absolute -ml-5 mt-5 w-20 h-10 rounded bg-orange-600 py-2'><p className='mx-auto'>New</p></div>
+                            </div>
                         </div>
 
                     </div>
@@ -153,13 +185,24 @@ const LandingPage = ({ auth }) => {
 
 
             <style>{`
+            .preview-media{
+                display: none;
+                position: fixed;
+                width: 80rem;
+                height: 45rem;
+                background: azure;
+                left: 20rem;
+                top: 20%;
+                z-index: 2;
+            }
+
             .absolute.grid{
-                width:80rem;
-                left:50%;
+                width:max-content;
+                left:75%;
             }
             .someGlass{
-                width: 20rem;
-                height: 30rem;
+                width: 15rem;
+                height: 20rem;
                 position: relative;
                 background: rgba(47, 47, 47, 0);
                 border-radius: 16px;
@@ -167,12 +210,17 @@ const LandingPage = ({ auth }) => {
                 backdrop-filter: blur(9.7px);
                 -webkit-backdrop-filter: blur(3.7px);
                 border: 1px solid rgba(91, 91, 91, 0.4);
-                margin-left:10rem;
+                margin-left:8rem;
+                margin-top:0;
+                animation:slide-up 2s ease 1s 1 forwards;
             
+            }
+            .someGlass:hover{
+                cursor:pointer;
+                height:100%;
             }
             .someGlass:nth-child(1){
                 margin-top:-5rem;
-             
               
             }
            
@@ -246,6 +294,23 @@ const LandingPage = ({ auth }) => {
                         background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
                     }
                 }
+
+
+    @keyframes slide-up{
+form{
+    margin-top:-5rem;
+    width: 20rem;
+    height: 30rem;
+    margin-left:10rem;
+
+}
+to{
+    margin-top:-1rem;
+    width: 15rem;
+    height: 20rem;
+    margin-left:5rem;
+}
+    }
             `}</style>
         </>)
 }
