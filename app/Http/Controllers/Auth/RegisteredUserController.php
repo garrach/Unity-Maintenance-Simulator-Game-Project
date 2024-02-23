@@ -21,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        $role='client';
+        return Inertia::render('Auth/Register',['user'=>$role]);
     }
 
     /**

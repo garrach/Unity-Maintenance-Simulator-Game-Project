@@ -29,9 +29,9 @@ const timestamp=dateString;
     vehicle:{name:'DefaultCar'},
     device:{name:'Dash-cam'},
   }]*/
-  let vh=-1;
-  let dv=-1;
-  let conn=-1;
+  let vh=0;
+  let dv=0;
+  let conn=0;
   props.vehicles.forEach(element => {
     vh++;
   });
@@ -45,11 +45,12 @@ const timestamp=dateString;
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
       <ul>
-        {(
-          <li>
-            <p>Vehicle: {props.vehicles[vh-2].make}</p>
-            <p>Device: {props.devices[0][dv-2].type}</p>
+        {props.vehicles && (
+          <li> 
+            <p>Vehicle: {props.vehicles[0].make}</p>
+            <p>Device: {props.devices[0][0].type}</p>
             <p>Timestamp: {timestamp}</p>
+           
           </li>
         )}
       </ul>

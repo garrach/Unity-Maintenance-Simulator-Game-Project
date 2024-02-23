@@ -4,16 +4,18 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm ,usePage} from '@inertiajs/react';
 
 export default function Register() {
+    const {props}=usePage();
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
-        role: '',
+        role: props.user.role,
         password: '',
         password_confirmation: '',
     });
+   
 
     useEffect(() => {
         return () => {
@@ -32,65 +34,16 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit}>
-                <div className='grid grid-cols-2 gap-12'>
-                    <div className='flex flex-col sm:justify-center items-center dark:bg-gray-900'>
-                        <InputLabel className='text-center' htmlFor="role" value="When logging in, please select your role from the 
-                        options provided: Admin, Client, or Employee. Each role is designed to cater to specific tasks and responsibilities 
-                        within the application, ensuring a tailored and efficient user experience.
-                        Choose the role that aligns with your responsibilities to access the features relevant to your needs." />
-                        
-                        <div>
-                        <div className="mt-1">
-                            <label className="mr-4">
-                                <input
-                                    type="radio"
-                                    id="admin"
-                                    name="role"
-                                    value="admin"
-                                    checked={data.role === 'admin'}
-                                    onChange={(e) => setData('role', e.target.value)}
-                                    required
-                                />
-                                <span className='ml-2'>Admin</span> 
-                            </label>
-                        </div>
-                        <div className="mt-1">
-                            <label className="mr-4">
-                                <input
-                                    type="radio"
-                                    id="client"
-                                    name="role"
-                                    value="client"
-                                    checked={data.role === 'client'}
-                                    onChange={(e) => setData('role', e.target.value)}
-                                    required
-                                />
-                                <span className='ml-2'>Client</span>
-                            </label>
-                        </div>
-                        <div className="mt-1">
-                            <label>
-                                <input
-                                    type="radio"
-                                    id="employee"
-                                    name="role"
-                                    value="employee"
-                                    checked={data.role === 'employee'}
-                                    onChange={(e) => setData('role', e.target.value)}
-                                    required
-                                />
-                                <span className='ml-2'>Employee</span>
-                            </label>
-                        </div>
-                        </div>
-                     
-
-                        <InputError message={errors.role} className="mt-2" />
-
-                    </div>
+                <div className='flex'>
+                    {console.log(props)}
+                    {props.user.role!=="" && (<>
+                    
+                    <div className='flex bg-gray-800 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'></div>
+                    </>)}
+                   
 
 
-                    <div className='flex flex-col sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
+                    <div className='flex regbox flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
 
                         <div>
                             <InputLabel htmlFor="name" value="Name" />
@@ -176,6 +129,14 @@ export default function Register() {
 
 
 
+<style>
+    {`
+    
+    .regbox{
+        box-shadow: 28px -26px 27px 0px #96969638 inset;
+    }
+    `}
+</style>
                 </div>
             </form>
         </GuestLayout>

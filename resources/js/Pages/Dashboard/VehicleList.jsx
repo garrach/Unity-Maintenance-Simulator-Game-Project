@@ -4,8 +4,8 @@ import React from 'react';
 const VehicleList = ({ vehicle }) => {
   const vehicles=[{
     id:'',
-    name:'',
-    model:'',
+    name:'Toyota cammy Default',
+    model:'Toyota',
     year:'',
   }]
   return (

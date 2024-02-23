@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Artisan;
-
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 class ProfileController extends Controller
 {
@@ -33,6 +33,20 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function show(Request $request)
+    {
+        $user=User::all()->find($request->userID+1);
+        $infos=[];
+        
+           $infos[0]=$user->id;
+           $infos[1]=$user->name;
+           $infos[2]=$user->email;
+           $infos[3]=$user->role;
+        
+        return Inertia::render('Profile/show',[
+            'userID' => $infos,
+        ]);
+    }
 
 
 

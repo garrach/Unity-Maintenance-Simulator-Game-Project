@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode.react';
+
 const Show = ({ device, auth }) => {
   const [formatData,setFormatData]=useState('');
   const canvasRef = useRef(null);

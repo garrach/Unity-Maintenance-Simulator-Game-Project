@@ -20,7 +20,6 @@ async function handleConnectionMessages(message, ws, db) {
       // Implement createConnection function
       // createConnection(message.data.vehicleId, message.data.deviceId, db);
       console.log('Handling createConneion request');
-      console.log('Handling connection messages:', message);
 
     }
   
@@ -29,7 +28,6 @@ async function handleConnectionMessages(message, ws, db) {
       // Implement readConnections function
       // readConnections(ws, db);
       console.log('Handling readConnections request');
-      console.log('Handling connection messages:', message);
 
     }
   

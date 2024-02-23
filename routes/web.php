@@ -40,6 +40,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::middleware('auth')->group(function () {
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');
+    Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
 
     // PaymentPlans Routes
     Route::resource('paymentPlans', PaymentPlanController::class);
+    Route::post('/paymentPlans/subscription',[PaymentPlanController::class,'subNewPlan'])->name('subscription.store');
 
     // Vehicle Routes
     Route::resource('vehicles', VehicleController::class);

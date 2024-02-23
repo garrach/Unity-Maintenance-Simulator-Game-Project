@@ -36,7 +36,6 @@ async function handleVehicleMessages(message, ws, db) {
       // Implement readVehicles function
       // readVehicles(ws, db);
       console.log('Handling readVehicles request');
-      console.log('Handling vehicle messages:', message);
 
     }
   

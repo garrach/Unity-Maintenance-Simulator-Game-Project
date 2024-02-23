@@ -22,7 +22,6 @@ async function handleDeviceMessages(message, ws, db) {
       // Implement createDevice function
       // createDevice(message.data, db);
       console.log('Handling createDevice request');
-      console.log('Handling device messages:', message);
 
     }
   
@@ -32,7 +31,6 @@ async function handleDeviceMessages(message, ws, db) {
       // readDevices(ws, db);
       console.log('Handling readDevices request');
       // Placeholder code for handling device messages
-      console.log('Handling device messages:', message);
     }
   
   }

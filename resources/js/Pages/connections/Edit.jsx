@@ -5,8 +5,8 @@ import { Link, useForm } from '@inertiajs/react';
 
 const Edit = ({ connection, auth }) => {
   const { data, setData, put, processing, errors, reset } = useForm({
-    name: connection.name,
-    // Add other fields as needed
+    name: 'connection.name',
+    
   });
 
   const handleChange = (e) => {

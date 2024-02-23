@@ -9,9 +9,12 @@ const QuickActions = ({auth}) => {
       <div className='mt-20'>
         {auth.user.role==='admin' && (
           <>
-           <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-blue-600">Add Vehicle</button>
-      <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">Create Plan</button>
-      <button className="bg-green-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600"><Link href='/connections'>Connections</Link></button>
+      <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-blue-600">
+      <Link href='/vehicles'>Add Vehicle</Link></button>
+      <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">
+      <Link href='/paymentPlans'>Create Plan</Link></button>
+      <button className="bg-green-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">
+      <Link href='/connections'>Connections</Link></button>
      
           </>
         )

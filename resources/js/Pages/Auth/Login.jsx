@@ -33,7 +33,7 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <form onSubmit={submit} className='w-80 mx-auto'>
+            <form onSubmit={submit} className='w-80 mx-auto h-screen'>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
@@ -76,16 +76,26 @@ export default function Login({ status, canResetPassword }) {
                         />
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                     </label>
+                    <Link
+                         href={route('register')}
+                         className="underline mt-4 inline-flex text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"
+                     >
+                        Register with new account.
+                     </Link>
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
+                     
                         <Link
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
                             Forgot your password?
                         </Link>
+                        
+                        
+                        
                     )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>

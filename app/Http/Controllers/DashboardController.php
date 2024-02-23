@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Connection;
 use App\Models\Vehicle;
 use App\Models\Device;
+use App\Models\Service;
 class DashboardController extends Controller
 {
     public function index(){
@@ -15,6 +16,7 @@ class DashboardController extends Controller
             $vehicles=[];
         $devices=[];
         $connections = Connection::all();
+        $services = Service::all();
 
         $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
         $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
@@ -27,6 +29,7 @@ class DashboardController extends Controller
             return Inertia::render('Dashboard',
             ['usersList'=>$usersList,
             'someSocket'=>'ws://localhost:3004',
+            'services'=>$services,
             'connections'=>$connections,
             'vehicles'=>$vehicles,
             'devices'=>$devices]);

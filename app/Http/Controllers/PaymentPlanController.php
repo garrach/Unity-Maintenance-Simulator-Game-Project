@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentPlan;
 use App\Models\Service;
+use App\Models\Dashboard;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,15 +14,35 @@ class PaymentPlanController extends Controller
     public function index()
     {
         $paymentPlans = PaymentPlan::all();
+        $dashboards = Dashboard::all();
         $services=[count($paymentPlans)];
         for ($i=0; $i < count($paymentPlans) ; $i++) { 
             $paymentPlan = $paymentPlans[$i];
             $services[$i] = $paymentPlan->services;
         }
       
-        return Inertia::render('PaymentPlans/Index', ['paymentPlans' => $paymentPlans,'services'=> $services]);
+        return Inertia::render('PaymentPlans/Index',
+        ['paymentPlans' => $paymentPlans,
+        'services'=> $services,
+        'dashboards'=> $dashboards]);
     }
 
+    public function subNewPlan(Request $request){
+        
+        $paymentPlans = PaymentPlan::all();
+        $dashboards = Dashboard::all();
+        $data=$request->all();
+        $services=[count($paymentPlans)];
+        for ($i=0; $i < count($paymentPlans) ; $i++) { 
+            $paymentPlan = $paymentPlans[$i];
+            $services[$i] = $paymentPlan->services;
+        }
+        return $data;
+        /*return Inertia::render('PaymentPlans/Index',
+        ['paymentPlans' => $paymentPlans,
+        'services'=> $services,
+        'dashboards'=> $dashboards]);*/
+    }
     public function create()
     {
         return Inertia::render('PaymentPlans/Create');

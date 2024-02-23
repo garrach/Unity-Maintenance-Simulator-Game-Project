@@ -1,12 +1,16 @@
 // resources/js/Components/Dashboard/PaymentPlanOverview.jsx
-import React from 'react';
+import { usePage } from '@inertiajs/react';
+import React, { useRef } from 'react';
 
 const PaymentPlanOverview = ({ paymentPlan }) => {
+  const {props}=usePage();
+  const servicesRef=useRef();
+  servicesRef.current=props.services;
   const paymentPlans=[{
     id:'',
-    name:'',
-    features:'',
-    statut:true,
+    name:'Premium Plan',
+    features:servicesRef.current,
+    statut:'Active',
   }]
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
@@ -14,9 +18,15 @@ const PaymentPlanOverview = ({ paymentPlan }) => {
       <ul>
         {paymentPlans.map((plan) => (
           <li key={plan.id}>
-            <p>Name: {plan.name}</p>
-            <p>Features: {plan.features}</p>
-            <p>Subscribe: {plan.statut}</p>
+            <p><b>Name:</b>{plan.name}</p>
+            <ul>
+              <li><p><b>features:</b></p></li>
+            {servicesRef.current &&(servicesRef.current.map((feature,index)=>
+            <li key={index}>{feature.name}</li>
+            ) )}
+            </ul>
+           
+            <p><b>Subscribe:</b>{plan.statut}</p>
            
           </li>
         ))}

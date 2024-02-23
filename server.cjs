@@ -64,8 +64,22 @@ wss.on('connection', (ws,req) => {
     }  
     if(parsedMessage.type==="running"){
       fps+=10;
+      const req={
+        body:{
+          data:{
+            user: "65c50f332bb660a7a0f0b77a",
+            selectedOptions: parsedMessage.data.device_id,
+            dataTosendvh: parsedMessage.data.vehicle_id,
+          }
+        }    
+      }
+      const subData=parsedMessage.data;
+      broadcast(JSON.stringify(subData))
+      uploadConnection(req)
     }  
-    broadcast(JSON.stringify({message:parsedMessage.data}))
+
+    if(parsedMessage.type!=="running")
+      broadcast(JSON.stringify({message:parsedMessage.data}))
     } catch (error) {
       fps=0;
     }
@@ -120,7 +134,6 @@ app.post('/api/devices', async (req, res) => {
   try {
     const newDevice = new Device({ name, type });
     await newDevice.save();
-    res.json({ message: 'Device added successfully', data: newDevice });
   } catch (error) {
     console.error('Error adding Device:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -140,23 +153,25 @@ app.get('/api/devices', async (req, res) => {
 
 app.post('/api/connections', async (req, res) => {
   try {
+    uploadConnection(req);
+    res.json({ message: 'Device added successfully', data: newDevice });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+});
+
+async function uploadConnection(req){
     const {user, selectedOptions, dataTosendvh } = req.body.data;
-    
     console.log(selectedOptions);
     const newConnection = new Connection({U_id:user,D_id:selectedOptions,V_id:dataTosendvh});
     await newConnection.save();
-    res.json({ message: 'Connection added successfully', data: newConnection });
-  } catch (error) {
-    console.error('Error adding Connection:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
+   
+}
 
 app.get('/api/connections', async (req, res) => {
-  if( (await db.collection('users').find().toArray()).length >0){
+  if( (await db.collection('users').find().toArray()).length >0 && req.query.q){
     db.collection('users');
-
     const dataArr=[];
     try {
     const connections = await db.collection('connections').find().toArray();
@@ -177,13 +192,15 @@ app.get('/api/connections', async (req, res) => {
     console.error('Error retrieving connections:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}else{
+  res.status(403).send('<p>fuck off</p>');
 }
 });
 
 app.post('/api/vehicles', async (req, res) => {
   const {make,model,mpg,cylinders,displacement,horsepower,weight,acceleration,origin,year} = req.body;
   try {
-    console.log(req.body)
+
     const newVehicle = new Vehicle({make:make,model:model,mpg:mpg,cylinders:cylinders,
       displacement:displacement,horsepower:horsepower,
       weight:weight,acceleration:acceleration,origin:origin,year:year});

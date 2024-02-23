@@ -57,7 +57,7 @@ export default function Dashboard({ auth , usersList}) {
     const host = new URL(webSocket.url).host;
     setwebSocketHost(host);
     webSocket.addEventListener('open',(event)=>{
-      
+      webSocket.send(JSON.stringify({type:"poke",data:"inner client on"}))
     })
   }
   return (

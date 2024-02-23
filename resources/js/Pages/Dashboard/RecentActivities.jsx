@@ -16,18 +16,18 @@ const RecentActivities = ({ activities }) => {
   
   useEffect(()=>{
     socket.addEventListener('message',(event)=>{
-    setMessage(event.data);
+      setMessage(JSON.parse(event.data))
   })
   },[message])
   useEffect(()=>{
-    setActs((prevActs) => [...prevActs, message]);
+    setActs((prevActs) => [...prevActs, message.message]);
     
     
   },[message])
   return (
     <div className="bg-white h-56 overflow-y-scroll dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Recent Activities</h2>
-      {message&&(<h2 className="text-lg font-semibold mb-2">{message}</h2>)}
+      {message&&(<h2 className="text-lg font-semibold mb-2">{message.message}</h2>)}
       <ul>
       {acts.map((element,idex) =>( 
         <li key={idex}>{element}</li>

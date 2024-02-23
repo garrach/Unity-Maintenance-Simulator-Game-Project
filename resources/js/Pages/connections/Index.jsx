@@ -1,9 +1,50 @@
 // resources/js/Pages/Connections/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import React from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 
 const Index = ({ connections, vehicles, devices, auth }) => {
+  const { props } = usePage();
+  const pageData = usePage();
+  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(true);
+  const connectionRef = useRef();
+  const deviceRef = useRef();
+  const {
+    data,
+    setData,
+    delete: destroy,
+    processing,
+    reset,
+    errors,
+  } = useForm({
+    connection: connectionRef.current,
+    device: deviceRef.current,
+  });
+
+
+  const confirmUserDeletion = () => {
+    setConfirmingUserDeletion(true);
+  };
+
+
+  const deleteUser = (e, connection, device) => {
+    e.preventDefault();
+    connectionRef.current = connection;
+    deviceRef.current = device;
+    destroy(route('connections.destroy', { connection: connection, device: device }), {
+      preserveScroll: true,
+      onSuccess: () => closeModal(),
+      onFinish: () => reset(),
+    });
+  };
+
+  const closeModal = () => {
+    setConfirmingUserDeletion(false);
+
+    reset();
+  };
+
+
   return (
     <div>
       <AuthenticatedLayout
@@ -18,42 +59,49 @@ const Index = ({ connections, vehicles, devices, auth }) => {
           <h1 className="text-3xl font-semibold mb-4">Connection List</h1>
           <ul className="space-y-2">
             <ul>
-              {vehicles && vehicles.map((vehicle, index) => (<>
-                <li className='text-2xl font-bold uppercase'>{vehicle.make}</li>
-                <li className='font-bold uppercase'>Devices:</li>
-                <li key={index}
-                  className='p-4 text-gray-900 rounded-md shadow-md'
-                >{
-                    vehicle.devices && vehicle.devices.map((device, index) => (
-                      <>
-                        <ol>
-                          <li key={index}>{device.serial_number}</li>
-                        </ol>
-                      </>
-                    ))
-
-                  }
-                </li>
+              <li>
 
 
-                <li>
-                  <div className="flex space-x-2">
-                    <Link
-                      href={route('connections.show', { connection: connections[index].id })}
-                      className="bg-orange-500 text-white px-4 py-1 rounded hover:bg-blue-600 mt-4 mb-4 inline-block"
-                    >
-                      View
-                    </Link>
-                    
-                    <Link
-                      href={route('connections.edit', { connection: connections[index].id })}
-                      className="bg-gray-800 text-white px-4 py-1 rounded hover:bg-blue-600 mt-4 mb-4 inline-block"
-                      >
-                      Edit
-                    </Link>
-                  </div>
-                </li>
-              </>))}
+                {vehicles && vehicles.map((vehicle, index1) => (
+                  <ul key={index1}>
+                    <li className='text-2xl font-bold uppercase'>{vehicle.make}</li>
+                    <li className='font-bold uppercase'>Devices:</li>
+                    <li key={index1}
+                      className='p-4 text-gray-900 rounded-md shadow-md'
+                    >{
+                        vehicle.devices && vehicle.devices.map((device, index) => (
+
+                          <form onSubmit={(e) => { e.preventDefault(); deleteUser(e, connections[index1].id, device.id); }} key={index}>
+                            <ol className='flex'>
+                              <li title={connections[index1].id}>{device.serial_number}
+                              </li>
+                              <button className="bg-red-500 ml-56 uppercase text-white px-4 py-1 rounded hover:bg-blue-600 ">
+                                delete
+                              </button>
+                            </ol>
+                          </form>
+
+                        ))
+
+                      }
+                    </li>
+
+
+                    <li>
+                      <div className="flex space-x-2">
+                        <Link
+                          href={route('connections.show', { connection: connections[index1].id })}
+                          className="bg-orange-500 text-white px-4 py-1 rounded hover:bg-blue-600 mt-4 mb-4 inline-block"
+                        >
+                          View
+                        </Link>
+                      </div>
+                    </li>
+                  </ul>))}
+
+
+              </li>
+
             </ul>
           </ul>
 

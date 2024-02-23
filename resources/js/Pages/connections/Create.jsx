@@ -5,10 +5,10 @@ import { Link, useForm } from '@inertiajs/react';
 
 const Create = ({ auth, vehicles, devices, connections }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
-    // Your form fields here
+    name:'',
     vehicle_id: 1,
     device_id: 1,
-    connection_date: '',
+    connection_date: "",
   });
   const [socket,setSocket]=useState(new WebSocket("ws://localhost:3004"));
   const handleChange = (e) => {
@@ -21,8 +21,10 @@ const Create = ({ auth, vehicles, devices, connections }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route('connections.store'));
-    confirm("Data : "+data);
-    socket.send(JSON.stringify({type:'web', data:data}));
+    const validDataToUNity="\n connection_date:"+data.connection_date+"\n vehicle_id:"+data.vehicle_id+"\n device_id:"+data.device_id+"\n"
+    confirm("Data : "+validDataToUNity);
+      socket.send(JSON.stringify({type:'running', data:data}));
+
   };
 
   return (
@@ -43,6 +45,17 @@ const Create = ({ auth, vehicles, devices, connections }) => {
               <label htmlFor="vehicle_id" className="block text-sm font-medium text-gray-700">
                 Vehicle:
               </label>
+              <p>Connection:</p>
+              <div>
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+              />
+            </div>
               <select
                 id="vehicle_id"
                 name="vehicle_id"

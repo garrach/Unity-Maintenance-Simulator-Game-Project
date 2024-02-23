@@ -10,7 +10,6 @@ const ConnectedServicesIndex = ({ connections, vehicles, devices, auth }) => {
     const [deviceChart, setDeviceChart] = useState();
     const handlDeviceChart = (device) => {
         setDeviceChart(device);
-        console.log(device);
     }
     useEffect(() => {
     }, [deviceChart])
