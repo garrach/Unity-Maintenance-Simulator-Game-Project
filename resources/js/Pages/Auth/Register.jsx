@@ -11,13 +11,14 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
-        role: props.user.role,
+        role: 'client',
         password: '',
         password_confirmation: '',
     });
    
 
     useEffect(() => {
+       
         return () => {
             reset('password', 'password_confirmation');
         };
@@ -25,7 +26,7 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
+        
         post(route('register'));
     };
 
@@ -35,9 +36,8 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div className='flex'>
-                    {console.log(props)}
                     {props.user.role!=="" && (<>
-                    
+                 
                     <div className='flex bg-gray-800 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'></div>
                     </>)}
                    
@@ -72,7 +72,7 @@ export default function Register() {
                                 value={data.email}
                                 className="mt-1 block w-full"
                                 autoComplete="username"
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) => {setData('email', e.target.value);}}
                                 required
                             />
 

@@ -4,6 +4,8 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 
 const Index = ({ devices, auth }) => {
+  const purchased=false;
+  const installded=false;
   return (
     <div className='dark:text-white'>
       <AuthenticatedLayout
@@ -14,16 +16,30 @@ const Index = ({ devices, auth }) => {
           </h2>
         }
       >
-        <div className="my-5">
+        <div className="my-5 w-fit">
           <h1 className="text-2xl font-semibold mb-4">Device List</h1>
-          <ul className="space-y-2 grid grid-cols-3 gap-4 ">
+          <ul className="space-y-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">
             {devices.map((device, index) => (
               <li key={device.id} className={`bg-${index % 2 === 0 ? 'gray-100' : 'gray-200'} dark:bg-${index % 2 === 0 ? 'gray-800' : 'gray-700'} p-4 rounded-md shadow-md mb-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-xl font-semibold mb-1">{`Serial Number: ${device.serial_number}`}</p>
                     <p className="text-sm text-gray-500">{`Type: ${device.type}`}</p>
-                    <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
+                    {auth.user.role==="admin" || (purchased && installded && auth.user.role==="client" ) ? (<>
+                      <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
+                      <p className="text-sm text-gray-500">{`Device Price : $...`}</p>
+                    </>):(<>
+                    {(auth.user.role==="client" && (!installded && purchased)) || (auth.user.role==="employee" && !installded) ? (<>
+                      <p className="text-sm text-gray-500">{`Installation pending..`}</p>
+                    </>):(<>
+                    {(auth.user.role==="employee" && installded) || (auth.user.role==="client" && (installded && purchased)) ?(<>
+                      <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
+                    </>):(<>
+                  
+                      <p className="text-sm text-gray-500">{`Device Price : $...`}</p>
+                    </>)}
+                    </>)}
+                    </>)}
                   </div>
                   <div className="flex space-x-4">
                     <Link href={route('devices.show', { device: device.id })} className="text-blue-500 hover:underline">
