@@ -15,31 +15,29 @@ const Index = ({ services, auth }) => {
         }
       >
         <div className="my-4 max-w-5xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
-          <h1 className="text-2xl font-semibold mb-4">Services</h1>
-          <ul className="space-y-2 grid grid-cols-3 gap-8 mb-12">
+          <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">Services</h1>
+
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {services.map((service) => (
-              <li key={service.id} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md cursor-pointer hover:text-white hover:bg-cyan-300">
-                <p className="text-lg font-semibold mb-2">{service.name}</p>
-                <div className="flex space-x-2">
-                  <Link
-                    href={route('services.show', { service: service.id })}
-                    className="text-blue-500 hover:underline"
-                  >
-                    View
-                  </Link>
-                  <Link
-                    href={route('services.edit', { service: service.id })}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                </div>
+              <li key={service.id}>
+                <Link href={route('services.show', { service: service.id })} className="block bg-white dark:bg-gray-800 p-6 rounded-md shadow-md cursor-pointer hover:shadow-lg transition duration-300">
+                  <h2 className="text-xl font-semibold mb-4">{service.name}</h2>
+                  <div className="flex space-x-4">
+                    <span className="text-blue-500 hover:underline cursor-pointer">
+                      View
+                    </span>
+                    <span className="text-blue-500 hover:underline cursor-pointer">
+                      Edit
+                    </span>
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>
+
           <Link
             href={route('services.create')}
-            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 mt-4 inline-block"
+            className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 mt-8 inline-block"
           >
             Create Service
           </Link>
