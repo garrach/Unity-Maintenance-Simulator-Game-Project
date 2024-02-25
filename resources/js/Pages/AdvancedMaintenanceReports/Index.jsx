@@ -31,8 +31,8 @@ const AdvancedMaintenanceReportsIndex = ({ auth }) => {
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Advanced Maintenance Reports Page</h2>}
       >
         <Head title="Advanced Maintenance Reports Page" />
-        <div className="my-4 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
-          <h1 className="text-2xl font-semibold mb-4">Welcome to the Advanced Maintenance Reports Page</h1>
+        <div className="my-4 p-6 bg-white dark:bg-gray-800  rounded-md shadow-md">
+          <h1 className="text-2xl font-semibold mb-4 dark:text-gray-200">Welcome to the Advanced Maintenance Reports Page</h1>
           <p className="text-gray-600 dark:text-gray-300">
             This page provides advanced reports and analytics for your maintenance data.
           </p>
@@ -58,7 +58,7 @@ const AdvancedMaintenanceReportsIndex = ({ auth }) => {
 
               {/* Start Date */}
               <div>
-                <label htmlFor="startDate" className="block text-sm font-medium text-gray-600 dark:text-gray-200">
+                <label htmlFor="startDate" className="block text-sm font-medium text-gray-600 dark:text-gray-100">
                   Start Date
                 </label>
                 <input
@@ -74,7 +74,7 @@ const AdvancedMaintenanceReportsIndex = ({ auth }) => {
 
               {/* End Date */}
               <div>
-                <label htmlFor="endDate" className="block text-sm font-medium text-gray-600 dark:text-gray-200">
+                <label htmlFor="endDate" className="block text-sm font-medium text-gray-600 dark:text-gray-100">
                   End Date
                 </label>
                 <input
@@ -99,9 +99,8 @@ const AdvancedMaintenanceReportsIndex = ({ auth }) => {
           </form>
 
           {/* Display Advanced Reports */}
-          <div className="mt-8">
+          <div className="mt-8 dark:text-gray-200">
             <DefaultPlan param={auth} />
-            {/* Add more components or display logic for advanced reports here */}
           </div>
         </div>
       </AuthenticatedLayout>

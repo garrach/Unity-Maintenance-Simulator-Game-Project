@@ -62,7 +62,6 @@ export default function Dashboard({ auth , usersList}) {
   }
   return (
     <>
-{webSocketHost && (<><h1>It's ready to get Data</h1></>)}
       <AuthenticatedLayout
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}</h2>}

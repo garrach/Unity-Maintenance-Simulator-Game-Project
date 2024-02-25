@@ -32,6 +32,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/webPreview/unity',function(){
+    return Inertia::render('preview/Index');
+});
 Route::get('/aboutUs',function(){return Inertia::render('About');})->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
@@ -41,6 +44,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::middleware('auth')->group(function () {
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');
     Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
+    Route::get('/userAccount/user/{id?}', [ProfileController::class, 'editUser'])->name('userAccount.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -42,7 +42,7 @@ const FullMaintenanceSuiteIndex = ({ auth }) => {
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Full Maintenance Suite</h2>}
       >
         <Head title="Full Maintenance Suite" />
-        <div className="my-4 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+        <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Welcome to the Full Maintenance Suite</h1>
 
           <section className="mb-8">

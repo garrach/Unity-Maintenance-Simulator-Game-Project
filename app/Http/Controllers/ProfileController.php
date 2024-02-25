@@ -35,7 +35,7 @@ class ProfileController extends Controller
 
     public function show(Request $request)
     {
-        $user=User::all()->find($request->userID+1);
+        $user=User::find($request->userID);
         $infos=[];
         
            $infos[0]=$user->id;
@@ -61,6 +61,14 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function editUser(Request $request) : Response {
+
+        $originalData = base64_decode($request->id);
+        $userInfo=explode(',', $originalData);
+        return Inertia::render('Profile/UserProfileEdit', [
+            'user' => $userInfo,
+        ]);
+    }
     /**
      * Update the user's profile information.
      */

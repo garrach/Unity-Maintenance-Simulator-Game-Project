@@ -8,7 +8,7 @@ export default function Guest({ children }) {
         <div className="h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100 dark:bg-gray-900">
             
             <div style={{ maxWidth: '100%' }} className="w-full bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
-            <div className='w-full mx-auto bg-gray-100 rounded-lg  py-32 pt-4'>
+            <div className='w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg  py-32 pt-4'>
                 <Link href="/">
                     <ApplicationLogo className="w-20 mt-12 mx-auto fill-current text-gray-500" />
                 </Link>

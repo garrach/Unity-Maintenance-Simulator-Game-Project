@@ -5,7 +5,7 @@ import { usePage } from '@inertiajs/react';
 const Account = () => {
   const { user, qt } = usePage().props;
   const carDetails = { make: "(N/A)", model: "(N/A)", year: "(N/A)" };
-  const roles = ['Admin', 'Client', 'Employee', 'Guest'];
+  const roles = ['admin', 'client', 'employee', 'Guest'];
   const colors = ['blue', 'green', 'red', 'yellow'];
 
   return (
@@ -27,10 +27,15 @@ const Account = () => {
             <p className="mb-2"><strong>Email:</strong> {user.email}</p>
 
             <div className="flex flex-wrap">
-              {roles.map((role, index) => (
-                <div key={index} className={`bg-${colors[index].toLowerCase()}-500 text-white px-12 py-1 rounded-full mr-2 mb-2`}>
-                  {role}
-                </div>
+              {roles.map((role, index) => (<>
+                {user.role === role && (
+                  <div key={index} className={`bg-${colors[index].toLowerCase()}-500 text-white px-12 py-1 rounded-full mr-2 mb-2`}>
+                    {role}
+                  </div>
+                )}
+
+              </>
+
               ))}
             </div>
           </div>
@@ -43,44 +48,44 @@ const Account = () => {
           </div>
 
           <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Maintenance History</h2>
-  <p>This section could display service records and reminders.</p>
-</div>
+            <h2 className="text-lg font-bold mb-2">Maintenance History</h2>
+            <p>This section could display service records and reminders.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Dashboard and Analytics</h2>
-  <p>This section could display mileage tracking, fuel efficiency, and maintenance costs.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Dashboard and Analytics</h2>
+            <p>This section could display mileage tracking, fuel efficiency, and maintenance costs.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">App Preferences</h2>
-  <p>This section could allow users to customize notification settings and app preferences.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">App Preferences</h2>
+            <p>This section could allow users to customize notification settings and app preferences.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Security</h2>
-  <p>This section could allow users to change passwords and enable 2FA.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Security</h2>
+            <p>This section could allow users to change passwords and enable 2FA.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Support and Help</h2>
-  <p>This section could display FAQs, a help center, and contact support information.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Support and Help</h2>
+            <p>This section could display FAQs, a help center, and contact support information.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2>
-  <p>This section could include a logout button and an option for account deactivation.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2>
+            <p>This section could include a logout button and an option for account deactivation.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Connected Services</h2>
-  <p>This section could involve integration with auto repair shops or other connected services.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Connected Services</h2>
+            <p>This section could involve integration with auto repair shops or other connected services.</p>
+          </div>
 
-<div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-  <h2 className="text-lg font-bold mb-2">Legal and Privacy</h2>
-  <p>This section could include links to terms of service and the privacy policy.</p>
-</div>
+          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
+            <h2 className="text-lg font-bold mb-2">Legal and Privacy</h2>
+            <p>This section could include links to terms of service and the privacy policy.</p>
+          </div>
         </div>
       </AuthenticatedLayout>
     </div>

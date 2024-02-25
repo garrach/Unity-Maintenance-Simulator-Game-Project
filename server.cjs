@@ -55,13 +55,18 @@ wss.on('connection', (ws,req) => {
     let parsedMessage = message; 
     try {
       parsedMessage = JSON.parse(message);
-     if(parsedMessage.type==="greet"){
+     if(parsedMessage.vehicleSp){
        fps+=1;
-       console.log(parsedMessage.type)
+       broadcast(JSON.stringify({message:parsedMessage}))
+       console.log(parsedMessage)
      }
     if(parsedMessage.type==="web"){
       fps+=2;
     }  
+    if(parsedMessage.type==="deviceMoved"){
+      console.log(parsedMessage)
+      broadcast(JSON.stringify({message:{type:"deviceMoving",data:parsedMessage.data}}))
+    }
     if(parsedMessage.type==="running"){
       fps+=10;
       const req={
@@ -74,8 +79,8 @@ wss.on('connection', (ws,req) => {
         }    
       }
       const subData=parsedMessage.data;
-      broadcast(JSON.stringify(subData))
-      uploadConnection(req)
+      //broadcast(JSON.stringify(subData))
+      //uploadConnection(req)
     }  
 
     if(parsedMessage.type!=="running")

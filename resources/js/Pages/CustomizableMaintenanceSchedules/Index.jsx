@@ -38,7 +38,7 @@ const CustomizableMaintenanceSchedulesIndex = ({ auth }) => {
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Customizable Maintenance Schedules</h2>}
       >
         <Head title="Customizable Maintenance Schedules" />
-        <div className="my-4 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+        <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Manage Your Maintenance Schedules</h1>
 
           <section className="mb-8">

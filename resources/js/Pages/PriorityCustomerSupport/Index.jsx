@@ -34,7 +34,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
             <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Priority Customer Support</h2>}>
                 <Head title="Priority Customer Support" />
                 <div className="my-4 max-w-md mx-auto">
-                    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-md">
+                    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 dark:text-gray-200 p-6 rounded-md shadow-md">
                         <h1 className="text-2xl font-semibold mb-4">Job Application Form</h1>
                         {/* Full Name */}
                         <div className="mb-4">

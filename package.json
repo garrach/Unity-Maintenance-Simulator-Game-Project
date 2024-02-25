@@ -6,9 +6,10 @@
         "build": "npx vite build",
         "php": "php artisan serve",
         "express": "nodemon server.cjs",
+        "expressProd": "node server.cjs",
         "vite:client": "nodemon /resources/js/Pages/client.cjs",
-        "start": "npx concurrently \"npm run php\" \"npm run express\" \"npm run dev\"",
-        "pro": "npx concurrently \"npm run express\" \"npx vite build\" \"php artisan serve\"",
+        "start": "npx concurrently \"npm run php\" \"npm run expressProd\" \"npm run dev\"",
+        "pro": "npx concurrently \"npm run expressProd\" \"npx vite build\" \"php artisan serve\"",
         "start:express": "npm run express",
         "start:vite": "npm run dev"
     },

@@ -12,6 +12,7 @@ const Show = ({ userID }) => {
         email: '',
         role: '',
     });
+    const encryptedData = btoa(userID);
     const handluserinfo = (userName, userEmail, userRole) => {
         useEffect(() => {
             setUserInfo({
@@ -39,7 +40,7 @@ const Show = ({ userID }) => {
 
 
 
-            <div className="container mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+            <div className="container mx-auto mt-6 p-6 bg-white dark:text-white dark:bg-gray-800 rounded-md shadow-md">
 
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold mb-4">{props.qt}</h1>
@@ -88,6 +89,7 @@ const Show = ({ userID }) => {
                     <p>This section could allow users to customize notification settings and app preferences.</p>
                 </div>
 
+               { props.auth.user.role==="admin" && (<>
                 <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
                     <h2 className="text-lg font-bold mb-2">Security</h2>
                     <p>This section could allow users to change passwords and enable 2FA.</p>
@@ -99,9 +101,9 @@ const Show = ({ userID }) => {
                 </div>
 
                 <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-                    <h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2>
+                    <Link href={route('userAccount.edit',{id:encryptedData})}><h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2></Link> 
                     <p>This section could include a logout button and an option for account deactivation.</p>
-                </div>
+                </div></>)}
 
                 <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
                     <h2 className="text-lg font-bold mb-2">Connected Services</h2>
