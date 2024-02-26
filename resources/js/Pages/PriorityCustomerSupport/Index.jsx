@@ -1,37 +1,40 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
 import React, { useState } from 'react';
+import { Head, useForm } from '@inertiajs/react';
 
 const PriorityCustomerSupportIndex = ({ auth }) => {
-    // State to manage form data
-    const [formData, setFormData] = useState({
+    const { data, setData, post, processing, errors, reset } = useForm({
         fullName: '',
         email: '',
         phone: '',
-        resume: null, // Use this for file input (resume upload)
+        resume: null,
         coverLetter: '',
     });
 
-    // Handler for form submission
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic here
-        console.log(formData);
+    const handleChange = (e) => {
+        const { name, value, type } = e.target;
+        const val = type === 'file' ? e.target.files[0] : value;
+        setData((prevData) => ({
+            ...prevData,
+            [name]: val,
+        }));
     };
 
-    // Handler for input changes
-    const handleInputChange = (e) => {
-        const { name, value, files } = e.target;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('fullName', data.fullName);
+        formData.append('email', data.email);
+        formData.append('phone', data.phone);
+        formData.append('resume', data.resume);
+        formData.append('coverLetter', data.coverLetter);
 
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: name === 'resume' ? files[0] : value,
-        }));
+        post(route('applyforjob.store'), formData);
     };
 
     return (
         <div>
-            <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Priority Customer Support</h2>}>
+            <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Customer Support</h2>}>
                 <Head title="Priority Customer Support" />
                 <div className="my-4 max-w-md mx-auto">
                     <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 dark:text-gray-200 p-6 rounded-md shadow-md">
@@ -45,9 +48,9 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 type="text"
                                 id="fullName"
                                 name="fullName"
-                                value={formData.fullName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded-md"
+                                value={data.fullName}
+                                onChange={handleChange}
+                                className="mt-1 p-2 w-full dark:text-gray-800  border rounded-md"
                                 required
                             />
                         </div>
@@ -61,9 +64,9 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 type="email"
                                 id="email"
                                 name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded-md"
+                                value={data.email}
+                                onChange={handleChange}
+                                className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                 required
                             />
                         </div>
@@ -79,9 +82,9 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 name="phone"
                                 placeholder="(XXX) XXX-XXXX"
                                 pattern="^\+\d{3} \d{2} \d{3} \d{3}$" 
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded-md"
+                                value={data.phone}
+                                onChange={handleChange}
+                                className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                 required
                             />
                         </div>
@@ -96,8 +99,8 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 id="resume"
                                 name="resume"
                                 accept=".pdf,.doc,.docx"
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded-md"
+                                onChange={handleChange}
+                                className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                 required
                             />
                         </div>
@@ -110,10 +113,10 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                             <textarea
                                 id="coverLetter"
                                 name="coverLetter"
-                                value={formData.coverLetter}
-                                onChange={handleInputChange}
+                                value={data.coverLetter}
+                                onChange={handleChange}
                                 rows="4"
-                                className="mt-1 p-2 w-full border rounded-md"
+                                className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                 required
                             ></textarea>
                         </div>

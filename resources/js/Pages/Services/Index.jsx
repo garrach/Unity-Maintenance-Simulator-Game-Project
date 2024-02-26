@@ -26,21 +26,22 @@ const Index = ({ services, auth }) => {
                     <span className="text-blue-500 hover:underline cursor-pointer">
                       View
                     </span>
+                    {auth.user.role==='admin'&&
                     <span className="text-blue-500 hover:underline cursor-pointer">
                       Edit
-                    </span>
+                    </span>}
                   </div>
                 </Link>
               </li>
             ))}
           </ul>
-
+          {auth.user.role==='admin'&&
           <Link
             href={route('services.create')}
             className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 mt-8 inline-block"
           >
             Create Service
-          </Link>
+          </Link>}
         </div>
       </AuthenticatedLayout>
     </div>

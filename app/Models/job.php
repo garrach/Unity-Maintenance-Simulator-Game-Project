@@ -11,5 +11,7 @@ class job extends Model
     protected $fillable = [
         'title',
         'description',
+        'resume',
+        'hash',
     ];
 }

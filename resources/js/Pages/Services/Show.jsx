@@ -1,4 +1,4 @@
-// resources/js/Pages/Profile/Services/Show.jsx
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
 import { Link } from '@inertiajs/react';
@@ -32,15 +32,17 @@ const Show = ({ service, auth }) => {
               {service.description}
             </p>
           </div>
-          {/* Add other fields as needed */}
+          {auth.user.role==='admin'&&
           <div className="flex space-x-2">
+         
+                   
             <Link
               href={route('services.edit', { service: service.id })}
               className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 focus:outline-none"
             >
               Edit
             </Link>
-          </div>
+          </div> }
         </div>
       </AuthenticatedLayout>
     </div>

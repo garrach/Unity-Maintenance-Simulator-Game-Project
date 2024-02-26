@@ -5,7 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class report extends Model
+class Report extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'application_status',
+        'application_date',
+        'title',
+        'description',
+    ];
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
 }

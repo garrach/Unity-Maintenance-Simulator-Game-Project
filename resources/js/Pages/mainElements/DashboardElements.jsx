@@ -45,15 +45,15 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
 
 
 
-const MainContent = ({ children,auth , usersList,currentwebSocket}) => {
+const MainContent = ({ children,auth , usersList,currentwebSocket, display}) => {
     const {props}=usePage();
     return (
         <main className="flex-2 p-4">
             <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4 content-center m-md-n4">
                 <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions auth={auth} /></DashboardCard>
-                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities auth={auth} currentwebSocket={currentwebSocket}/></DashboardCard>
+                <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities display={display} auth={auth} currentwebSocket={currentwebSocket}/></DashboardCard>
                 <DashboardCard number="15m" icon="ic_glass_message.png" span={false} ><RecentConnections auth={auth} /></DashboardCard>
-                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus  auth={auth} /></DashboardCard>
+                <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus display={display}  auth={auth} /></DashboardCard>
                 <DashboardCard number="71.9k" icon="ic_glass_buy.png" span={false} ><Analytics auth={auth} /></DashboardCard>
                 <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={false} ><UsersList auth={auth} usersList={usersList} /></DashboardCard>
                 <DashboardCard number="41.5k" icon="ic_glass_buy.png" span={false} ><MaintenanceReminders auth={auth}/></DashboardCard>
@@ -67,9 +67,9 @@ const MainContent = ({ children,auth , usersList,currentwebSocket}) => {
     );
 };
 
-const DashboardElements = ({ children, auth,usersList,currentwebSocket}) => {
+const DashboardElements = ({ children, auth,usersList,currentwebSocket,display}) => {
     return (
-        <MainContent auth={auth} usersList={usersList} currentwebSocket={currentwebSocket}>
+        <MainContent auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
             {children}
         </MainContent>
     );

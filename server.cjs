@@ -57,7 +57,7 @@ wss.on('connection', (ws,req) => {
       parsedMessage = JSON.parse(message);
      if(parsedMessage.vehicleSp){
        fps+=1;
-       broadcast(JSON.stringify({message:parsedMessage}))
+       broadcast(JSON.stringify(parsedMessage))
        console.log(parsedMessage)
      }
     if(parsedMessage.type==="web"){

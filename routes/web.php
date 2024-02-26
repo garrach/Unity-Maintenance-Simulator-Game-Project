@@ -23,6 +23,11 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentPlanController;
 use App\Http\Controllers\AssetBundlesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AddonRequestController;
+use App\Http\Controllers\WishListController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -48,9 +53,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    
+    Route::resource('reports', ReportController::class);
 
+    Route::post('/reports/applyforjob', [ReportController::class,'apply'])->name('applyforjob.store');
 
+    Route::post('/reports/addonrequest', [AddonRequestController::class,'requestDevice'])->name('requestDevice.store');
 
+    Route::resource('reminders', ReminderController::class);
+
+    Route::resource('whishlist', WishListController::class);
+
+    Route::resource('schedules', ScheduleController::class);
 
     // AssetBundles Routes
     Route::resource('assetBundles', AssetBundlesController::class);   
@@ -60,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     // PaymentPlans Routes
     Route::resource('paymentPlans', PaymentPlanController::class);
+
     Route::post('/paymentPlans/subscription',[PaymentPlanController::class,'subNewPlan'])->name('subscription.store');
 
     // Vehicle Routes

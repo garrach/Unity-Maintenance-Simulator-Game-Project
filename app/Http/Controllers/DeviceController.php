@@ -13,7 +13,7 @@ class DeviceController extends Controller
     public function index()
     {
         $devices = Device::all();
-        
+        session('request',0);
         return Inertia::render('devices/Index', [
             'devices' => $devices,
         ]);

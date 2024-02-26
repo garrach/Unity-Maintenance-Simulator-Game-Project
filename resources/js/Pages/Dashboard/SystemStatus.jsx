@@ -1,52 +1,56 @@
 // resources/js/Components/Dashboard/SystemStatus.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 
-const SystemStatus = ({ currentWebSocket }) => {
-  const [webSocketLive,setwebSocketLive]=useState(null);
-  const [message,setMessage]=useState(null);
-  const [sys,setSys]=useState(false);
-  const {props} = usePage();
-  const socket=new WebSocket(props.someSocket);
+const SystemStatus = ({ currentWebSocket, display }) => {
+  const [webSocketLive, setwebSocketLive] = useState(null);
+  const message = useRef(false);
+  const [sys, setSys] = useState();
+  const { props } = usePage();
 
-  /*navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-  .then((stream) => {
-    // Use the stream for audio/video communication
-  })
-  .catch((error) => {
-    console.error('Error accessing user media:', error);
-  });*/
-
+  const handlUnityRuntime=()=>{
+    const unityMsg=display.message.message;
+    if(unityMsg=="deviceTracking"){
+      message.current=true;
+      setSys('unity ON');
+      console.log('unity ON')
+    }else if(unityMsg=="disconnected"){
+      message.current=false;
+      console.log('unity shut')
+      setSys('unity shut');
+    }else{
+      //setSys(display.message.message);
+    }
+    
+    return message.current;
+  }
   useEffect(()=>{
-    if(socket)
-    socket.addEventListener('message',(evnt)=>{
-      setMessage(JSON.parse(evnt.data))
-      setSys(true)
-    })
-  },[message])
+    handlUnityRuntime();
+  },[display.message])
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">System Status</h2>
 
-      {(message && sys) ? (<>
-      
-        <>{props.someSocket !=='' ? (<>
-      
-      <h1>Server Running.. {message.message}</h1>
-      </>):(<>
-      
+      {(display.message) ? (<>
+
+        <>{props.someSocket !== '' ? (<>
+
+          <h1>Server Running.. {/*display.message.message*/}</h1>
+          <h2>{sys}</h2>
+          <h3>{display.message.message}</h3>
+        </>) : (<>
+
+          <h1>Server 0 Down..</h1>
+
+        </>)}</>
+
+      </>) : (<>
+
+        <h1>Server 1 Down..</h1>
        
-      <h1>Server Down..</h1>
-
-      </>)}</>
-
-      </>):(<>
-      
-        <h1>Server Down..</h1>
-      
       </>)}
 
-      
+
     </div>
   );
 };

@@ -14,31 +14,37 @@ const Sidebar = ({ Children, auth, expand }) => {
      {ssi ? (
         <>
 
-            <aside className="bg-gray-800 text-gray-500 sm:w-56">
-                <nav>
-                    <ul className="p-0 mmLi sm:w-56">
-                        <li className='px-0 py-0' onClick={handlSideBar}><span className='text-white'><FontAwesomeIcon icon={faBars} /></span></li>
-                        <li><Link href={route('basic-maintenance')}>Basic Maintenance</Link></li>
-                        <li><Link href={route('car-analytics')}>Car Analytics</Link></li>
-                        <li><Link href={route('connected-services')}>Connected Services</Link></li>
-                        <li><Link href={route('reminder-notifications')}>Reminder Notifications</Link></li>
-                        <li><Link href={route('full-maintenance-suite')}>Full Maintenance Suite</Link></li>
-                        <li><Link href={route('customizable-maintenance-schedules')}>Customizable Schedules</Link></li>
-                        <li><Link href={route('exclusive-discounts')}>Exclusive Discounts</Link></li>
-                        <li><Link href={route('priority-customer-support')}>Priority Support</Link></li>
-                        <li><Link href={route('advanced-maintenance-reports')}>Advanced Reports</Link></li>
-                        {Children}
-                    </ul>
-                </nav>
-                <div className='really-idk mx-auto flex bg-gray-800'>
-                    <span>
-                        <img src="" alt="" />
-                    </span>
-                    <ul>
-                        <li className='bg-gray-800 ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600  px-12'><Link href={route('myaccount')}> {auth.user.name}</Link></li>
-                    </ul>
-                </div>
-            </aside>
+<aside className="bg-gray-800 text-gray-500 sm:w-56 dark:bg-gray-900 dark:text-gray-300">
+  <nav>
+    <ul className="p-0 mmLi sm:w-56">
+      <li className='px-0 py-0' onClick={handlSideBar}>
+        <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
+      </li>
+      {auth.user.role==='admin'&&(<>
+      <li><Link href={route('basic-maintenance')}>Basic Maintenance</Link></li>
+      <li><Link href={route('car-analytics')}>Car Analytics</Link></li>
+      <li><Link href={route('connected-services')}>Connected Services</Link></li>
+      <li><Link href={route('reminder-notifications')}>Reminder Notifications</Link></li>
+      <li><Link href={route('full-maintenance-suite')}>Full Maintenance Suite</Link></li>
+      <li><Link href={route('customizable-maintenance-schedules')}>Customizable Schedules</Link></li>
+      <li><Link href={route('exclusive-discounts')}>Exclusive Discounts</Link></li>
+      <li><Link href={route('priority-customer-support')}>Priority Support</Link></li>
+      <li><Link href={route('advanced-maintenance-reports')}>Advanced Reports</Link></li></>)}
+      {Children}
+    </ul>
+  </nav>
+  <div className='really-idk mx-auto flex bg-gray-800 dark:bg-gray-900'>
+    <span>
+      <img src="" alt="" />
+    </span>
+    <ul>
+      <li className='bg-gray-800 dark:bg-gray-900 ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 px-12'>
+        <Link href={route('myaccount')}>{auth.user.name}</Link>
+      </li>
+    </ul>
+  </div>
+</aside>
+
             <style>
                 {`
         .really-idk{
@@ -82,8 +88,8 @@ const Sidebar = ({ Children, auth, expand }) => {
 
 
         </>) : (
-        <>
-            <aside className="bg-gray-800" >
+        <>  
+            {auth.user.role==='admin'&&(<><aside className="bg-gray-800" >
                 <nav>
                     <ul className="mmLi">
                         <li>
@@ -147,7 +153,7 @@ const Sidebar = ({ Children, auth, expand }) => {
                         <li ><Link href={route('myaccount')}> {auth.user.name}</Link></li>
                     </ul>
                 </div>
-            </aside>
+            </aside></>)}
             <style>
                 {`
                 aside{

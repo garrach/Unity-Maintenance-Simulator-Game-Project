@@ -1,12 +1,10 @@
 // resources/js/Pages/paymentPlans/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import React from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useRef, useState } from 'react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 
 const Index = ({ paymentPlans, auth }) => {
-
   const { props } = usePage();
-  const pageData = usePage();
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(true);
   const connectionRef = useRef();
   const deviceRef = useRef();
@@ -18,32 +16,25 @@ const Index = ({ paymentPlans, auth }) => {
     reset,
     errors,
   } = useForm({
-    connection: connectionRef.current,
-    device: deviceRef.current,
+    user: props.auth.user,
+    plan: '',
   });
 
 
-  const confirmUserDeletion = () => {
-    setConfirmingUserDeletion(true);
-  };
-
-
-  const deleteUser = (e, connection, device) => {
+  const suub = (e) => {
     e.preventDefault();
-    connectionRef.current = connection;
-    deviceRef.current = device;
-    destroy(route('subscription.store', { connection: connection, device: device }), {
-      preserveScroll: true,
-      onSuccess: () => closeModal(),
-      onFinish: () => reset(),
-    });
-  };
-
-  const closeModal = () => {
-    setConfirmingUserDeletion(false);
-
+    console.log(data)
     reset();
   };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
 
 
   return (
@@ -56,69 +47,81 @@ const Index = ({ paymentPlans, auth }) => {
           </h2>
         }
       >
-        <div className="my-4 mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+       
+            <form onSubmit={suub}> <div className="my-4 mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Payment Plans</h1>
           <ul className="grid grid-cols-3 gap-8 mb-12">
-            {paymentPlans.map((plan) => (
-              <li key={plan.id} className="bg-white dark:bg-gray-800 p-4  rounded-md shadow-md cursor-pointer h-full  hover:text-white hover:bg-cyan-300">
-                <p className="text-lg font-semibold mb-2">{plan.name}</p>
+            {paymentPlans.map((plan, index) => (
+              <div key={index}>
+              <label htmlFor={plan.id}>
+                <li className="bg-white dark:bg-gray-800 p-4  rounded-md shadow-md cursor-pointer h-full  hover:text-white hover:bg-cyan-300">
+                  <p className="text-lg font-semibold mb-2">{plan.name}</p>
 
-                {/* Display services associated with the payment plan */}
-                <ul>
-                  {plan.services.map((service) => (
-                    <li key={service.id}>{service.name}</li>
-                  ))}
-                </ul>
+                
+                  <ul>
 
-                <div className="flex space-x-2">
-                  <Link
-                    href={route('paymentPlans.show', { paymentPlan: plan.id })}
-                    className="text-blue-500 hover:underline"
-                  >
-                    View
-                  </Link>
-                  <Link
-                    href={route('paymentPlans.edit', { paymentPlan: plan.id })}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
+                    {plan.services.map((service,index) => (<>
+                      <li key={index}>{service.name}</li></>
+                    ))}
+                  </ul>
 
-                </div>
+                  <div className="flex space-x-2">
+                    <Link
+                      href={route('paymentPlans.show', { paymentPlan: plan.id })}
+                      className="text-blue-500 hover:underline"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      href={route('paymentPlans.edit', { paymentPlan: plan.id })}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </Link>
 
-              </li>
-            ))}
+                  </div>
 
-<form onSubmit={(e) => { e.preventDefault(); deleteUser(e, connections[index1].id, device.id); }}>
-<li><Link
-              href={route('subscription.store')}
-              className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
-            >
-              Subscribe
-            </Link></li>
-            <li><Link
-              href={route('subscription.store')}
-              className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
-            >
-              Subscribe
-            </Link></li>
-            <li><Link
-              href={route('subscription.store')}
-              className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
-            >
-              Subscribe
-            </Link></li>
+                </li>  
+                <input
+                    type="radio"
+                    name="plan"
+                    className='hiRadio'
+                    value={plan.name}
+                    onChange={handleChange}
+                    
+                    id={plan.id} />
+              </label></div>))}
 
-</form>
-           
+              <li><button
+                className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
+              >
+                Subscribe
+              </button></li>
+              <li><button
+                className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
+              >
+                Subscribe
+              </button></li>
+              <li><button
+
+                className="subscribe !block bg-blue-500 text-white mx-auto px-4 py-2 rounded-full hover:bg-blue-600"
+              >
+                Subscribe
+              </button></li>
+
+            
+
           </ul>
 
-        </div>
+        </div></form>
       </AuthenticatedLayout>
       <style>
         {`
         .subscribe{
          
+        }
+        .hiRadio{
+          display:none !important; 
         }
         
         `}
