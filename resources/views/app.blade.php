@@ -17,6 +17,7 @@
         @inertiaHead
     </head>
     <body className="font-sans antialiased mt-16 overflow-hidden will-change-scroll">
+         <!-- Scripts <div className="preLoader" style="background: red;position: absolute;width: 100%;height: 100%;"></div>-->
         @inertia
     </body>
 </html>

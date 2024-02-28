@@ -14,6 +14,7 @@ import NotificationCenter from '../Dashboard/NotificationCenter';
 import MaintenanceReminders from '../Dashboard/MaintenanceReminders';
 import PaymentPlanOverview from '../Dashboard/PaymentPlanOverview';
 import UsersList from '../Dashboard/UsersList';
+import { clientSocket } from '../client.cjs';
 
 const DashboardCard = ({ number, icon, children, span, margin }) => {
     return (
@@ -45,12 +46,12 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
 
 
 
-const MainContent = ({ children,auth , usersList,currentwebSocket, display}) => {
+const MainContent = ({ children,auth , usersList,currentwebSocket, display,requests}) => {
     const {props}=usePage();
     return (
         <main className="flex-2 p-4">
             <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4 content-center m-md-n4">
-                <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions auth={auth} /></DashboardCard>
+                <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-3 row-span-1"><QuickActions requests={requests} auth={auth} /></DashboardCard>
                 <DashboardCard number="2" icon="ic_glass_users.png" span={false} ><RecentActivities display={display} auth={auth} currentwebSocket={currentwebSocket}/></DashboardCard>
                 <DashboardCard number="15m" icon="ic_glass_message.png" span={false} ><RecentConnections auth={auth} /></DashboardCard>
                 <DashboardCard number="188k" icon="ic_glass_buy.png" span={false} ><SystemStatus display={display}  auth={auth} /></DashboardCard>
@@ -67,9 +68,9 @@ const MainContent = ({ children,auth , usersList,currentwebSocket, display}) => 
     );
 };
 
-const DashboardElements = ({ children, auth,usersList,currentwebSocket,display}) => {
+const DashboardElements = ({ children, auth,usersList,currentwebSocket,display,requests}) => {
     return (
-        <MainContent auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
+        <MainContent requests={requests} auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
             {children}
         </MainContent>
     );

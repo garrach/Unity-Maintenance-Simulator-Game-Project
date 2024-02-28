@@ -1,6 +1,7 @@
 // resources/js/Components/Dashboard/SystemStatus.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { clientSocket } from '../client.cjs';
 
 const SystemStatus = ({ currentWebSocket, display }) => {
   const [webSocketLive, setwebSocketLive] = useState(null);

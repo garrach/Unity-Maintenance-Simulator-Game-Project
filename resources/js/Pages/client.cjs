@@ -1,21 +1,30 @@
+const clientSocket = (client) => {
+  const customObject = { key: client };
+  const headers = {
+    client : JSON.stringify(customObject)
+  };
+  const socket = new WebSocket('ws://localhost:3004', [client], {
+    headers: headers
+  });
 
-const clientSocket=()=>{
-const socket = new WebSocket('ws://localhost:3004');
-socket.addEventListener('open', () => {
-  console.log('Connected to WebSocket server');
-  socket.send(JSON.stringify({type:'poke',data:'Api WebClient'}));
-});
+  socket.addEventListener('open', () => {
+    console.log('Connected to WebSocket server');
+  });
 
-socket.addEventListener('message', (event) => {
-});
+  socket.addEventListener('message', (event) => {
+    const message = JSON.parse(event);
+    console.log('Received message:', message);
+  });
 
-socket.addEventListener('close', () => {
-  console.log('Connection closed');
-});
+  socket.addEventListener('close', () => {
+    console.log('Connection closed');
+  });
 
-socket.addEventListener('error', (error) => {
-  console.error('WebSocket error:', error.message);
-});
-return socket;
-}
+  socket.addEventListener('error', (error) => {
+    console.error('WebSocket error:', error.message);
+  });
+
+  return socket;
+};
+
 export { clientSocket };

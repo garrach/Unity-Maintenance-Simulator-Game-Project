@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { json } from "react-router-dom";
+import { clientSocket } from '../client.cjs';
 
 const Preview = () => {
 
@@ -9,9 +10,9 @@ const Preview = () => {
     const [unityTracking, setUnityTracking] = useState(false);
     const messageRef = useRef();
     const messageArr = useRef([]);
-    const soket = new WebSocket('ws://127.0.0.1:3004');
+    const soket = clientSocket('unityPreview');
     soket.addEventListener('open', (evnt) => {
-        soket.send(JSON.stringify({ type: 'preview', data: 'preview mod on' }))
+        soket.send(JSON.stringify({ type: 'preview',message:'', data: 'preview mod on' }))
     })
 
     const [trackChanges, setTrackChanges] = useState(false);

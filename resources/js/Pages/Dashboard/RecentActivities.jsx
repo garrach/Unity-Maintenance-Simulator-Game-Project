@@ -1,6 +1,8 @@
 // resources/js/Components/Dashboard/RecentActivities.jsx
 import React, {useEffect, useState } from 'react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { clientSocket } from '../client.cjs';
+
 const RecentActivities = ({ activities, display }) => {
   const [acts,setActs]=useState([null]);
   const [webSocketLive,setwebSocketLive]=useState(null);

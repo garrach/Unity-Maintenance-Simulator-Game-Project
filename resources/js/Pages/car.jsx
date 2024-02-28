@@ -5,7 +5,7 @@ import * as dat from 'dat.gui';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const ThreeCar = () => {
+const ThreeCar = ({carModel}) => {
   const mount = useRef(null);
   const controls = useRef(null);
   const lights = useRef(null);
@@ -104,7 +104,7 @@ const ThreeCar = () => {
 
         // Load GLTF model
         const loader = new GLTFLoader();
-        loader.load('cyberpunk_car.glb', (gltf) => {
+        loader.load('storage/cyberpunk_car.glb', (gltf) => {
             // Success callback
             const modelMesh = gltf.scene;
             modelMesh.position.set(0, 0, -1); 

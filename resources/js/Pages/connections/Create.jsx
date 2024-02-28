@@ -23,7 +23,7 @@ const Create = ({ auth, vehicles, devices, connections }) => {
     post(route('connections.store'));
     const validDataToUNity="\n connection_date:"+data.connection_date+"\n vehicle_id:"+data.vehicle_id+"\n device_id:"+data.device_id+"\n"
     confirm("Data : "+validDataToUNity);
-      socket.send(JSON.stringify({type:'running', data:data}));
+      socket.send(JSON.stringify({type:'running',message:'', data:data}));
 
   };
 

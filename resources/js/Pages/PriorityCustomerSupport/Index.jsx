@@ -1,8 +1,23 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import { clientSocket } from '../client.cjs';
+
 
 const PriorityCustomerSupportIndex = ({ auth }) => {
+
+    const socket = clientSocket('dashdoard_sentRequest');
+
+    const sendRoleRequest = (e) => {
+        e.preventDefault();
+
+        if(socket.readyState===WebSocket.OPEN){
+            socket.send(JSON.stringify({ type: 'roleRequest', message: 'a request from client to admin, to grant role', data: auth.user }))
+        }
+
+    }
+
+
     const { data, setData, post, processing, errors, reset } = useForm({
         fullName: '',
         email: '',
@@ -22,6 +37,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const formData = new FormData();
         formData.append('fullName', data.fullName);
         formData.append('email', data.email);
@@ -30,6 +46,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
         formData.append('coverLetter', data.coverLetter);
 
         post(route('applyforjob.store'), formData);
+        sendRoleRequest(e);
     };
 
     return (
@@ -81,7 +98,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 id="phone"
                                 name="phone"
                                 placeholder="(XXX) XXX-XXXX"
-                                pattern="^\+\d{3} \d{2} \d{3} \d{3}$" 
+                                pattern="^\+\d{3} \d{2} \d{3} \d{3}$"
                                 value={data.phone}
                                 onChange={handleChange}
                                 className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"

@@ -22,7 +22,12 @@ export default function Dashboard({ auth, usersList }) {
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');
   const [currentwebSocket, setcurrentwebSocket] = useState(null);
-  const [messageObject, setUserMessage] = useState({ message: 'Welcome, WebSocket to provide realtime data monitoring' });
+  const [requests, setrequests] = useState({
+    reports:10,
+    requestJob:0,
+    notify:0,
+  });
+  const [messageObject, setUserMessage] = useState({ type:'head', message: 'Welcome, WebSocket to provide realtime data monitoring',data:'' });
 
   const {
     data,
@@ -72,7 +77,7 @@ export default function Dashboard({ auth, usersList }) {
     }
   }
   const handlewebSocket = (useaction) => {
-    const webSocket = clientSocket(messageObject);
+    const webSocket = clientSocket('auth');
     setcurrentwebSocket(webSocket)
     setWebSocketOn(true);
     if (useaction)
@@ -85,20 +90,29 @@ export default function Dashboard({ auth, usersList }) {
         planstate: 'planstate',
         message:makeJson(event.data),
       })
-      webSocket.send(JSON.stringify({ type: "poke", data: "client on" }))
+      webSocket.send(JSON.stringify({ type: "poke",message:'reload' ,data: "client on "+auth.user.name }))
     })
-    webSocket.addEventListener('message', (event) => {
+    webSocket.addEventListener('message', (msg) => {
       setData({
         currentwebSocket: webSocket,
         planstate: 'planstate',
-        message:makeJson(event.data),
+        message:makeJson(msg.data),
       })
+      let reqq={type:'',message:'',data:''};
+
+      try {
+        reqq=JSON.parse(msg);
+        const{type,message,data}=reqq;
+        console.log(type)
+      } catch (error) {
+        console.log(msg)
+      }
     })
   }
   useEffect(() => {
     handlewebSocket(false);
   }, [])
-
+const [clientReq,setClientReq]=useState()
   return (
     <>
       <AuthenticatedLayout
@@ -109,13 +123,14 @@ export default function Dashboard({ auth, usersList }) {
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
+        {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
 
           <div className="sm:flex side-menu dark:bg-gray-900">
             <div className="flex bg-gray-200">
               <Sidebar auth={auth} expand={false}></Sidebar>
             </div>
             <div className="relative bg-gray-100 menu-content">
-              <DashboardElements auth={auth} usersList={usersList} currentwebSocket={setwebSocketHost} display={data} />
+              <DashboardElements requests={requests} auth={auth} usersList={usersList} currentwebSocket={setwebSocketHost} display={data} />
             </div>
           </div>
         </div>
