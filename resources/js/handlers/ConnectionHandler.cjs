@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 
 const ConnectionSchema = new mongoose.Schema({
-  U_id:String,
-  V_id:String,
+  U_id:[String],
+  V_id:[String],
   D_id:[String],
 });
 

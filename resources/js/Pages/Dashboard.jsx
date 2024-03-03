@@ -117,7 +117,11 @@ const [clientReq,setClientReq]=useState()
     <>
       <AuthenticatedLayout
         user={auth.user}
-        header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}</h2>}
+        header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}
+        <span><>
+        <Link href={route('meeting.index')}>Meet</Link>
+        <Link href={route('unityRefresh')}>unityRefresh</Link>
+        </></span></h2>}
       >
 
         <Head title="Dashboard" />
@@ -154,6 +158,9 @@ const [clientReq,setClientReq]=useState()
       </div>
       <style>
         {` 
+        .rounded-md{
+          border-radius: 1.3rem !important;
+        }
         .websocket{
           display:none;
           padding:20px;

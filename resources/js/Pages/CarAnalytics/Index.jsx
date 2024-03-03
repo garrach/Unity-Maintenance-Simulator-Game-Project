@@ -1,9 +1,27 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { clientSocket, TMD } from '../client.cjs';
 
+
+// Assuming your React component is named CarAnalyticsIndex
 const CarAnalyticsIndex = ({ auth }) => {
+    const socket = clientSocket('car_analystics');
+
+    const [dataType, setDataType] = useState({
+        vehicle: {},
+        devices: [],
+        analytics: {},
+        performance: {}
+    });
+
+    const [messageData, setMessageData] = useState(TMD('', '', dataType));
+
+    const feedprovider = () => {
+        const feed = TMD('carAnalytics', 'retrieve data from the server', {});
+        socket.send(JSON.stringify(feed));
+    };
 
     // Static car details
     const carDetails = {
@@ -24,6 +42,7 @@ const CarAnalyticsIndex = ({ auth }) => {
         insuranceCost: '$500',
         // Add other analytics data as needed
     };
+
     // Static connected devices
     const connectedDevices = ['GPS Tracker', 'Bluetooth OBD-II Scanner', 'Smartphone Integration'];
 
@@ -36,9 +55,14 @@ const CarAnalyticsIndex = ({ auth }) => {
     // Static performance metrics
     const performanceMetrics = {
         topSpeed: '120 mph',
-        acceleration: '0-60 mph in 8 seconds',
+        acceleration: '0-60 mph in 80 seconds',
         horsepower: '180 hp',
     };
+
+    useEffect(() => {
+        setDataType({ vehicle: carDetails, devices: connectedDevices, analytics: analyticsData, performance: performanceMetrics })
+    }, [])
+
     return (
         <div className='dark:text-white dark:bg-gray-900'>
 
@@ -55,53 +79,30 @@ const CarAnalyticsIndex = ({ auth }) => {
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Car Details</h2>
                             <ul>
-                                <li className="mb-2"><span className="font-bold">Make:</span> {carDetails.make}</li>
-                                <li className="mb-2"><span className="font-bold">Model:</span> {carDetails.model}</li>
-                                <li className="mb-2"><span className="font-bold">Year:</span> {carDetails.year}</li>
-                                <li className="mb-2"><span className="font-bold">Color:</span> {carDetails.color}</li>
-                                <li className="mb-2"><span className="font-bold">Mileage:</span> {carDetails.mileage}</li>
-                                <li className="mb-2"><span className="font-bold">Fuel Type:</span> {carDetails.fuelType}</li>
-                                <li className="mb-2"><span className="font-bold">Transmission:</span> {carDetails.transmission}</li>
-                                {/* Add other details as needed */}
+                                {Object.entries(dataType.vehicle).map(([key, value]) => (
+                                    <li key={key} className="mb-2">
+                                        <span className="font-bold">{key}:</span> {value}
+                                    </li>
+                                ))}
                             </ul>
-
                         </div>
 
                         {/* Display Analytics Data */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Analytics Data</h2>
-                            <p className="mb-2"><span className="font-bold">Fuel Efficiency:</span> {analyticsData.fuelEfficiency}</p>
-                            <p className="mb-2"><span className="font-bold">Maintenance Cost:</span> {analyticsData.maintenanceCost}</p>
-                            <p className="mb-2"><span className="font-bold">Insurance Cost:</span> {analyticsData.insuranceCost}</p>
-                            {/* Add other analytics data as needed */}
+                            {Object.entries(dataType.analytics).map(([key, value]) => (
+                                <p key={key} className="mb-2">
+                                    <span className="font-bold">{key}:</span> {value}
+                                </p>
+                            ))}
                         </div>
 
                         {/* Display Connected Devices */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Connected Devices</h2>
                             <ul>
-                                {connectedDevices.map((device, index) => (
+                                {dataType.devices.map((device, index) => (
                                     <li key={index} className="mb-2">{device}</li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Display Interior Devices */}
-                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
-                            <h2 className="text-xl font-bold mb-2">Interior Devices</h2>
-                            <ul>
-                                {interiorDevices.map((device, index) => (
-                                    <li key={index} className="mb-2">{device}</li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Display Safety Features */}
-                        <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
-                            <h2 className="text-xl font-bold mb-2">Safety Features</h2>
-                            <ul>
-                                {safetyFeatures.map((feature, index) => (
-                                    <li key={index} className="mb-2">{feature}</li>
                                 ))}
                             </ul>
                         </div>
@@ -109,17 +110,16 @@ const CarAnalyticsIndex = ({ auth }) => {
                         {/* Display Performance Metrics */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow">
                             <h2 className="text-xl font-bold mb-2">Performance Metrics</h2>
-                            <p className="mb-2"><span className="font-bold">Top Speed:</span> {performanceMetrics.topSpeed}</p>
-                            <p className="mb-2"><span className="font-bold">Acceleration:</span> {performanceMetrics.acceleration}</p>
-                            <p className="mb-2"><span className="font-bold">Horsepower:</span> {performanceMetrics.horsepower}</p>
+                            {Object.entries(dataType.performance).map(([key, value]) => (
+                                <p key={key} className="mb-2">
+                                    <span className="font-bold">{key}:</span> {value}
+                                </p>
+                            ))}
                         </div>
                     </div>
-
                 </div>
             </AuthenticatedLayout>
-
         </div>
-
     );
 };
 

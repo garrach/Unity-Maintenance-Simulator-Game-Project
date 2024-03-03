@@ -2,7 +2,8 @@
 import React from 'react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import Navigation from '../Navigation';
-import { clientSocket } from '../client.cjs';
+import { clientSocket ,TMD} from '../client.cjs';
+
 
 const QuickActions = ({auth,requests}) => {
   const sendRoleRequest=(e)=>{
@@ -19,7 +20,7 @@ const QuickActions = ({auth,requests}) => {
     
   }
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md"> 
+    <div className="bg-white dark:bg-transparent p-4 rounded-md shadow-md"> 
      {auth.user.role==='admin' ? (<>
       <div className='clientEmployee-requests'>
         <span>{requests.reports}</span>
@@ -68,21 +69,21 @@ const QuickActions = ({auth,requests}) => {
       <style>
         {`
         .clientEmployee-requests{
-          display:flex;
-          justify-content:space-around;
-          width:10%;
-          position: absolute;
-          right: 30%;
+          display: flex;
+          justify-content: end;
+          width: auto;
+          position: relative;
         }
         .clientEmployee-requests span{
-          display:block;
-          position:relative;
-          padding:0.2rem;
-          width:auto;
-          height:auto;
-          border-radius:0.2rem;
-          background-color:red;
-          text-align:center;
+          display: block;
+          position: relative;
+          padding: 0.3rem;
+          width: auto;
+          height: auto;
+          border-radius: 0.2rem;
+          background-color: red;
+          text-align: center;
+          margin: 7px;
         }
        
         `}

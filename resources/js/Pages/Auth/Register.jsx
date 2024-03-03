@@ -4,10 +4,12 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm ,usePage} from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import {sendToMongo} from '../../mongoBackUP.cjs'
 
 export default function Register() {
-    const {props}=usePage();
+    const apiEndpoint = 'http://127.0.0.1:3002/api/login';
+    const { props } = usePage();
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -15,19 +17,23 @@ export default function Register() {
         password: '',
         password_confirmation: '',
     });
-   
+
 
     useEffect(() => {
-       
+
         return () => {
             reset('password', 'password_confirmation');
         };
     }, []);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        
-        post(route('register'));
+        post(route('register'), {
+            onSuccess: () => {sendToMongo(data)}
+        });
+
+
+
     };
 
     return (
@@ -36,11 +42,11 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div className='flex'>
-                    {props.user.role!=="" && (<>
-                 
-                    <div className='flex bg-gray-800 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'></div>
+                    {props.user.role !== "" && (<>
+
+                        <div className='flex bg-gray-800 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'></div>
                     </>)}
-                   
+
 
 
                     <div className='flex regbox flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
@@ -72,7 +78,7 @@ export default function Register() {
                                 value={data.email}
                                 className="mt-1 block w-full"
                                 autoComplete="username"
-                                onChange={(e) => {setData('email', e.target.value);}}
+                                onChange={(e) => { setData('email', e.target.value); }}
                                 required
                             />
 
@@ -129,14 +135,14 @@ export default function Register() {
 
 
 
-<style>
-    {`
+                    <style>
+                        {`
     
     .regbox{
         box-shadow: 28px -26px 27px 0px #96969638 inset;
     }
     `}
-</style>
+                    </style>
                 </div>
             </form>
         </GuestLayout>

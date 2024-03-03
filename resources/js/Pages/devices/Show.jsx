@@ -121,7 +121,7 @@ const Show = ({ device, auth }) => {
             {formatData && (
               <div className="mt-6">
                 <div className='border flex justify-center bg-gray-100 p-4'>
-                  {/* <QRCode value={formatedData(formatData)} renderAs="canvas" />*/}
+                  {<QRCode value={formatedData(formatData)} renderAs="canvas" />}
                 </div>
                 <button
                   className='p-2 dark:text-white hover:bg-orange-500 bg-gray-900 uppercase mt-4 rounded'

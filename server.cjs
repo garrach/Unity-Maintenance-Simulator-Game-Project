@@ -4,18 +4,35 @@ const cors = require('cors');
 const crypto = require('crypto');
 const http = require('http');
 const WebSocket = require('ws');
+const bcrypt = require('bcrypt');
+
 const winston = require('winston');
 const { ObjectId } = require('mongodb');
-
 const { connectToDatabase } = require('./resources/js/utils/database.cjs');
 const { handleVehicleMessages, Vehicle, getVehicleById } = require('./resources/js/handlers/VehiclesHandler.cjs');
 const { handleDeviceMessages, Device } = require('./resources/js/handlers/DevicesHandler.cjs');
 const { handleConnectionMessages, Connection } = require('./resources/js/handlers/ConnectionHandler.cjs');
 const { handleLogin, Auth } = require('./resources/js/handlers/LoginHandler.cjs');
+const { checkApiKey } = require('./middleware/ApikeyChecker.cjs');
 const app = express();
 const port = 3002;
+const TMD={
+  type:'',
+  message:'',
+  data:{},
+}
+const TMD2={
+  type:'',
+  message:'',
+  data:{},
+}
 app.use(cors());
 app.use(express.json());
+app.use(checkApiKey);
+
+
+
+
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 let fps = 0;
@@ -38,7 +55,7 @@ const logger = winston.createLogger({
   ],
 });
 
-mongoose.connect('mongodb://localhost:27017/vr-project', {
+mongoose.connect('mongodb://localhost:27017/backupplan', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -51,6 +68,9 @@ let xy = 0;
 // Object to store active connections with additional data
 const activeConnections = {};
 
+
+
+//WEBSOKET-SERVER (REALTIME COMMUNICATION)
 // Counter for connection index
 let connectionIndex = 0;
 
@@ -93,10 +113,13 @@ wss.on('connection', (ws, req) => {
     parsedMessage = JSON.parse(msg);
     try {
       const { type = '', message = '', data = '' } = parsedMessage;
+      TMD.type=type;
+      TMD.message=message;
+      TMD.data=data;
       console.log(parsedMessage)
       if (parsedMessage.vehicleSp) {
         fps += 1;
-        broadcast({ type: type, message: message, data: data })
+        broadcast(TMD)
         console.log(parsedMessage)
       }
       if (type === "poke") {
@@ -105,9 +128,13 @@ wss.on('connection', (ws, req) => {
 
         ws.send(JSON.stringify({type:'poke',message:'refresh',data:'grant refresh'}))
       }
-      if (type === "deviceMoved") {
+      if (type === "deviceMoved type_here") {
         console.log(parsedMessage)
         broadcast({ type: 'deviceMoving', message: 'DeviceMoving-response', data: parsedMessage.data })
+      }
+      if (type === "type_here") {
+        console.log(parsedMessage)
+        broadcast({ type: 'unityOn', message: 'unity-response', data: parsedMessage.data })
       }
       if (type === "running") {
         fps += 10;
@@ -145,7 +172,7 @@ wss.on('connection', (ws, req) => {
     delete activeConnections[clientInfo.clientId];
     connectionIndex--;
 
-    broadcast(JSON.stringify({ message: 'disconnected' }))
+    broadcast(JSON.stringify({type:'out' ,message: 'disconnected',data:ws}))
     clients.delete(ws);
   });
 });
@@ -166,29 +193,55 @@ function broadcast({ type, message, data }) {
 function generateClientId() {
   return Date.now().toString();
 }
+//END WEBSOCKET-SERVER
 
 
 
+
+//MONGOBD-CONNECTION (SAVE DATA in JSON FORMAT)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+//END
 
 
-
+//API-KEY
 const generateRandomHexString = (length) => {
   const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
   const hexString = randomBytes.toString('hex').slice(0, length);
   return hexString;
 };
 
+const retriveUsers = async function () {
+}
 
+async function uploadConnection(req) {
+  const { user, selectedOptions, dataTosendvh } = req.body.data;
+  console.log(selectedOptions);
+  const newConnection = new Connection({ U_id: user, D_id: selectedOptions, V_id: dataTosendvh });
+  await newConnection.save();
+
+}
+
+const message = { key: generateRandomHexString(16), usersCount: '65c50f332bb660a7a0f0b77a' };
+
+//HTTP-HTTPS SERVER API (ENDPOINTS)
 app.get('/api/user', async (req, res) => {
   try {
-    res.send({ data: await retriveUser('65c154bcecc4a1cb5b2566ed', db) })
+    res.send({ data: await retriveUser('65c50f332bb660a7a0f0b77a', db) })
   } catch (error) {
     console.log('invalid ID..')
     res.send({ error: 'invalid ID..' })
+  }
+});
+app.get('/api/users', async (req, res) => {
+  try {
+    const result = await db.collection('users').find().toArray();
+    res.json({ data: result })
+  } catch (error) {
+    console.log('invalid ID..')
+    res.json({ error: 'invalid ID..' })
   }
 });
 
@@ -205,14 +258,13 @@ app.post('/api/devices', async (req, res) => {
 
 app.get('/api/devices', async (req, res) => {
   try {
-    const devices = await Device.find();
+    const devices = await db.collection("devices").find().toArray();
     res.json({ message: 'List of devices', data: devices });
   } catch (error) {
     console.error('Error listing devices:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 app.post('/api/connections', async (req, res) => {
   try {
@@ -224,16 +276,8 @@ app.post('/api/connections', async (req, res) => {
 
 });
 
-async function uploadConnection(req) {
-  const { user, selectedOptions, dataTosendvh } = req.body.data;
-  console.log(selectedOptions);
-  const newConnection = new Connection({ U_id: user, D_id: selectedOptions, V_id: dataTosendvh });
-  await newConnection.save();
-
-}
-
 app.get('/api/connections', async (req, res) => {
-  if ((await db.collection('users').find().toArray()).length > 0 && req.query.q) {
+  /*if ((await db.collection('users').find().toArray()).length > 0 && req.query.q) {
     db.collection('users');
     const dataArr = [];
     try {
@@ -256,8 +300,11 @@ app.get('/api/connections', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   } else {
-    res.status(403).send('<p>fuck off</p>');
-  }
+    res.status(403).send(JSON.stringify({type:'nice',message:'<p>fuck off</p>',data:'Hmmm'}));
+  }*/
+  const connections = await db.collection('connections').find().toArray();
+  res.json({ message: 'List of connections', data:connections });
+
 });
 
 app.post('/api/vehicles', async (req, res) => {
@@ -297,25 +344,11 @@ app.get('/api/vehicles', async (req, res) => {
     }
 });
 
-
-const retriveUsers = async function () {
-  const coll = db.collection('users');
-  const cursor = coll.find();
-  const result = (await cursor.toArray());
-  if (result.length > 0) {
-    return await result;
-  } else {
-    return 0;
-  }
-}
-
-const message = { key: generateRandomHexString(16), usersCount: '65c50f332bb660a7a0f0b77a' };
-
-app.get('/login', async (req, res) => {
+app.get('/api/login', async (req, res) => {
   res.json(message);
 });
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   handleLogin(res, req.body, db)
 });
 
@@ -325,3 +358,4 @@ app.listen(port, () => {
     console.log(`Server WebSocket is listening on port ${port + 2}`);
   });
 });
+//END SERVER

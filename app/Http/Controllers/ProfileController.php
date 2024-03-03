@@ -3,52 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Inertia\Response;
-use Illuminate\Support\Facades\Artisan;
-use App\Models\User;
-use Illuminate\Foundation\Inspiring;
+
 class ProfileController extends Controller
 {
-
-
 
     /**
      * Display the user's profile form.
      */
     public function create()
     {
-       
-        $qt=(Inspiring::quote());
+
+        $qt = (Inspiring::quote());
         $qt = strip_tags($qt);
-        $auth=Auth::user();
-        return Inertia::render('Profile/Account',[
+        $auth = Auth::user();
+        return Inertia::render('Profile/Account', [
             'user' => $auth,
-            'qt'=>$qt,
+            'qt' => $qt,
         ]);
     }
 
     public function show(Request $request)
     {
-        $user=User::find($request->userID);
-        $infos=[];
-        
-           $infos[0]=$user->id;
-           $infos[1]=$user->name;
-           $infos[2]=$user->email;
-           $infos[3]=$user->role;
-        
-        return Inertia::render('Profile/show',[
+        $user = User::find($request->userID);
+        $infos = [];
+        $role = $request->role;
+
+        try {
+            $infos[0] = $user->id;
+            $infos[1] = $user->name;
+            $infos[2] = $user->email;
+            $infos[3] = $user->role;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return Inertia::render('Profile/show', [
             'userID' => $infos,
         ]);
     }
-
-
 
     /**
      * Display the user's profile form.
@@ -61,10 +63,23 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function editUser(Request $request) : Response {
+// ...
+
+    public function updateRole(User $user,Request $request)
+    {
+        $user=User::find($request->user)->first();
+        $user->update([
+            'role'=>$request->role,
+        ]);
+        $user->save();
+        return Redirect::route('dashboard');
+    }
+
+    public function editUser(Request $request): Response
+    {
 
         $originalData = base64_decode($request->id);
-        $userInfo=explode(',', $originalData);
+        $userInfo = explode(',', $originalData);
         return Inertia::render('Profile/UserProfileEdit', [
             'user' => $userInfo,
         ]);

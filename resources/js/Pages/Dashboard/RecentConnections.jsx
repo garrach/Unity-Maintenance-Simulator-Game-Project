@@ -47,9 +47,9 @@ const timestamp=dateString;
       <ul>
         {props.vehicles && (
           <li> 
-            <p>Vehicle: {props.vehicles[0].make}</p>
-            <p>Device: {props.devices[0][0].type}</p>
-            <p>Timestamp: {timestamp}</p>
+            <p>Vehicle: </p>
+            <p>Device: </p>
+            <p>Timestamp: </p>
            
           </li>
         )}

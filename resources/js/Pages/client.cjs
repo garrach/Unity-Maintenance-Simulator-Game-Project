@@ -12,7 +12,7 @@ const clientSocket = (client) => {
   });
 
   socket.addEventListener('message', (event) => {
-    const message = JSON.parse(event);
+    const message = JSON.parse(event.data);
     console.log('Received message:', message);
   });
 
@@ -27,4 +27,14 @@ const clientSocket = (client) => {
   return socket;
 };
 
-export { clientSocket };
+const TMD=({type,message,data})=>{
+
+  const dataType={
+      type:type,
+      message:message,
+      data:data,
+  }
+  return dataType;
+}
+
+export { clientSocket,TMD };

@@ -28,6 +28,7 @@ use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AddonRequestController;
 use App\Http\Controllers\WishListController;
+use App\Http\Controllers\DBsyncController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -52,9 +53,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/userAccount/user/{id?}', [ProfileController::class, 'editUser'])->name('userAccount.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/role', [ProfileController::class, 'updateRole'])->name('role.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    Route::get('/meeting',function(){
+        return Inertia::render('meeting');
+    })->name('meeting.index');
+
+    Route::get('/unity-refresh',[DBsyncController::class,'index'])->name('unityRefresh');
+
     
+
     Route::resource('reports', ReportController::class);
 
     Route::post('/reports/applyforjob', [ReportController::class,'apply'])->name('applyforjob.store');
