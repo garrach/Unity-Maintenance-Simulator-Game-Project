@@ -1,42 +1,23 @@
 const mongoose = require('mongoose');
-
-
-
 const DeviceSchema = new mongoose.Schema({
   name: String,
   type: String,
 });
-
 const Device = mongoose.model('userDV', DeviceSchema);
-
-
-
-
-
-
-async function handleDeviceMessages(message, ws, db) {
-
-  
-    // Example: Create a device
-    if (message.type === 2) {
-      // Implement createDevice function
-      // createDevice(message.data, db);
-      console.log('Handling createDevice request');
-
-    }
-  
-    // Example: Read devices
-    if (message.type === 3) {
-      // Implement readDevices function
-      // readDevices(ws, db);
-      console.log('Handling readDevices request');
-      // Placeholder code for handling device messages
-    }
-  
+async function handleDeviceMessages(res, data, db) {
+  // Check if a device with the same serial_number already exists
+  const existingDevice = await db.collection('userdvs').findOne({ name: data.serial_number });
+  if (existingDevice) {
+    // Handle the case where the device already exists
+    console.log({ error: 'Device with the same serial_number already exists' });
+  } else {
+    // If the device does not exist, proceed to create and save the new device
+    const newDevice = new Device({ name: data.serial_number, type: data.type });
+    await newDevice.save();
+    console.log({ success: 'Device added successfully' });
   }
-  
-  module.exports = {
-    handleDeviceMessages,
-    Device,
-  };
-  
+}
+module.exports = {
+  handleDeviceMessages,
+  Device,
+};

@@ -1,19 +1,17 @@
 import { useForm } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react"
-
+import axios from 'axios';
 const UnityRefresh = ({ DBsync }) => {
-
   const apiKey = 'YOUR_SECRET_API_KEY'; // Replace with your actual API key
   const arrMariaConnectionsData = useRef()
   const [userData, setUserData] = useState(null);
   const [devicesData, setDevicesData] = useState(null);
   const [connectionsData, setConnectionsData] = useState(null);
   const [vehiclesData, setVehiclesData] = useState(null);
-
+  const [validLogin,setValidLogin]=useState(true);
   const[validPOst,setValidPost]=useState();
   const retriveSt = useRef(null);
   const [dataIshere, setDataIshere] = useState(false);
-
   const { data, setData, post } = useForm({
     connections: null,
     Vehicle: null,
@@ -22,33 +20,52 @@ const UnityRefresh = ({ DBsync }) => {
     Reminder: null,
     Schedule: null,
   });
-
   const dataSync = ['connections', 'Vehicle', 'Device', 'User', 'Reminder', 'Schedule']
-
-  const fetchData = async (method,endpoint, setDataFunction) => {
-    try {
-      const response = await fetch(`http://localhost:3002${endpoint}`, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': apiKey,
-        },
-      });
-      const data = await response.json();
-      setDataFunction(data.data); // Assuming the data object has a 'data' property
-      retriveSt.current = data.data;
-    } catch (error) {
-      retriveSt.current = false;
-      console.error(`Error fetching data from ${endpoint}:`, error);
-
-    }
-  };
+const fetchData = async ( endpoint, setDataFunction) => {
+  try {
+    const response = await axios({
+      method: 'GET',
+      url: `http://localhost:3002${endpoint}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      },
+    });
+    const data = response.data;
+    setDataFunction(data.data); // Assuming the data object has a 'data' property
+    retriveSt.current = data.data;
+    console.log(response.data);
+  } catch (error) {
+    retriveSt.current = false;
+    console.error(`Error fetching data from ${endpoint}:`, error);
+  }
+};
+const fetchDataPOST = async (endpoint, data, setDataFunction) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: `http://localhost:3002${endpoint}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      },
+      data: data, // Include your data payload here
+    });
+    const responseData = response.data;
+    setDataFunction(responseData.data); // Assuming the data object has a 'data' property
+    retriveSt.current = true;
+    console.log(response.data);
+  } catch (error) {
+    retriveSt.current = false;
+    console.error(`Error fetching data from ${endpoint}:`, error);
+  }
+};
   const retriveDataFromMongoDB = () => {
     // Fetch data from different endpoints on component mount
-    fetchData('GET','/api/users', setUserData);
-    fetchData('GET','/api/devices', setDevicesData);
-    fetchData('GET','/api/connections', setConnectionsData);
-    fetchData('GET','/api/vehicles', setVehiclesData);
+    fetchData('/api/users', setUserData);
+    fetchData('/api/devices', setDevicesData);
+    fetchData('/api/connections', setConnectionsData);
+    fetchData('/api/vehicles', setVehiclesData);
     console.log('retriveDataFromMongoDB')
     setDataIshere(true)
   }
@@ -74,23 +91,26 @@ const UnityRefresh = ({ DBsync }) => {
       arrMariaConnectionsData.current = []
     };
   }, [])
-  const sysnncronize = async (e) => {
+  const sysnncronize = (e) => {
     e.preventDefault();
     try {
-      arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, indexKey) => {
-        setData((prevData) => ({ ...prevData, [dataSync[indexKey]]: data }));
-      })
-      fetchData('POST','/api/connections',setValidPost);
-      fetchData('POST','/api/vehicles',setValidPost);
-      fetchData('POST','/api/devices',setValidPost);
-      fetchData('POST','/api/login',setValidPost);
+      fetchDataPOST('/api/connections',{type:"addConnectin",message:'syncData',data:data.connections},setValidPost);
+      fetchDataPOST('/api/vehicles',{type:"addvehicles",message:'syncData',data:data.Vehicle},setValidPost);
+      fetchDataPOST('/api/devices',{type:"adddevices",message:'syncData',data:data.Device},setValidPost);
+      fetchDataPOST('/api/login',{type:"addUser",message:'syncData',data:data.User},setValidPost);
     } catch (error) {
       console.log(data)
     }
   }
+  const dataFlush=()=>{
+    console.log(data);
+      arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, indexKey) => {
+      setData((prevData) => ({ ...prevData, [dataSync[indexKey]]: data }));
+    })
+  }
   return <>
-    <div className="grid grid-cols-3">
-      <div className="MongoData">
+   {validLogin && <div className="grid grid-cols-3 p-12">
+      <div className="MongoData bg-gray-300 p-4 rounded m-2">
         {retriveSt.current ? <h1>{`Unity MongoDB sync:authorized`}</h1> : <h1>{`Unity MongoDB sync:Unauthorized`}</h1>}
         <div>
           <ul>
@@ -98,43 +118,38 @@ const UnityRefresh = ({ DBsync }) => {
               <h3>User Data:</h3>
               <ul>
                 {userData && userData.map((user, index) => (
-                  <li key={index}>{user.username}</li>
+                  <li key={index}>{user._id}</li>
                 ))}
               </ul>
             </li>}
-
             {devicesData && <li>
               <h3>Devices Data:</h3>
               <ul>
                 {devicesData && devicesData.map((device, index) => (
-
-                  <li key={index}>{device.name}</li>
-
+                  <li key={index}>{device._id}</li>
                 ))}
               </ul>
             </li>}
-
             {connectionsData && <li>
               <h3>Connections Data:</h3>
               <ul>
-                {connectionsData && Object.entries(connectionsData).map((connection, index) => (
+                {connectionsData && connectionsData.map((connection, index) => (
                   <li key={connection._id}>{connection._id}</li>
                 ))}
               </ul>
             </li>}
-
             {vehiclesData && <li>
               <h3>Vehicles Data:</h3>
               <ul>
                 {vehiclesData.map((vehicle, index) => (
-                  <li key={index}>{vehicle.Name}</li>
+                  <li key={index}>{vehicle._id}</li>
                 ))}
               </ul>
             </li>}
           </ul>
         </div>
       </div>
-      <div className="MariaData">
+      <div className="MariaData bg-gray-300 p-4 rounded m-2">
         <ul>
           {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
             <li key={index}>
@@ -144,7 +159,6 @@ const UnityRefresh = ({ DBsync }) => {
                   <li key={index}> <ul key={index}>
                     {Object.entries(d).map(([key, value], index) => (
                       <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
-
                     )
                     )}
                   </ul>
@@ -156,12 +170,11 @@ const UnityRefresh = ({ DBsync }) => {
         </ul>
       </div>
       <div className="action">
-        <form onSubmit={sysnncronize} method="get">
-          <button>SyncDATA</button>
-        </form>
+        {data.connections ? <form onSubmit={sysnncronize}>
+          <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded">SyncDATA</button>
+        </form>: <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
       </div>
-    </div>
-
+    </div>}
   </>
 }
 export default UnityRefresh;

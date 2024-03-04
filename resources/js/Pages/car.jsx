@@ -122,12 +122,12 @@ const ThreeCar = ({ carModel }) => {
 
       // Load GLTF model
       const loader = new GLTFLoader();
-      loader.load('storage/cyberpunk_car.glb', (gltf) => {
+      loader.load('storage/mersedes-benz_s65_w222.glb', (gltf) => {
         // Success callback
         const modelMesh = gltf.scene;
         modelMesh.position.set(0, 0, -1);
         //modelMesh.rotation.set(Math.PI/2,Math.PI/2,0); 
-        modelMesh.scale.set(0.02, 0.02, 0.02);
+        modelMesh.scale.set(2, 2, 2);
         scene.add(modelMesh)
         //scene.add(modelMesh);
 

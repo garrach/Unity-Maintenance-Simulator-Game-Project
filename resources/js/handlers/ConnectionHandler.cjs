@@ -1,41 +1,24 @@
 const mongoose = require('mongoose');
-
-
-
 const ConnectionSchema = new mongoose.Schema({
-  U_id:[String],
-  V_id:[String],
-  D_id:[String],
+  U_id:String,
+  V_id:String,
+  D_id:String,
 });
-
 const Connection = mongoose.model('connections', ConnectionSchema);
-
-
-
-async function handleConnectionMessages(message, ws, db) {
-    // Placeholder code for handling connection messages
-  
-    // Example: Create a connection
-    if (message.type === 4) {
-      // Implement createConnection function
-      // createConnection(message.data.vehicleId, message.data.deviceId, db);
-      console.log('Handling createConneion request');
-
-    }
-  
-    // Example: Read connections
-    if (message.type === 5) {
-      // Implement readConnections function
-      // readConnections(ws, db);
-      console.log('Handling readConnections request');
-
-    }
-  
-    // ... add more cases based on your application's requirements
+async function handleConnectionMessages(res, data, db) {
+  // Check if a connection with the same V_id already exists
+  const existingConnection = await db.collection('connections').findOne({ V_id: data.vehicle_id });
+  if (existingConnection) {
+    // Handle the case where the connection already exists
+    console.log({ error: 'Connection with the same vehicle_id already exists' });
+  } else {
+    // If the connection does not exist, proceed to create and save the new connection
+    const newConnection = new Connection({ V_id: data.vehicle_id, D_id: data.device_id, U_id: data.user_id });
+    await newConnection.save();
+    console.log({ success: 'Connection added successfully' });
   }
-  
+}
   module.exports = {
     handleConnectionMessages,
     Connection,
   };
-  
