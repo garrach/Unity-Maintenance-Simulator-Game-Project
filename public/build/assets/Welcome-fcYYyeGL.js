@@ -1,0 +1,1 @@
+import{j as e,a as o}from"./app-BUPJ0MyC.js";import t from"./landingPage-CPX4plDc.js";import"./car-CVP-m6MY.js";function l({auth:r,laravelVersion:a,phpVersion:s}){return e.jsxs(e.Fragment,{children:[e.jsx(o,{title:"Welcome"}),e.jsx(t,{auth:r})]})}export{l as default};
