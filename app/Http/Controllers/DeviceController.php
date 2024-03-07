@@ -5,6 +5,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Models\Review;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,6 +19,19 @@ class DeviceController extends Controller
         return Inertia::render('devices/Index', [
             'devices' => $devices,
         ]);
+    }
+
+    public function preview()
+    {
+        $devices = Device::all();
+        $reviews=Review::all();
+        $Comments=Comment::all();
+
+        return $reviews." ".$Comments;
+        /*session('request',0);
+        return Inertia::render('devicesPreview', [
+            'devices' => $devices,
+        ]);*/
     }
 
     public function create()

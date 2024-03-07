@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" className="dark-mode">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
-    <body className="font-sans antialiased mt-16 overflow-hidden will-change-scroll">
+    <body>
          <!-- Scripts <div className="preLoader" style="background: red;position: absolute;width: 100%;height: 100%;"></div>-->
         @inertia
     </body>

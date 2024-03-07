@@ -7,7 +7,9 @@ use Inertia\Inertia;
 use App\Models\Contact; // Make sure to import the Contact model
 class ContactController extends Controller
 {
-    function index(){return Inertia::render('Contact', ['successMessage' => session('success')]);}
+    function index(){
+        return Inertia::render('Contact');
+    }
     public function store(Request $request)
     {
         // Validate the form data
@@ -24,6 +26,6 @@ class ContactController extends Controller
         'message' => $request->message,
     ]);
 
-        return redirect()->route('contact')->with('success', 'message submitted successfully!');
+        return redirect()->route('home')->with('success', 'message submitted successfully!');
     }
 }

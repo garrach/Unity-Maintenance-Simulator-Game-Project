@@ -3,10 +3,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dashboard;
 use App\Models\PaymentPlan;
 use App\Models\Service;
-use App\Models\Dashboard;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PaymentPlanController extends Controller
@@ -15,33 +17,36 @@ class PaymentPlanController extends Controller
     {
         $paymentPlans = PaymentPlan::all();
         $dashboards = Dashboard::all();
-        $services=[count($paymentPlans)];
-        for ($i=0; $i < count($paymentPlans) ; $i++) { 
+        $services = [count($paymentPlans)];
+        for ($i = 0; $i < count($paymentPlans); $i++) {
             $paymentPlan = $paymentPlans[$i];
             $services[$i] = $paymentPlan->services;
         }
-      
+
         return Inertia::render('PaymentPlans/Index',
-        ['paymentPlans' => $paymentPlans,
-        'services'=> $services,
-        'dashboards'=> $dashboards]);
+            ['paymentPlans' => $paymentPlans,
+                'services' => $services,
+                'dashboards' => $dashboards]);
     }
 
-    public function subNewPlan(Request $request){
-        
-        $paymentPlans = PaymentPlan::all();
-        $dashboards = Dashboard::all();
-        $data=$request->all();
-        $services=[count($paymentPlans)];
-        for ($i=0; $i < count($paymentPlans) ; $i++) { 
-            $paymentPlan = $paymentPlans[$i];
-            $services[$i] = $paymentPlan->services;
+    public function subNewPlan(Request $request)
+    {
+        $data = $request->all();
+        $plan_id = $request->plan;
+        $user_id = $request->user;
+
+        $user = Auth::user();
+        $user = User::where('id', $user->id)->first();
+        $plan = PaymentPlan::where('id', $plan_id)->first();
+
+        if ($user->plans()->exists()) {
+            $user->plans()->sync($plan);
+            return redirect()->route('dashboard')->with('success', 'Payment Plan updated successfully.');
+        } else {
+            $user->plans()->attach($plan);
+            return redirect()->route('dashboard')->with('success', 'Payment Plan created successfully.');
         }
-        return $data;
-        /*return Inertia::render('PaymentPlans/Index',
-        ['paymentPlans' => $paymentPlans,
-        'services'=> $services,
-        'dashboards'=> $dashboards]);*/
+
     }
     public function create()
     {
@@ -56,8 +61,8 @@ class PaymentPlanController extends Controller
 
     public function show(PaymentPlan $paymentPlan)
     {
-        $services=$paymentPlan->services;
-        return Inertia::render('PaymentPlans/Show', ['paymentPlan' => $paymentPlan,'services'=> $services]);
+        $services = $paymentPlan->services;
+        return Inertia::render('PaymentPlans/Show', ['paymentPlan' => $paymentPlan, 'services' => $services]);
     }
 
     public function edit(PaymentPlan $paymentPlan)
@@ -77,20 +82,20 @@ class PaymentPlanController extends Controller
         return redirect()->route('paymentPlans.index')->with('success', 'Payment Plan deleted successfully.');
     }
 
-            // PaymentPlanController.php
+    // PaymentPlanController.php
 
-        public function addService(PaymentPlan $paymentPlan, Service $service)
-        {
-            $paymentPlan->services()->attach($service);
+    public function addService(PaymentPlan $paymentPlan, Service $service)
+    {
+        $paymentPlan->services()->attach($service);
 
-            return redirect()->route('paymentPlans.edit', $paymentPlan);
-        }
+        return redirect()->route('paymentPlans.edit', $paymentPlan);
+    }
 
-        public function deleteService(PaymentPlan $paymentPlan, Service $service)
-        {
-            $paymentPlan->services()->detach($service);
+    public function deleteService(PaymentPlan $paymentPlan, Service $service)
+    {
+        $paymentPlan->services()->detach($service);
 
-            return redirect()->route('paymentPlans.edit', $paymentPlan);
-        }
+        return redirect()->route('paymentPlans.edit', $paymentPlan);
+    }
 
 }

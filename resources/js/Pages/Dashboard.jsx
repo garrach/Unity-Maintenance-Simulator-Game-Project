@@ -13,21 +13,30 @@ import PriorityCustomerSupport from './PriorityCustomerSupport/Index';
 import AdvancedMaintenanceReports from './AdvancedMaintenanceReports/Index';
 import DashboardElements from './mainElements/DashboardElements';
 
-import { clientSocket } from './client.cjs';
+import { useDynamicContext } from './DynamicContext';
+
+
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth, usersList }) {
+export default function Dashboard({ auth, usersList,
+  someSocket,
+  services,
+  connections,
+  paymentPlan,
+  vehicles,
+  devices }) {
+
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');
   const [currentwebSocket, setcurrentwebSocket] = useState(null);
   const [requests, setrequests] = useState({
-    reports:10,
-    requestJob:0,
-    notify:0,
+    reports: 10,
+    requestJob: 0,
+    notify: 0,
   });
-  const [messageObject, setUserMessage] = useState({ type:'head', message: 'Welcome, WebSocket to provide realtime data monitoring',data:'' });
+  const [messageObject, setUserMessage] = useState({ type: 'head', message: 'Welcome, WebSocket to provide realtime data monitoring', data: '' });
 
   const {
     data,
@@ -41,6 +50,7 @@ export default function Dashboard({ auth, usersList }) {
     planstate: 'planstate',
     message: '',
   });
+
 
   const handlinputchange = (e) => {
     setUserMessage({ message: e.target.value })
@@ -68,16 +78,16 @@ export default function Dashboard({ auth, usersList }) {
   const onClose = () => {
     setAlertDialogOpen(!isAlertDialogOpen)
   }
-  const makeJson=(stringJson)=>{
+  const makeJson = (stringJson) => {
     try {
-      const objectData=JSON.parse(stringJson)
+      const objectData = JSON.parse(stringJson)
       return objectData;
     } catch (error) {
-      return {message:'Reloading..'}
+      return { message: 'Reloading..' }
     }
   }
   const handlewebSocket = (useaction) => {
-    const webSocket = clientSocket('auth');
+    const webSocket = dynamicValues.socket;
     setcurrentwebSocket(webSocket)
     setWebSocketOn(true);
     if (useaction)
@@ -88,50 +98,60 @@ export default function Dashboard({ auth, usersList }) {
       setData({
         currentwebSocket: webSocket,
         planstate: 'planstate',
-        message:makeJson(event.data),
+        message: makeJson(event.data),
       })
-      webSocket.send(JSON.stringify({ type: "poke",message:'reload' ,data: "client on "+auth.user.name }))
+      webSocket.send(JSON.stringify({ type: "poke", message: 'reload', data: "client on " + auth.user.name }))
     })
     webSocket.addEventListener('message', (msg) => {
       setData({
         currentwebSocket: webSocket,
         planstate: 'planstate',
-        message:makeJson(msg.data),
+        message: makeJson(msg.data),
       })
-      let reqq={type:'',message:'',data:''};
+      let reqq = { type: '', message: '', data: '' };
 
       try {
-        reqq=JSON.parse(msg);
-        const{type,message,data}=reqq;
+        reqq = JSON.parse(msg);
+        const { type, message, data } = reqq;
         console.log(type)
       } catch (error) {
+
         console.log(msg)
       }
     })
   }
   useEffect(() => {
     handlewebSocket(false);
+    
   }, [])
-const [clientReq,setClientReq]=useState()
+  const [clientReq, setClientReq] = useState()
+  const { dynamicValues, updateValues } = useDynamicContext();
+
+  useEffect(()=>{
+    updateValues({socket:dynamicValues,title:"i'm in dashboard"})
+  },[])
   return (
     <>
-      <AuthenticatedLayout
+    {console.log(dynamicValues)}
+      <AuthenticatedLayout 
+        webSocket={currentwebSocket}
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}
-        <span><>
-        <Link href={route('meeting.index')}>Meet</Link>
-        <Link href={route('unityRefresh')}>unityRefresh</Link>
-        </></span></h2>}
+          <span className='flex w-56 m-2 justify-around'><>
+            <Link href={route('meeting.index')}>Meet</Link>
+            <Link href={route('unityRefresh')}>unityRefresh</Link>
+          </></span></h2>}
       >
 
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0">
-        {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
+          {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
 
           <div className="sm:flex side-menu dark:bg-gray-900">
             <div className="flex bg-gray-200">
-              <Sidebar auth={auth} expand={false}></Sidebar>
+              <Sidebar auth={auth} expand={false} Children={<li className='text-gray-200 mt-4 hover:text-white'><Link href={route('paymentPlans.index')}>Subscribe</Link></li>}/>
+              
             </div>
             <div className="relative bg-gray-100 menu-content">
               <DashboardElements requests={requests} auth={auth} usersList={usersList} currentwebSocket={setwebSocketHost} display={data} />

@@ -1,8 +1,14 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faHome, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = ({ Children, auth, expand }) => {
+    const routesArr = ['basic-maintenance', 'car-analytics', 'connected-services', 'reminder-notifications',
+        'full-maintenance-suite', 'customizable-maintenance-schedules', 'exclusive-discounts', 'priority-customer-support',
+        'priority-customer-support', 'advanced-maintenance-reports']
+    const { props } = usePage();
+    const servicesRef = useRef();
+    servicesRef.current = props.services;
     const [ssi, setSsi] = useState(false);
     useEffect(() => {
     }, [ssi])
@@ -10,43 +16,40 @@ const Sidebar = ({ Children, auth, expand }) => {
         setSsi((prevState) => !prevState)
     }
     return (
-    <>
-     {ssi ? (
         <>
+            {ssi ? (
+                <>
 
-<aside className="bg-gray-800 text-gray-500 sm:w-56 dark:bg-gray-900 dark:text-gray-300">
-  <nav>
-    <ul className="p-0 mmLi sm:w-56">
-      <li className='px-0 py-0' onClick={handlSideBar}>
-        <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
-      </li>
-      {auth.user.role==='admin'&&(<>
-      <li><Link href={route('basic-maintenance')}>Basic Maintenance</Link></li>
-      <li><Link href={route('car-analytics')}>Car Analytics</Link></li>
-      <li><Link href={route('connected-services')}>Connected Services</Link></li>
-      <li><Link href={route('reminder-notifications')}>Reminder Notifications</Link></li>
-      <li><Link href={route('full-maintenance-suite')}>Full Maintenance Suite</Link></li>
-      <li><Link href={route('customizable-maintenance-schedules')}>Customizable Schedules</Link></li>
-      <li><Link href={route('exclusive-discounts')}>Exclusive Discounts</Link></li>
-      <li><Link href={route('priority-customer-support')}>Priority Support</Link></li>
-      <li><Link href={route('advanced-maintenance-reports')}>Advanced Reports</Link></li></>)}
-      {Children}
-    </ul>
-  </nav>
-  <div className='really-idk mx-auto flex bg-gray-800 dark:bg-gray-900'>
-    <span>
-      <img src="" alt="" />
-    </span>
-    <ul>
-      <li className='bg-gray-800 dark:bg-gray-900 ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 px-12'>
-        <Link href={route('myaccount')}>{auth.user.name}</Link>
-      </li>
-    </ul>
-  </div>
-</aside>
+                    <aside className="bg-gray-800 text-gray-500 sm:w-56 dark:bg-gray-900 dark:text-gray-300">
+                        <nav>
+                            <ul className="p-0 mmLi sm:w-56">
+                                <li className='px-0 py-0' onClick={handlSideBar}>
+                                    <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
+                                </li>
+                                {(<>
+                                    {servicesRef.current && (servicesRef.current.map((feature, index) =>
+                                        <li><Link href={route(`${feature.route}`)}>{feature.name}</Link></li>
+                                    ))}
 
-            <style>
-                {`
+                                </>
+                                )}
+                                {Children}
+                            </ul>
+                        </nav>
+                        <div className='really-idk mx-auto flex bg-gray-800 dark:bg-gray-900'>
+                            <span>
+                                <img src="" alt="" />
+                            </span>
+                            <ul>
+                                <li className='bg-gray-800 dark:bg-gray-900 ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 px-12'>
+                                    <Link href={route('myaccount')}>{auth.user.name}</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
+
+                    <style>
+                        {`
         .really-idk{
     width: auto;
     position: fixed;
@@ -83,79 +86,42 @@ const Sidebar = ({ Children, auth, expand }) => {
     color:white;
     cursor:pointer;
     }`}
-            </style>
+                    </style>
 
 
 
-        </>) : (
-        <>  
-            {auth.user.role==='admin'&&(<><aside className="bg-gray-800" >
-                <nav>
-                    <ul className="mmLi">
-                        <li>
-                            <span className='text-white mx-auto mt-4' onClick={handlSideBar}>
-                                <FontAwesomeIcon icon={faBars} size="lg" />
+                </>) : (
+                <>
+                    {(<><aside className="bg-gray-800" >
+                        <nav>
+                            <ul className="mmLi">
+                                <li>
+                                    <span className='text-white mx-auto mt-4' onClick={handlSideBar}>
+                                        <FontAwesomeIcon icon={faBars} size="lg" />
+                                    </span>
+                                </li>
+                                {servicesRef.current && (servicesRef.current.map((feature, index) =>
+                                    <li className='text-white mx-5 mt-4'>
+                                    <Link href={route(`${feature.route}`)}>
+                                        <FontAwesomeIcon icon={faCog} size="lg" />
+                                    </Link>
+                                </li>
+                                ))}
+                                {Children}
+                                
+                            </ul>
+                        </nav>
+                        <div className='really-idk mx-auto text-white flex bg-gray-800'>
+                            <span>
+                                <img src="" alt="" />
                             </span>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('basic-maintenance')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('car-analytics')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('connected-services')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('reminder-notifications')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('full-maintenance-suite')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('customizable-maintenance-schedules')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('exclusive-discounts')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('priority-customer-support')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        <li className='text-white mx-5 mt-4'>
-                            <Link href={route('advanced-maintenance-reports')}>
-                                <FontAwesomeIcon icon={faCog} size="lg" />
-                            </Link>
-                        </li>
-                        {Children}
-                    </ul>
-                </nav>
-                <div className='really-idk mx-auto text-white flex bg-gray-800'>
-                    <span>
-                        <img src="" alt="" />
-                    </span>
-                    <ul>
-                        <li ><Link href={route('myaccount')}> {auth.user.name}</Link></li>
-                    </ul>
-                </div>
-            </aside></>)}
-            <style>
-                {`
+                            <ul>
+                                <li ><Link href={route('myaccount')}> {auth.user.name}</Link></li>
+                            </ul>
+                        </div>
+                    </aside></>)}
+                    <style>
+                        {`
                 aside{
                     width:100%;
                     overflow:hidden;
@@ -203,11 +169,11 @@ const Sidebar = ({ Children, auth, expand }) => {
                         color:#1f2937;
                         cursor:pointer;
                     }`}
-            </style>
+                    </style>
 
 
-        </>)}
-    </>
+                </>)}
+        </>
     )
 }
 export default Sidebar

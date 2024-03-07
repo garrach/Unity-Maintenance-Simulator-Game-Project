@@ -16,7 +16,7 @@ const Index = ({ devices, auth }) => {
           </h2>
         }
       >
-        <div className="my-5 w-fit">
+        <div className="my-5 container mx-auto">
           <h1 className="text-2xl font-semibold mb-4">Device List</h1>
           <ul className="space-y-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">
             {devices.map((device, index) => (
@@ -59,7 +59,7 @@ const Index = ({ devices, auth }) => {
 
             <Link
               href={route('devices.create')}
-              className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 inline-block"
+              className="bg-blue-500 text-white px-4 py-2 mt-12 rounded-full hover:bg-blue-600 inline-block"
             >
               Create Device
             </Link>

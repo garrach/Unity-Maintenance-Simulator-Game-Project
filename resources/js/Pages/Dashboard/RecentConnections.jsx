@@ -2,9 +2,10 @@
 import { usePage } from '@inertiajs/react';
 import React from 'react';
 
-const RecentConnections = ({ connection }) => {
+const RecentConnections = ({ connection , webSocket}) => {
   const currentDate = new Date();
   const {props}=usePage();
+  const prop=usePage();
 
 const currentDayOfMonth = setZero(currentDate.getDate()) 
 const currentMonth = setZero( currentDate.getMonth()+1); 
@@ -45,15 +46,18 @@ const timestamp=dateString;
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
       <ul>
-        {props.vehicles && (
-          <li> 
-            <p>Vehicle: </p>
-            <p>Device: </p>
-            <p>Timestamp: </p>
-           
-          </li>
-        )}
+        {props.connections && Object.entries(props.connections).map(([key,value],index)=>(
+         Object.entries(value).map(([field,content])=>(
+          <>
+           {field ==='vehicle_id' && ( <li>{`Vehicle:${content}`}</li>)}
+           {field ==='device_id' && ( <li>{`Device:${content}`}</li>)}
+           {field ==='installationdate' && ( <li>{`Installation Date:${content}`}</li>)}
+          </>
+          
+          ))
+          ))}
       </ul>
+          {console.log({prop})}
     </div>
   );
 };

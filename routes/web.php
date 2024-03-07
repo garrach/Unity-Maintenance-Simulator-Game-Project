@@ -37,7 +37,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 Route::get('/webPreview/unity',function(){
     return Inertia::render('preview/Index');
 });
@@ -46,6 +46,7 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/preview/devices',[DeviceController::class,'preview'])->name('devices.preview');
 
 Route::middleware('auth')->group(function () {
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');

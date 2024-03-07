@@ -35,10 +35,10 @@ const ThreeCar = ({ carModel }) => {
     folderMaterial.add(groundMaterial, 'emissiveIntensity', 0, 1).name('Emissive Intensity');
   };
   useEffect(() => {
-    let scene, camera, renderer, car, light;
-     // Create a clock
-     var clock = new THREE.Clock();
-     var timeScale = 1;
+    let scene, camera, renderer, car, light, distanceCam,myscreenX,myscreenY;
+    // Create a clock
+    var clock = new THREE.Clock();
+    var timeScale = 1;
     let PlayState = true;
     const scenes = [
       { x: 3.2969087939719683, y: 3.430890457734696, z: -6.3898604104255305 },
@@ -61,7 +61,7 @@ const ThreeCar = ({ carModel }) => {
       renderer.shadowMap.enabled = true;
       mount.current.appendChild(renderer.domElement);
 
-     
+
 
       // Create a rotating mesh
       var geometry = new THREE.BoxGeometry();
@@ -75,13 +75,17 @@ const ThreeCar = ({ carModel }) => {
       var movingMesh = new THREE.Mesh(movingGeometry, movingMaterial);
       scene.add(movingMesh);
 
-     
+
       // Orbit controls setup
       controls.current = new OrbitControls(camera, renderer.domElement);
       controls.current.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
       controls.current.dampingFactor = 0.25;
       controls.current.screenSpacePanning = false;
       controls.current.maxPolarAngle = Math.PI / 2;
+      controls.current.minTargetRadius = 3;
+      controls.current.minDistance = 6;
+      controls.current.maxDistance = 9;
+
       // Texture loader
       const textureLoader = new TextureLoader();
       const texture = textureLoader.load('mapG0.jpg');
@@ -125,15 +129,23 @@ const ThreeCar = ({ carModel }) => {
       loader.load('storage/mersedes-benz_s65_w222.glb', (gltf) => {
         // Success callback
         const modelMesh = gltf.scene;
-        modelMesh.position.set(0, 0, -1);
+        modelMesh.position.set(0, 0, 0);
+        car = modelMesh;
         //modelMesh.rotation.set(Math.PI/2,Math.PI/2,0); 
         modelMesh.scale.set(2, 2, 2);
         scene.add(modelMesh)
+        
+        const Carcalls=document.createElement('span');
+
+        Carcalls.classList.add('callout');
+        mount.current.appendChild(Carcalls);
+        
         //scene.add(modelMesh);
 
       }, (xhr) => {
         // Loading progress callback
         console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        
       }, (error) => {
         // Error callback
         console.error('Error loading model', error);
@@ -153,9 +165,11 @@ const ThreeCar = ({ carModel }) => {
       const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 2);
       scene.add(hemisphereLight);
 
+     
       // Animation
       animate();
     };
+
     const animate = () => {
       requestAnimationFrame(animate);
       if (PlayState) {
@@ -164,6 +178,9 @@ const ThreeCar = ({ carModel }) => {
       lights.current.position.x = camera.position.x + 1;
       lights.current.position.y = camera.position.y + 1;
       lights.current.position.z = camera.position.z + 1;
+      if(car)
+      car.rotation.y+=0.001;
+
       controls.current.update();
 
       renderer.render(scene, camera);
@@ -171,6 +188,7 @@ const ThreeCar = ({ carModel }) => {
 
     const lerpFactor = 0.05; // You can adjust this value for the speed of interpolation
 
+    let isAnimPlaying=false;
     const changeScene = (index) => {
       const targetPosition = scenes[index];
       console.log(index);
@@ -190,13 +208,14 @@ const ThreeCar = ({ carModel }) => {
           Math.abs(targetPosition.y - camera.position.y) > 0.1 ||
           Math.abs(targetPosition.z - camera.position.z) > 0.1
         ) {
-
+          isAnimPlaying=true;
           requestAnimationFrame(animate);
+        }else{
+          isAnimPlaying=false;
         }
 
       };
 
-      // Start the animation
       animate();
     };
     window.addEventListener('resize', () => {
@@ -204,8 +223,48 @@ const ThreeCar = ({ carModel }) => {
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    const calcDistance = (initPos, target) => {
+      //a2+b2=c2
+      const distance = Math.abs(Math.pow((initPos.x - target.x), 2) + Math.pow((initPos.y - target.y), 2) + Math.pow((initPos.z - target.z), 2));
+      return Math.floor(Math.sqrt(distance) + 0.25);
+    }
     window.addEventListener('wheel', (evntt) => {
-      console.log(camera.position);
+      const { x, y, z } = car.position;
+      const initPos = {
+        x: x,
+        y: y,
+        z: z,
+      }
+
+      distanceCam = calcDistance(initPos, camera.position)
+      if (distanceCam < 7) {
+        //controls.current.enablePan=false;
+        //controls.current.enableZoom=false;
+        console.log(distanceCam);
+      }else {
+        //controls.current.enableZoom=true;
+      }
+      //if(Math.abs(camera.position.x>=8) || Math.abs(camera.position.y)>=8 || Math.abs(camera.position.z)>=8 )
+    })
+    const TH3dPointTOscreen=(position,Camera)=>{
+      const Carcalls=document.querySelector('.callout');
+      const point3D=position;
+      const point2D=point3D.clone().project(camera);
+      const myscreenWidth = window.innerWidth;
+      const myscreenHeight = window.innerHeight;
+      myscreenX=(point2D.x+1+0.001)* (myscreenWidth/2);
+      myscreenY=(-point2D.y+1+0.001)* (myscreenHeight/2);
+      Carcalls.style.top=myscreenY+'px';
+      Carcalls.style.left=myscreenX+'px';
+
+      console.log("screen Cords:",myscreenX,myscreenY);
+      console.log(Carcalls.getBoundingClientRect().x=myscreenX);
+      console.log(Carcalls);
+    }
+    
+    window.addEventListener('mousemove',(evv)=>{
+      if(car)
+      TH3dPointTOscreen(car.position,camera);
     })
 
     let index = 0;
@@ -216,6 +275,7 @@ const ThreeCar = ({ carModel }) => {
       elemnt.setAttribute('value', index++)
       elemnt.addEventListener('click', (eve) => {
         console.log(eve.target)
+        if(!isAnimPlaying)
         changeScene(Number(elemnt.getAttribute('value')))
 
       })

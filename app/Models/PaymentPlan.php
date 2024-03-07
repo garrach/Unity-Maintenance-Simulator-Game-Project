@@ -14,6 +14,10 @@ class PaymentPlan extends Model
 
     public function services()
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class)->withPivot('service_id');
+    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('user_id');
     }
 }

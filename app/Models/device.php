@@ -15,4 +15,14 @@ class Device extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+    
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 }

@@ -23,7 +23,7 @@ const QuickActions = ({auth,requests}) => {
     <div className="bg-white dark:bg-transparent p-4 rounded-md shadow-md"> 
      {auth.user.role==='admin' ? (<>
       <div className='clientEmployee-requests'>
-        <span>{requests.reports}</span>
+        <Link href={route('reports.index')}>{requests.reports}</Link>
         <span >{requests.requestJob}</span>
         <span>{requests.notify}</span>
       </div>

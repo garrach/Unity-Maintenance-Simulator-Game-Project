@@ -48,7 +48,7 @@ class ReportController extends Controller
             job::create($res);
         }
 
-        return Redirect::route('reports.index')->with('success', 'Report created successfully!');
+        return Redirect::route('dashboard')->with('success', 'Report created successfully!');
     }
 
     public function index()

@@ -10,23 +10,28 @@ const Contact = ({successMessage}) => {
     email: '',
     message: '',
   });
+  const [validSub,setValidSub]=useState(false);
   
   const handleChange = (e) => {
     setData(e.target.name, e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route('contact.store'));
+    setValidSub(true);
+    if(data.name!==''){
+
+      setTimeout(()=>{
+        post(route('contact.store'));
+      },2000)
+    }
     reset();
   };
 
-
-
-
-
-
   return (
    <div className="dark:bg-gray-800 drak:text-white  bg-gray-100 min-h-screen">
+   {validSub && <div className='bg-green-500 w-screen abolute h-fit text-xl dark:text-white text-gray-200 text-center'>
+      Message sent
+    </div>}
       <header className="py-8 bg-blue-500 text-white text-center dark:bg-gray-800 drak:text-white">
         <h1 className="text-4xl font-bold">Contact Us</h1>
         <p className="mt-2">Reach out to us with any questions or concerns!</p>
@@ -34,7 +39,7 @@ const Contact = ({successMessage}) => {
 
       <main className="container mx-auto my-8 dark:bg-gray-800 drak:text-white">
         <section>
-          <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Get in Touch</h2>
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">
             {/* Display success message */}
           {successMessage && (
@@ -43,7 +48,7 @@ const Contact = ({successMessage}) => {
             </div>
           )}
             <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+              <label htmlFor="name" className="block dark:text-gray-200 text-gray-700 font-bold mb-2">
                 Name
               </label>
               <input
@@ -60,7 +65,7 @@ const Contact = ({successMessage}) => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+              <label htmlFor="email" className="block dark:text-gray-200 text-gray-700 font-bold mb-2">
                 Email
               </label>
               <input
@@ -75,7 +80,7 @@ const Contact = ({successMessage}) => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="message" className="block text-gray-700 font-bold mb-2">
+              <label htmlFor="message" className="block dark:text-gray-200 text-gray-700 font-bold mb-2">
                 Message
               </label>
               <textarea

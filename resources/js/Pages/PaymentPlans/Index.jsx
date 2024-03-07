@@ -11,7 +11,7 @@ const Index = ({ paymentPlans, auth }) => {
   const {
     data,
     setData,
-    delete: destroy,
+    post,
     processing,
     reset,
     errors,
@@ -24,6 +24,7 @@ const Index = ({ paymentPlans, auth }) => {
   const suub = (e) => {
     e.preventDefault();
     console.log(data)
+    post(route('subscription.store'))
     reset();
   };
   const handleChange = (e) => {
@@ -86,7 +87,7 @@ const Index = ({ paymentPlans, auth }) => {
                     type="radio"
                     name="plan"
                     className='hiRadio'
-                    value={plan.name}
+                    value={plan.id}
                     onChange={handleChange}
                     
                     id={plan.id} />

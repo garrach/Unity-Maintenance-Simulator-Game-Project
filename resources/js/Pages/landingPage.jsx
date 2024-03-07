@@ -5,21 +5,28 @@ import { useEffect, useRef, useState } from 'react';
 const LandingPage = ({ auth }) => {
       
     return (
-        <> <div className='canvas'>
+        <>
+        <div className='bg-gray-500 absolute mx-auto scrollter'>
+            Scroll-Zoom
+        </div>
+        
+         <div className='canvas'>
                     <ThreeCar />
             </div>
  
                 <div className="container mt-4 text-left ml-4 z-40">
         
                     <div className="mt-6 z-10">
-                        <Link href={route('login')} className="bg-orange-500 absolute text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
-                        <Link href={route('devices.index')} className="absolute  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
-                        <Link href={route('about')} className=" absolute text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
-                        <Link href="/" className=" absolute text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
-
+                        <div className='flex static-links'>
+                            <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
+                            <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">contact</Link>
+                            <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
+                            <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
+                            <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
+                            <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+                        </div>
                         <span className='relative flex mt-12 text-white'>Available For</span>
                         <div className='relative flex mt-5'>
-
                             <img src="https://minimals.cc/assets/icons/platforms/ic_js.svg" alt="" className='ml-4' />
                             <img src="https://minimals.cc/assets/icons/platforms/ic_vite.svg" alt="" className='ml-4' />
                             <img src="unity-69.svg" alt="" className='ml-4 w-6' />
@@ -27,10 +34,10 @@ const LandingPage = ({ auth }) => {
                         </div>
                         
                         <div className='preview-media mt-12 flex flex-col'>
-                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 bg-gray-500 rounded-full'>01</button>
-                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 bg-gray-500 rounded-full'>02</button>
-                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 bg-gray-500 rounded-full'>03</button>
-                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 bg-gray-500 rounded-full'>04</button>
+                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 hover:border-2  hover:border-orange-500  rounded-full'>01</button>
+                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 hover:border-2  hover:border-orange-500 rounded-full'>02</button>
+                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 hover:border-2  hover:border-orange-500 rounded-full'>03</button>
+                            <button className='text-white hover:bg-white hover:text-gray-500 px-2 mt-2 hover:border-2  hover:border-orange-500 rounded-full'>04</button>
                         </div>
                         <div className='absolute grid grid-cols-3 gap-4' id='element00'>
                             <div className='someGlass'>
@@ -50,6 +57,20 @@ const LandingPage = ({ auth }) => {
                 </div>
 
             <style>{`
+            .callout{
+                position:fixed;
+                width:3rem;
+                height:3rem;
+                background:red;
+
+            }
+            .scrollter{
+                width:10rem;
+                height:10rem;
+                padding:3rem;
+                left: calc(50% - 5rem);
+                top: 75%;
+            }
             .op:hover{
                 color:#ff6c00;
                 background:#ffffff24;
@@ -58,22 +79,18 @@ const LandingPage = ({ auth }) => {
             .op{
                    
             }
-                .z-10 a{
+            .static-links a{
+                position: relative;
+                display:block;
+            }
+                .static-links{
                     position: fixed;
-                    top: 22px;
+                    top: 5%;
+                    right: 10%;
+                    width:40%;
+                    justify-content:space-between;
                 }
-                .z-10 a:nth-child(1){
-                    right: 5rem;
-                }
-                .z-10 a:nth-child(2){
-                    right: 15rem;
-                }
-                .z-10 a:nth-child(3){
-                    right: 25rem;
-                }
-                .z-10 a:nth-child(4){
-                    right: 35rem;
-                }
+                
                 .absolute.top-200{
                     top: 170%;
                     width: 30rem;

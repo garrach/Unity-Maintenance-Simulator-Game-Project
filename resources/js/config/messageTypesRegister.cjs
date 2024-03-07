@@ -45,6 +45,7 @@ function handleTypeHere(TMD, clientKey, ws, db) {
 
 function handleRunning(TMD, clientKey, ws, db) {
     console.log(TMD.message); 
+    ws.send(JSON.stringify(TMD))
 }
 
 function handleMovingPart(TMD, clientKey, ws, db) {

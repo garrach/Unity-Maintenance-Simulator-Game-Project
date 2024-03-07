@@ -9,14 +9,45 @@ use App\Models\Connection;
 use App\Models\Vehicle;
 use App\Models\Device;
 use App\Models\Service;
+use App\Models\PaymentPlan;
+use Illuminate\Support\Facades\Auth;
+
 class DashboardController extends Controller
 {
     public function index(){
-            $usersList=User::all();
-            $vehicles=[];
+        $usersList=User::all();
+        $vehicles=[];
         $devices=[];
         $connections = Connection::all();
         $services = Service::all();
+        $plans = PaymentPlan::skip(0)->take(1)->first();
+       
+
+        $user=Auth::user();
+        $user=User::where('id',$user->id)->first();
+        
+        $plans=$user->plans->first();
+         
+        if ($plans) {
+            $services = $plans->services; // This gives you a collection of services associated with the payment plan
+        
+            foreach ($services as $service) {
+                // Access service details
+                $serviceName = $service->name;
+                // Access additional pivot data
+                $additionalData = $service->pivot->service_id;
+            }
+        } else {
+            $plans=PaymentPlan::all()->first();
+            $services = $plans->services; // This gives you a collection of services associated with the payment plan
+        
+            foreach ($services as $service) {
+                // Access service details
+                $serviceName = $service->name;
+                // Access additional pivot data
+                $additionalData = $service->pivot->service_id;
+            }
+        }
 
         $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
         $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
@@ -31,6 +62,7 @@ class DashboardController extends Controller
             'someSocket'=>'ws://localhost:3004',
             'services'=>$services,
             'connections'=>$connections,
+            'paymentPlan'=>$plans,
             'vehicles'=>$vehicles,
             'devices'=>$devices]);
         

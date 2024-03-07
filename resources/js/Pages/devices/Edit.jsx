@@ -31,11 +31,11 @@ const Edit = ({ device, auth }) => {
           </h2>
         }
       >
-        <div className="my-4">
+        <div className="my-4 container mx-auto w-80">
           <h1 className="text-2xl font-semibold mb-4">Edit Device</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="serial_number" className="block text-sm font-medium text-gray-600">
+              <label htmlFor="serial_number" className="block text-sm font-medium dark:text-gray-200 text-gray-600">
                 Device Name:
               </label>
               <input
@@ -46,7 +46,7 @@ const Edit = ({ device, auth }) => {
                 value={data.serial_number}
                 placeholder={device.serial_number}
                 onChange={handleChange}
-                className="mt-1 p-2 border rounded-md w-full"
+                className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
               />
             </div>
             {/* Add other form fields as needed */}
