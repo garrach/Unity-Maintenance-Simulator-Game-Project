@@ -53,7 +53,6 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
   };
 
   const handleTaskAction = (taskId, action) => {
-   
     console.log(`Task ${taskId} ${action}`);
     post(route('markAsComplete',{id:taskId}))
   };

@@ -28,7 +28,7 @@ class FullMaintenanceSuiteController extends Controller
         }
         foreach ($Purchases as $Purchase) {
             if ($Purchase) {
-                $DeviceUsage[$Purchase->id]=1000*$Purchase->id;
+                $DeviceUsage=DeviceUsage::where('device_id',$Purchase->device->id)->get()->first()->usage_count;
                 $devices[$Purchase->id] = Device::where('id', $Purchase->device_id)->first();
                 $maintenanceTasksz[$Purchase->id] = [
                     'id' => $Purchase->id,
@@ -55,14 +55,29 @@ class FullMaintenanceSuiteController extends Controller
         $Purchase->update([
             'stat' => 1,
         ]);
-       
-        $DeviceUsage=
+        
+        $deviceUsage=DeviceUsage::where('device_id',$Purchase->device->id)->first();
+        
+        if($deviceUsage){
+            $usage_count=$deviceUsage->usage_count;
+            $deviceUsage->update([
+                'user_id'=>$Purchase->user->id, 
+                'device_id'=>$Purchase->device->id, 
+                'usage_count'=>$usage_count+100,
+            ]);
+        }else{
+            $deviceUsage = DeviceUsage::Create([
+                'user_id'=>$Purchase->user->id, 
+                'device_id'=>$Purchase->device->id, 
+                'usage_count'=>100,
+            ]);
+        }
         /*if($Purchase){
-        $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
-        $Schedule->delete();
+            $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
+            $Schedule->delete();
         }*/
-
+        
         $user = Auth::user();
-        return redirect()->route('full-maintenance-suite')->with('success', 'Model updated successfully');
+        return redirect()->route('basic-maintenance');
     }
 }

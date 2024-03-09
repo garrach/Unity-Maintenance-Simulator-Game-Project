@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DeviceUsage extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id', 'device_id', 'usage_count'];
+
 }

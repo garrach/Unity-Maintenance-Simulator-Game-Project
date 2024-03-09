@@ -32,6 +32,7 @@ use App\Http\Controllers\DBsyncController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ApplicationListController;
 
 
 //static Pages Routes
@@ -101,6 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/customizable-maintenance-schedules', [CustomizableMaintenanceSchedulesController::class, 'index'])->name('customizable-maintenance-schedules');
     Route::get('/exclusive-discounts', [ExclusiveDiscountsController::class, 'index'])->name('exclusive-discounts');
     Route::get('/priority-customer-support', [PriorityCustomerSupportController::class, 'index'])->name('priority-customer-support');
+    Route::get('/application-list', [ApplicationListController::class, 'index'])->name('application-list');
+   
     Route::get('/advanced-maintenance-reports', [AdvancedMaintenanceReportsController::class, 'index'])->name('advanced-maintenance-reports');
 });
 

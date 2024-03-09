@@ -25,7 +25,7 @@ class ReportController extends Controller
         $description = 'Name: ' . $request->fullName . "\n" .
         'Email: ' . $request->email . "\n" .
         'Phone: ' . $request->phone . "\n" .
-        'Cover Letter: ' . $request->coverLetter;
+        'Cover Letter: ' . trim($request->coverLetter);
 
         $resumeFile = $request->file('resume');
         $resumeContent = file_get_contents($resumeFile->path());
