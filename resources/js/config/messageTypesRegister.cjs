@@ -58,7 +58,7 @@ async function handleUnityLogin(TMD, clientKey, ws, db) {
 }
 async function findUser(dataInfoMSG, ws, db) {
     const arr = await getUserById(dataInfoMSG.user.id, db);
-    ws.send(JSON.stringify({ user: arr }))
+    ws.send({ user: arr })
   }
 
 module.exports = {

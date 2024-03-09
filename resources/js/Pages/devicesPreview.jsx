@@ -1,8 +1,8 @@
-// resources/js/Pages/devices/Index.jsx
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
-const Index = ({ devices, auth }) => {
+import GuestLayout from '@/Layouts/GuestLayout';
+
+const Index = ({ devices, reviews, comments, auth }) => {
     const purchased = false;
     const installded = false;
     const [preview, setPreview] = useState(false);
@@ -13,21 +13,35 @@ const Index = ({ devices, auth }) => {
         setPreview(!preview);
     }
     return (
-        <>
-            {preview && <div className='absolute z-20 w-full h-full bg-gray-500 mx-auto modelx'>
-            <div className='container mx-auto p-4'>
-                <p className="text-4xl font-semibold mb-1">{`Serial Number: ${data.serial_number}`}</p>
-                <p className="text-3xl text-gray-200">{`Type: ${data.type}`}</p>
-                <p className="text-3xl text-gray-200">{`Device Price : ${data.price}`}</p>
-                <div className='device-reviews-comments'>
-                    <ul>
-                        <li className='text-2xl text-gray-300'>reviews:</li>
-                    </ul>
-                    <ul>
-                        <li className='text-2xl text-gray-300'>comments:</li>
-                    </ul>
-                </div>
-                <Link href={route('devices.show',{ device: data.id })} className="text-2xl text-gray-300">see more..</Link>
+        <GuestLayout>
+            {preview && <div className='fixed z-20 w-full bg-gray-500 mx-auto modelx rounded-lg'>
+                <div className='container mx-auto p-4'>
+                    <p className="text-4xl font-semibold mb-1">{`Serial Number: ${data.serial_number}`}</p>
+                    <p className="text-3xl text-gray-200">{`Type: ${data.type}`}</p>
+                    <p className="text-3xl text-gray-200">{`Device Price : ${data.price}`}</p>
+
+                    <div className='device-reviews-comments'>
+                        <label className='text-3xl text-white'>Average Reviews:</label>
+                        <ul>
+                            {reviews[data.id].map((review, index) => (
+
+                                <li key={index} className='text-2xl text-gray-300'>{review.rate}</li>
+
+                            ))}
+                        </ul>
+                        <label className='text-3xl text-white'>Comments</label>
+
+                        <ul>
+                            {comments[data.id].map((comment, index) => (
+
+                                <li key={index} className='text-2xl text-gray-300 block'>
+                                    {comment.text}
+                                </li>
+
+                            ))}
+                        </ul>
+                    </div>
+                    <Link href={route('devices.show', { device: data.id })} className="text-2xl text-gray-300">see more..</Link>
                 </div>
                 <button onClick={handlPreview} className="text-xl absolute right-0 mr-4 top-0 mt-4 text-gray-200">Close</button>
 
@@ -55,11 +69,19 @@ const Index = ({ devices, auth }) => {
                 </div>
             </div>
             <style>
-                {`.modelx{
-                    transform:scale(0.7);
+                {`
+                .device-reviews-comments{
+                    position:relative;
+                    left:50%;
+                    top:0;
+                    height:75vh;
+                    overflow:auto;
+                }
+                .modelx{
+                    transform:scale(0.6);
                 }`}
-                         </style>
-        </>
+            </style>
+        </GuestLayout>
 
     );
 };

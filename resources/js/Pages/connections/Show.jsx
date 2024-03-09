@@ -52,7 +52,7 @@ const closeModal = () => {
           </h2>
         }
       >
-        <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+        <div className="max-w-2xl dark:text-white mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Connection Details</h1>
           <div className="mb-4">
             <label htmlFor="name" className="block font-bold text-2xl text-gray-600 dark:text-gray-400">

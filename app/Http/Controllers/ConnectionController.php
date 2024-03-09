@@ -6,10 +6,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Connection;
 use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Vehicle;
 use App\Models\Device;
+use App\Models\Purchase;
 class ConnectionController extends Controller
 {
     public function getDevicesForVehicle($vehicleId)
@@ -47,7 +50,15 @@ class ConnectionController extends Controller
     public function create()
     {
         $Vehicle_z = Vehicle::all();
-        $Devices_z = Device::all();
+        $user = Auth::user();
+        $user = User::where('id', $user->id)->first();
+        $Devices_z=[];
+        $Purchases=Purchase::all();
+       // $Device = $purchases->devices->first();
+
+       foreach($Purchases as $purchase){
+        $Devices_z[$purchase->id]=$purchase->device;
+       }
         $connections_z = Connection::all();
         return Inertia::render('connections/Create',[
             'vehicles'=>$Vehicle_z,

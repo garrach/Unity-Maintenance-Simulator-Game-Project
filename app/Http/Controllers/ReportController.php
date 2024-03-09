@@ -43,6 +43,8 @@ class ReportController extends Controller
                 'title' => $title,
                 'description' => $description,
                 'resume' => $resumePath,
+                'approval'=>0,
+                'hash' => $resumeHash,
                 'hash' => $resumeHash,
             ];
             job::create($res);

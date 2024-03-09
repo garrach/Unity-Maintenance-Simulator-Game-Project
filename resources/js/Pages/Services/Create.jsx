@@ -6,6 +6,8 @@ import { Link, useForm } from '@inertiajs/react';
 const Create = ({ auth }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
+    description: '',
+    route: '',
     // Add other fields as needed
   });
 
@@ -45,10 +47,35 @@ const Create = ({ auth }) => {
                 name="name"
                 value={data.name}
                 onChange={handleChange}
-                className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-blue-300"
+                className="mt-1 p-2 border rounded-md dark:text-gray-800 w-full focus:outline-none focus:ring focus:border-blue-300"
               />
             </div>
-            {/* Add other form fields as needed */}
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
+              description:
+              </label>
+              <input
+                type="text"
+                id="description"
+                name="description"
+                value={data.description}
+                onChange={handleChange}
+                className="mt-1 p-2 border rounded-md dark:text-gray-800 w-full focus:outline-none focus:ring focus:border-blue-300"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
+                route:
+              </label>
+              <input
+                type="text"
+                id="route"
+                name="route"
+                value={data.route}
+                onChange={handleChange}
+                className="mt-1 p-2 border rounded-md dark:text-gray-800 w-full focus:outline-none focus:ring focus:border-blue-300"
+              />
+            </div>
             <div>
               <button
                 type="submit"

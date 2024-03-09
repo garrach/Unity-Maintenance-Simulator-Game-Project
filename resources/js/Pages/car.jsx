@@ -5,12 +5,13 @@ import * as dat from 'dat.gui';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const ThreeCar = ({ carModel }) => {
+const ThreeCar = ({ carModel, SetLoading }) => {
   const mount = useRef(null);
   const controls = useRef(null);
   const lights = useRef(null);
   const animaRef = useRef(true);
   const [cammm, setCamm] = useState(null);
+  const childs = useRef([]);
   const setupGUI = (cam, ground, groundMaterial, camP, camR) => {
     const gui = new dat.GUI();
 
@@ -35,7 +36,7 @@ const ThreeCar = ({ carModel }) => {
     folderMaterial.add(groundMaterial, 'emissiveIntensity', 0, 1).name('Emissive Intensity');
   };
   useEffect(() => {
-    let scene, camera, renderer, car, light, distanceCam,myscreenX,myscreenY;
+    let scene, camera, renderer, car, light, distanceCam, myscreenX, myscreenY;
     // Create a clock
     var clock = new THREE.Clock();
     var timeScale = 1;
@@ -124,36 +125,42 @@ const ThreeCar = ({ carModel }) => {
       }
       // setupGUI(camera,ground, groundMaterial,camP,camR);
 
-      // Load GLTF model
       const loader = new GLTFLoader();
+
       loader.load('storage/mersedes-benz_s65_w222.glb', (gltf) => {
-        // Success callback
+
+
+
+
+
+
         const modelMesh = gltf.scene;
+
+
+
+
+
+        modelMesh.traverse((child) => {
+          childs.current.push(child);
+          TH3dPointTOscreen(child.position, camera, child)
+        })
+
+
+
+
+
+
+
         modelMesh.position.set(0, 0, 0);
         car = modelMesh;
-        //modelMesh.rotation.set(Math.PI/2,Math.PI/2,0); 
         modelMesh.scale.set(2, 2, 2);
-        scene.add(modelMesh)
-        
-        const Carcalls=document.createElement('span');
+        scene.add(modelMesh);
 
-        Carcalls.classList.add('callout');
-        mount.current.appendChild(Carcalls);
-        
-        //scene.add(modelMesh);
 
-      }, (xhr) => {
-        // Loading progress callback
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        
-      }, (error) => {
-        // Error callback
+        SetLoading(false);
+      }, undefined, (error) => {
         console.error('Error loading model', error);
       });
-
-
-
-
       // Point Light
       const pointLight = new THREE.PointLight(0xffffff, 100, 100);
 
@@ -165,7 +172,7 @@ const ThreeCar = ({ carModel }) => {
       const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 2);
       scene.add(hemisphereLight);
 
-     
+
       // Animation
       animate();
     };
@@ -178,8 +185,8 @@ const ThreeCar = ({ carModel }) => {
       lights.current.position.x = camera.position.x + 1;
       lights.current.position.y = camera.position.y + 1;
       lights.current.position.z = camera.position.z + 1;
-      if(car)
-      car.rotation.y+=0.001;
+      if (car)
+        car.rotation.y -= 0.001;
 
       controls.current.update();
 
@@ -188,7 +195,7 @@ const ThreeCar = ({ carModel }) => {
 
     const lerpFactor = 0.05; // You can adjust this value for the speed of interpolation
 
-    let isAnimPlaying=false;
+    let isAnimPlaying = false;
     const changeScene = (index) => {
       const targetPosition = scenes[index];
       console.log(index);
@@ -208,10 +215,10 @@ const ThreeCar = ({ carModel }) => {
           Math.abs(targetPosition.y - camera.position.y) > 0.1 ||
           Math.abs(targetPosition.z - camera.position.z) > 0.1
         ) {
-          isAnimPlaying=true;
+          isAnimPlaying = true;
           requestAnimationFrame(animate);
-        }else{
-          isAnimPlaying=false;
+        } else {
+          isAnimPlaying = false;
         }
 
       };
@@ -241,58 +248,57 @@ const ThreeCar = ({ carModel }) => {
         //controls.current.enablePan=false;
         //controls.current.enableZoom=false;
         console.log(distanceCam);
-      }else {
+      } else {
         //controls.current.enableZoom=true;
       }
       //if(Math.abs(camera.position.x>=8) || Math.abs(camera.position.y)>=8 || Math.abs(camera.position.z)>=8 )
     })
-    const TH3dPointTOscreen=(position,Camera)=>{
-      const Carcalls=document.querySelector('.callout');
-      const point3D=position;
-      const point2D=point3D.clone().project(camera);
+    const Carcalls = document.createElement('span');
+    const TH3dPointTOscreen = (position, Camera, yo) => {
+      Carcalls.classList.add(yo.name);
+      Carcalls.innerHTML = yo.name;
+      Carcalls.classList.add('callout');
+      mount.current.appendChild(Carcalls);
+      const point3D = position;
+      const point2D = point3D.clone().project(camera);
       const myscreenWidth = window.innerWidth;
       const myscreenHeight = window.innerHeight;
-      myscreenX=(point2D.x+1+0.001)* (myscreenWidth/2);
-      myscreenY=(-point2D.y+1+0.001)* (myscreenHeight/2);
-      Carcalls.style.top=myscreenY+'px';
-      Carcalls.style.left=myscreenX+'px';
+      myscreenX = (point2D.x + 1 + 0.001) * (myscreenWidth / 2);
+      myscreenY = (-point2D.y + 1 + 0.001) * (myscreenHeight / 2);
+      Carcalls.style.top = myscreenY + 'px';
+      Carcalls.style.left = myscreenX + 'px';
 
-      console.log("screen Cords:",myscreenX,myscreenY);
-      console.log(Carcalls.getBoundingClientRect().x=myscreenX);
-      console.log(Carcalls);
     }
-    
-    window.addEventListener('mousemove',(evv)=>{
-      if(car)
-      TH3dPointTOscreen(car.position,camera);
+
+    mount.current.addEventListener('mousemove', (evv) => {
+      if (car)
+        TH3dPointTOscreen(car.position, camera, car);
     })
 
     let index = 0;
 
-
+    mount.current.addEventListener('mousedown', (calloutGrn) => {
+      if(car)
+      console.log(childs.current[0]);
+    })
     const actions = document.querySelectorAll('button');
     actions.forEach((elemnt) => {
       elemnt.setAttribute('value', index++)
       elemnt.addEventListener('click', (eve) => {
         console.log(eve.target)
-        if(!isAnimPlaying)
-        changeScene(Number(elemnt.getAttribute('value')))
+        if (!isAnimPlaying)
+          changeScene(Number(elemnt.getAttribute('value')))
 
       })
     })
-
-
-
-
     init();
-
     return () => {
       window.removeEventListener('resize', () => { });
-
-      mount.current = null;
+      mount.current.removeEventListener('wheel', () => {});
+      mount.current.removeEventListener('mousemove', (evv) => {});
+      mount.current.removeEventListener('mousedown', (evv) => {});
     };
   }, []);
-
   return <div ref={mount} />;
 };
 

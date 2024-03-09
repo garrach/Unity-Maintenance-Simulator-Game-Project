@@ -3,11 +3,10 @@ import { Head } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
 
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const BasicMaintenanceIndex = ({ auth }) => {
-
-
+const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
+    const [maintenanceOne, setMaintenanceOne] = useState(Object.values(maintenanceTasksz));
 
     // Static maintenance schedule
     const maintenanceSchedule = {
@@ -42,6 +41,18 @@ const BasicMaintenanceIndex = ({ auth }) => {
         },
         labels: Object.keys(maintenanceSchedule),
     };
+    const statss = useRef([]);
+
+    useEffect(() => {
+
+        Object.values(maintenanceOne).map((v) => {
+            statss.current.push(v.usage);
+        })
+        console.log(statss.current)
+        return ()=>{
+            statss.current=[] 
+        }
+    }, [])
 
     const chartSeries = Object.values(maintenanceSchedule);
     return (
@@ -60,29 +71,16 @@ const BasicMaintenanceIndex = ({ auth }) => {
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Maintenance Schedule</h2>
                             <ul>
-                                <li className="mb-2"><span className="font-bold">Oil Change:</span> {maintenanceSchedule.oilChange}</li>
-                                <li className="mb-2"><span className="font-bold">Inspections:</span> {maintenanceSchedule.inspections}</li>
-                                <li className="mb-2"><span className="font-bold">Tire Rotation:</span> {maintenanceSchedule.tireRotation}</li>
-                                <li className="mb-2"><span className="font-bold">Brake Fluid Check:</span> {maintenanceSchedule.brakeFluidCheck}</li>
-                                <li className="mb-2"><span className="font-bold">Air Filter Replacement:</span> {maintenanceSchedule.airFilterReplacement}</li>
-                                {/* Add other maintenance tasks and intervals as needed */}
+                                {maintenanceOne.map((sk, index) => (
+                                    sk.task && <li className='mt-4'>{sk.task.description}</li>
+                                )
+                                )}
                             </ul>
                         </div>
                         {/* Display Maintenance Schedule Chart */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Maintenance Schedule Chart</h2>
                             <Chart options={chartOptions} series={chartSeries} type="donut" height={200} />
-                        </div>
-
-                        {/* Display Reminder Settings */}
-                        <div className="bg-green-100 p-4 dark:bg-gray-800 rounded-md shadow">
-                            <h2 className="text-xl font-bold mb-2">Reminder Settings</h2>
-                            <p className="mb-2">
-                                <span className="font-bold">Email Notifications:</span> {reminderSettings.emailNotifications ? 'Enabled' : 'Disabled'}
-                            </p>
-                            <p className="mb-0">
-                                <span className="font-bold">SMS Notifications:</span> {reminderSettings.smsNotifications ? 'Enabled' : 'Disabled'}
-                            </p>
                         </div>
                     </div>
 

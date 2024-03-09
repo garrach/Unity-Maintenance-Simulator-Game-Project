@@ -36,7 +36,6 @@ const QuickActions = ({auth,requests}) => {
         <span>notify</span>
       </div>
      
-     
      </>)}
     
       <h2 className="text-lg font-semibold  mb-2">Quick Actions</h2>
@@ -47,9 +46,9 @@ const QuickActions = ({auth,requests}) => {
       <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-blue-600">
       <Link href='/vehicles'>Add Vehicle</Link></button>
       <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">
-      <Link href='/paymentPlans'>Create Plan</Link></button>
+      <Link href={route('services.create')}>Create new Plan</Link></button>
       <button className="bg-green-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">
-      <Link href='/connections'>Connections</Link></button>
+      <Link href='/connected-services'>Connections</Link></button>
      
           </>
         ):(<>

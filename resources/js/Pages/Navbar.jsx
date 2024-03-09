@@ -4,29 +4,37 @@ import React, { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 
 const Navbar = ({ auth }) => {
-  const [currentUser,setCurrentUser]=useState(null); 
-  useEffect(()=>{
-    setCurrentUser(auth.initialPage.props.auth.user) ;
-  })
   return (
-    <nav className="bg-gray-800 p-4 text-white fixed top-0 w-full z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold">Your Logo</Link>
-        <div className="space-x-4">
-          <Link href="/aboutUs" className="hover:text-gray-400">About</Link>
-          <Link href="/contact" className="hover:text-gray-400">Contact</Link>
-          {currentUser !== null ? (
-          <Link href="/dashboard" className="hover:text-gray-400">Dashboard</Link>
-          ) : (<>
-           <Link href="/login" className="hover:text-gray-400">login</Link>
-           <Link href="/register" className="hover:text-gray-400">register</Link>
-          </>)
-
+    <>
+    <div className='flex static-links z-20'>
+      <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
+      <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">contact</Link>
+      <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
+      <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
+      <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
+      <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+    </div>
+    <style>
+{`  .static-links a{
+                position: relative;
+                display:block;
+            }
+            .op:hover{
+              color:#ff6c00;
+              background:#ffffff24;
+              border-bottom:2px solid orange;
           }
-
-        </div>
-      </div>
-    </nav>
+                .static-links{
+                    position: fixed;
+                    top: 5%;
+                    right: 2%;
+                    width:40%;
+                    height:3rem;
+                    justify-content:space-between;
+                }`}
+    </style>
+    </>
+    
   );
 };
 

@@ -26,14 +26,15 @@ const Sidebar = ({ Children, auth, expand }) => {
                                 <li className='px-0 py-0' onClick={handlSideBar}>
                                     <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
                                 </li>
-                                {(<>
-                                    {servicesRef.current && (servicesRef.current.map((feature, index) =>
-                                        <li><Link href={route(`${feature.route}`)}>{feature.name}</Link></li>
-                                    ))}
 
-                                </>
-                                )}
-                                {Children}
+                                {servicesRef.current && (servicesRef.current.map((feature, index) =>
+                                    <li key={index}><Link href={route(`${feature.route}`)}>{feature.name}</Link></li>
+                                ))}
+
+
+                                {auth.user.role === "admin" &&
+                                    Children}
+
                             </ul>
                         </nav>
                         <div className='really-idk mx-auto flex bg-gray-800 dark:bg-gray-900'>
@@ -101,14 +102,15 @@ const Sidebar = ({ Children, auth, expand }) => {
                                     </span>
                                 </li>
                                 {servicesRef.current && (servicesRef.current.map((feature, index) =>
-                                    <li className='text-white mx-5 mt-4'>
-                                    <Link href={route(`${feature.route}`)}>
-                                        <FontAwesomeIcon icon={faCog} size="lg" />
-                                    </Link>
-                                </li>
+                                    <li key={index} className='text-white mx-5 mt-4'>
+                                        <Link href={route(`${feature.route}`)}>
+                                            <FontAwesomeIcon icon={faCog} size="lg" />
+                                        </Link>
+                                    </li>
                                 ))}
-                                {Children}
-                                
+                                {auth.user.role === "admin" &&
+                                    Children}
+
                             </ul>
                         </nav>
                         <div className='really-idk mx-auto text-white flex bg-gray-800'>

@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(PaymentPlan::class)->withPivot('payment_plan_id');
     }
+
+    public function purchases()
+    {
+        return $this->hasmany(Purchase::class);
+    }
 }

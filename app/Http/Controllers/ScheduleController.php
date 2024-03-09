@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\Purchase;
+use App\Models\device;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +14,11 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedules = Schedule::all();
+        $Purchase = Purchase::all();
         $user=Auth::user();
         return Inertia::render('Schedules/Index',[
             'schedules' => $schedules,
+            'purchase' => $Purchase,
             'user'=> $user,
         ]);
     }

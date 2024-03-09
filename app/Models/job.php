@@ -14,4 +14,5 @@ class job extends Model
         'resume',
         'hash',
     ];
+    
 }

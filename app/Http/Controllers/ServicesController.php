@@ -6,12 +6,20 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\PaymentPlan;
+use App\Models\User;
 class ServicesController extends Controller
 {
-    public function index(): Response
+    public function index()
     {
         $services = Service::all();
+
+        $user = Auth::user();
+        $user = User::where('id', $user->id)->first();
+        $paymentPlan=$user->plans->first();
+        $services=$paymentPlan->services;
+       
         return Inertia::render('Services/Index', ['services' => $services]);
     }
 
@@ -20,7 +28,7 @@ class ServicesController extends Controller
         return Inertia::render('Services/Create');
     }
 
-    public function store(Request $request): Response
+    public function store(Request $request)
     {
         // Validation logic here, if needed
 

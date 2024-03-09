@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head ,useForm} from '@inertiajs/react';
+import jsPDF from 'jspdf';
 
-const FullMaintenanceSuiteIndex = ({ auth }) => {
-    const [maintenanceTasks, setMaintenanceTasks] = useState([
-        { id: 1, device: 'Infotainment System', task: 'Software Update', status: 'scheduled' },
-        { id: 2, device: 'Air Conditioning Unit', task: 'Clean Filters', status: 'completed' },
-        { id: 3, device: 'GPS Navigation', task: 'Calibration', status: 'scheduled' },
-        { id: 4, device: 'Seat Heaters', task: 'Check Wiring', status: 'scheduled' },
-        { id: 5, device: 'Dashboard Display', task: 'Firmware Upgrade', status: 'completed' },
-        // Add more interior device maintenance tasks as needed
-      ]);
-      const [maintenanceData, setMaintenanceData] = useState([
-        { id: 1, task: 'Inspect Equipment', status: 'completed', date: '2024-03-01' },
-        { id: 2, task: 'Replace Filters', status: 'scheduled', date: '2024-03-03' },
-        // Add more maintenance data as needed
-      ]);
-      const [assets, setAssets] = useState([
-        { id: 1, name: 'Vehicle GPS Units', category: 'Electronics', location: 'Warehouse A' },
-        { id: 2, name: 'Industrial Machinery', category: 'Machinery', location: 'Factory B' },
-        // Add more assets as needed
-      ]);
-      const generateReport = () => {
-        // Placeholder for generating a maintenance report
-        console.log('Generating maintenance report...');
-      };
-    
-      const handleAssetAction = (assetId, action) => {
-        // Placeholder for handling asset actions (e.g., edit, delete)
-        console.log(`Asset ${assetId} ${action}`);
-      };
+const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
+  const [maintenanceOne, setMaintenanceOne] = useState(Object.entries(maintenanceTasksz)); 
+
+  const {post}=useForm();
+
+  const pdfUnit = 71;
+
+  const pdfUnitInPixels = pdfUnit * (96 / 72);
+
+  const generateReport = () => {
+    const reportData = {
+      scheduledTasks: maintenanceOne,
+    };
+
+    // Create a new PDF document
+    const pdfDoc = new jsPDF();
+
+    // Set font and style for the title
+    pdfDoc.setFont('helvetica', 'bold');
+    pdfDoc.setFontSize(18);
+    pdfDoc.setTextColor(44, 62, 80); // Dark blue color
+    pdfDoc.text('Maintenance Report', 20, 20);
+
+    pdfDoc.setFont('helvetica', 'bold');
+    pdfDoc.setFontSize(11);
+    pdfDoc.setTextColor(44, 62, 80); // Dark blue color
+    pdfDoc.text(auth.user.name, pdfUnitInPixels * 2 - 20, 20);
+
+    // Add a horizontal line below the title
+    pdfDoc.setLineWidth(0.5);
+    pdfDoc.line(20, 25, 190, 25);
+
+    // Set font and style for section headers
+    pdfDoc.setFont('helvetica', 'normal');
+    pdfDoc.setFontSize(14);
+
+    // Example: Display scheduled tasks
+    pdfDoc.setTextColor(52, 73, 94); // Dark gray color
+    pdfDoc.text('Scheduled Tasks', pdfUnit / 4, pdfUnit - 30);
+    reportData.scheduledTasks.forEach(([key,task], index) => {
+      console.log(task)
+      pdfDoc.text(`${index + 1}. Device: ${task.device.type}, Task: ${(task.task) ?  task.task.title:'DONE'}, Status: ${task.status}`, pdfUnit / 5, (pdfUnit - 20) + index * 10);
+    });
+
+
+    // Save or open the PDF
+    pdfDoc.save('Maintenance_Report.pdf');
+  };
+
   const handleTaskAction = (taskId, action) => {
-    // Placeholder for handling task actions (e.g., mark as completed)
+   
     console.log(`Task ${taskId} ${action}`);
+    post(route('markAsComplete',{id:taskId}))
   };
 
   return (
@@ -47,89 +70,26 @@ const FullMaintenanceSuiteIndex = ({ auth }) => {
 
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-2">Scheduled Maintenance</h2>
-            {maintenanceTasks.length === 0 ? (
+            {maintenanceOne.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-300">No scheduled maintenance tasks found.</p>
             ) : (
               <ul className="space-y-4">
-                {maintenanceTasks.map((task) => (
-                  <li key={task.id} className={`bg-${task.status === 'completed' ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 'completed' ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
+                {maintenanceOne.map(([key,task]) => (
+                  <li key={task.id} className={`bg-${task.status === 1 ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 1 ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">{task.device}</h3>
-                      <p className={`text-sm text-gray-500 ${task.status === 'completed' ? 'line-through' : ''}`}>{task.status === 'completed' ? 'Completed' : 'Scheduled'}</p>
+                      <h3 className={`text-lg font-semibold mb-2 ${task.status === 1 ? 'dark:text-orange-600' : 'dark:text-gray-500'}`}>{task.device.type}</h3>
+                      <p className={`text-sm text-gray-500 ${task.status === 1 ? 'line-through' : ''}`}>{task.status === 1 ? 'Completed' : 'Scheduled'}</p>
                     </div>
                     <div className="flex space-x-2">
                       <button
                         onClick={() => handleTaskAction(task.id, 'complete')}
-                        className={`text-white px-3 py-1 rounded bg-${task.status === 'completed' ? 'gray' : 'green'}-500 hover:bg-${task.status === 'completed' ? 'gray' : 'green'}-600`}
+                        className={`text-white px-3 py-1 rounded bg-${task.status === 1 ? 'gray' : 'green'}-500 hover:bg-${task.status === 1 ? 'gray' : 'green'}-600`}
                         disabled={task.status === 'completed'}
                       >
                         Mark as Complete
                       </button>
                       {/* Add more buttons for other actions if needed */}
                     </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Asset Management</h2>
-            <p className="text-gray-600 dark:text-gray-300">Track and manage your assets efficiently.</p>
-            {/* You can add components and functionality related to asset management */}
-          </section>
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">List of Assets</h2>
-            {assets.length === 0 ? (
-              <p className="text-gray-600 dark:text-gray-300">No assets found.</p>
-            ) : (
-              <ul className="space-y-4">
-                {assets.map((asset) => (
-                  <li key={asset.id} className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">{asset.name}</h3>
-                      <p className="text-sm text-gray-500">{`Category: ${asset.category} | Location: ${asset.location}`}</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleAssetAction(asset.id, 'edit')}
-                        className="text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleAssetAction(asset.id, 'delete')}
-                        className="text-red-500 hover:underline"
-                      >
-                        Delete
-                      </button>
-                      {/* Add more buttons for other actions if needed */}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Add New Asset</h2>
-            {/* Add a form or components for adding new assets */}
-          </section>
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Reports and Analytics</h2>
-            <p className="text-gray-600 dark:text-gray-300">Generate reports and analyze maintenance data.</p>
-           
-          </section>
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Maintenance Data</h2>
-            {maintenanceData.length === 0 ? (
-              <p className="text-gray-600 dark:text-gray-300">No maintenance data found.</p>
-            ) : (
-              <ul className="space-y-4">
-                {maintenanceData.map((entry) => (
-                  <li key={entry.id} className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
-                    <h3 className="text-lg font-semibold mb-2">{entry.task}</h3>
-                    <p className="text-sm text-gray-500">{`Status: ${entry.status} | Date: ${entry.date}`}</p>
                   </li>
                 ))}
               </ul>

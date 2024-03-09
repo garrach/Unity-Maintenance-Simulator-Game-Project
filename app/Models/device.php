@@ -16,12 +16,18 @@ class Device extends Model
         return $this->belongsTo(Vehicle::class);
     }
     
-    public function comments(): HasMany
+
+    public function purchases()
+    {
+        return $this->hasmany(Purchase::class);
+    }
+    
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function reviews(): HasMany
+    public function reviews() 
     {
         return $this->hasMany(Review::class);
     }

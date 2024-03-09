@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\Review;
+use App\Models\Schedule;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,14 +25,19 @@ class DeviceController extends Controller
     public function preview()
     {
         $devices = Device::all();
-        $reviews=Review::all();
-        $Comments=Comment::all();
+        $reviews=[];
+        $Comments=[];
 
-        return $reviews." ".$Comments;
-        /*session('request',0);
+        foreach($devices as $device){
+            $reviews[$device->id]=$device->reviews;
+            $Comments[$device->id]=$device->comments;
+        }
+        session('request',0);
         return Inertia::render('devicesPreview', [
             'devices' => $devices,
-        ]);*/
+            'reviews' => $reviews,
+            'comments' => $Comments
+        ]);
     }
 
     public function create()
@@ -42,13 +48,16 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         Device::create($request->all());
+        Schedule::create($request->all());
         return redirect()->route('devices.index')->with('success', 'Device created successfully.');
     }
 
     public function show(Device $device)
     {
+        $purchase=$device->purchase;
         return Inertia::render('devices/Show', [
             'device' => $device,
+            'purchase' => $purchase,
         ]);
     }
 

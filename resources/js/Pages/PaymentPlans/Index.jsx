@@ -53,7 +53,7 @@ const Index = ({ paymentPlans, auth }) => {
           <h1 className="text-2xl font-semibold mb-4">Payment Plans</h1>
           <ul className="grid grid-cols-3 gap-8 mb-12">
             {paymentPlans.map((plan, index) => (
-              <div key={index}>
+            <div key={index}>
               <label htmlFor={plan.id}>
                 <li className="bg-white dark:bg-gray-800 p-4  rounded-md shadow-md cursor-pointer h-full  hover:text-white hover:bg-cyan-300">
                   <p className="text-lg font-semibold mb-2">{plan.name}</p>
@@ -61,8 +61,8 @@ const Index = ({ paymentPlans, auth }) => {
                 
                   <ul>
 
-                    {plan.services.map((service,index) => (<>
-                      <li key={index}>{service.name}</li></>
+                    {plan.services.map((service,indexs) => (
+                      <li key={indexs}>{service.name}</li>
                     ))}
                   </ul>
 

@@ -2,6 +2,7 @@
 
 import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
+import GuestLayout from '@/Layouts/GuestLayout';
 
 const Contact = ({successMessage}) => {
 
@@ -28,7 +29,8 @@ const Contact = ({successMessage}) => {
   };
 
   return (
-   <div className="dark:bg-gray-800 drak:text-white  bg-gray-100 min-h-screen">
+    <GuestLayout>
+    <div className="dark:bg-gray-800 drak:text-white bg-gray-100">
    {validSub && <div className='bg-green-500 w-screen abolute h-fit text-xl dark:text-white text-gray-200 text-center'>
       Message sent
     </div>}
@@ -104,6 +106,8 @@ const Contact = ({successMessage}) => {
         </section>
       </main>
     </div>
+    </GuestLayout>
+  
   );
 };
 

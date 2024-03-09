@@ -2,8 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { clientSocket } from '../client.cjs';
+import { useDynamicContext } from '../DynamicContext';
 
 const SystemStatus = ({ currentWebSocket, display }) => {
+  const { dynamicValues, updateValues } = useDynamicContext();
+  currentWebSocket=dynamicValues.socket;
   const [webSocketLive, setwebSocketLive] = useState(null);
   const message = useRef(false);
   const [sys, setSys] = useState();

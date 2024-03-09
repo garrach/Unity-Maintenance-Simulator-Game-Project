@@ -32,7 +32,7 @@ const Edit = ({ connection, auth }) => {
           </h2>
         }
       >
-        <div>
+        <div className='dark:text-white'>
           <h1>Edit Connection</h1>
           <form onSubmit={handleSubmit}>
             <div>

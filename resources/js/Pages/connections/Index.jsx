@@ -55,7 +55,7 @@ const Index = ({ connections, vehicles, devices, auth }) => {
           </h2>
         }
       >
-        <div className="my-4 max-w-7xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
+        <div className="dark:text-white my-4 max-w-7xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-3xl font-semibold mb-4">Connection List</h1>
           <ul className="space-y-2">
             <ul>
@@ -73,7 +73,7 @@ const Index = ({ connections, vehicles, devices, auth }) => {
 
                           <form onSubmit={(e) => { e.preventDefault(); deleteUser(e, connections[index1].id, device.id); }} key={index}>
                             <ol className='flex'>
-                              <li title={connections[index1].id}>{device.serial_number}
+                              <li className='dark:text-gray-300' title={connections[index1].id}>{device.serial_number}
                               </li>
                               <button className="bg-red-500 ml-56 uppercase text-white px-4 py-1 rounded hover:bg-blue-600 ">
                                 delete

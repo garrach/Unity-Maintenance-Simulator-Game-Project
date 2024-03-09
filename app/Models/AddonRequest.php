@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AddonRequest extends Model
 {
     use HasFactory;
+    protected $fillable = ['device_id', 'user_id'];
+
 }

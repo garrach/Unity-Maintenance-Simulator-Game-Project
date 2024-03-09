@@ -1,10 +1,11 @@
-// About.jsx
+import GuestLayout from '@/Layouts/GuestLayout';
 
 import React from 'react';
 
 const About = () => {
   return (
-    <div className="dark:bg-gray-800 dark:text-white bg-gray-100 min-h-screen">
+    <GuestLayout>
+    <div className="dark:bg-gray-800 dark:text-white bg-gray-100">
       <header className="py-8 bg-gray-800 text-white text-center">
         <h1 className="text-4xl font-bold">About Us</h1>
         <p className="mt-2">Learn more about our amazing team!</p>
@@ -50,6 +51,8 @@ const About = () => {
         </section>
       </main>
     </div>
+    </GuestLayout>
+
   );
 };
 

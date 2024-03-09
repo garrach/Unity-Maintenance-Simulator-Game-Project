@@ -69,7 +69,7 @@ function configureWebSocket(wss, db) {
     activeConnections[clientInfo.clientId] = clientInfo;
     const currentClient = clientsName.get(ws);
     const clientKey = { key: generateRandomHexString(16), client: ws, ID: currentClient };
-    ws.send(JSON.stringify({ type: 'Identity', message: 'serverAssignAutoID', data: currentClient }))
+    broadcast({ type: 'Identity', message: 'serverAssignAutoID', data: currentClient });
     ws.on('message',async (msg) => {
       let parsedMessage = msg;
       parsedMessage = JSON.parse(msg);
@@ -96,7 +96,7 @@ function configureWebSocket(wss, db) {
       console.log(currentClient + " left..");
       delete activeConnections[clientInfo.clientId];
       connectionIndex--;
-      broadcast(JSON.stringify({ type: 'out', message: 'disconnected', data: ws }))
+      broadcast({ type: 'out', message: 'disconnected', data: ws })
       clients.delete(ws);
     });
   });

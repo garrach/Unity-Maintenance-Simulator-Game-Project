@@ -10,14 +10,20 @@ class Purchase extends Model
 {
     use HasFactory;
 
-    protected $table="payment_plan_service";
+    protected $table="purchases";
 
-    protected $fillable = ['user_id', 'service_plan', 'purchase_date' , 'payment_plan_id'];
+    protected $fillable = ['user_id', 'device_id','stat'];
 
     // Define a relationship to the User model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Define a relationship to the User model
+    public function device()
+    {
+        return $this->belongsTo(device::class);
     }
 
     // Relationship to the PaymentPlan model

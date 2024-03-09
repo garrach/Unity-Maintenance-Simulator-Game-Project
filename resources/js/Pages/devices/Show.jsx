@@ -3,13 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode.react';
 import { useForm } from '@inertiajs/react';
+import StarsReview from '../StarsReview';
 
-const Show = ({ device, auth }) => {
+const Show = ({ device, purchase, auth }) => {
   const [formatData, setFormatData] = useState('');
   const canvasRef = useRef(null);
   const [requestSent, setRequestSet] = useState(false);
-  const purchased = true;
-  const installded = false;
+  const purchased = (purchase !== null && purchase.stat);
+  const installded = device.installation_date;
 
 
   const { data, setData, post, processing } = useForm({
@@ -64,9 +65,29 @@ const Show = ({ device, auth }) => {
     setRequestSet(true);
     setTimeout(() => {
       setRequestSet(false);
-      post(route('requestDevice.store'));
+      post(route('requestDevice.store', { device_id: data.device.id, user_id: auth.user.id }));
     }, 2000)
     console.log(device)
+  }
+
+  const stars=useRef();
+  const comment=useRef();
+  const handleSubmitFeedBack=(e)=>{
+    e.preventDefault();
+    setRequestSet(true);
+    setTimeout(() => {
+      setRequestSet(false);
+      post(route('reviews.store', { rate: stars.current,device_id: data.device.id}));
+      post(route('comments.store',{ text: comment.current,device_id: data.device.id}));
+    }, 2000)
+    console.log(device)
+  }
+  const handleFeedBackStars=(selectedStars)=>{
+   stars.current=selectedStars;
+  }
+  const handleFeedBack=(e)=>{
+    e.preventDefault();
+    comment.current=e.target.value;
   }
   return (
     <div className='dark:text-white'>
@@ -78,6 +99,7 @@ const Show = ({ device, auth }) => {
           </h2>
         }
       >
+        {console.log(purchase)}
         {requestSent && <div className='relative text-center slide-down bg-green-500 w-auto h-auto p-4 mx-auto'>Request Sent</div>}
         <div className="my-4 max-w-md mx-auto bg-white dark:bg-gray-800 p-6 rounded-md shadow-md mb-4 transition duration-300 ease-in-out transform hover:shadow-lg hover:scale-105">
           <h1 className="text-2xl font-semibold mb-4">Device Details</h1>
@@ -102,7 +124,6 @@ const Show = ({ device, auth }) => {
               <li>
                 {auth.user.role === "admin" || (purchased && installded && auth.user.role === "client") ? (<>
                   <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
-                  <p className="text-sm text-gray-500">{`Device Price : $...`}</p>
                 </>) : (<>
                   {(auth.user.role === "client" && (!installded && purchased)) || (auth.user.role === "employee" && !installded) ? (<>
                     <p className="text-sm text-gray-500">{`Installation pending..`}</p>
@@ -110,7 +131,6 @@ const Show = ({ device, auth }) => {
                     {(auth.user.role === "employee" && installded) || (auth.user.role === "client" && (installded && purchased)) ? (<>
                       <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
                     </>) : (<>
-
                       <p className="text-sm text-gray-500">{`Device Price : $...`}</p>
                     </>)}
                   </>)}
@@ -138,10 +158,21 @@ const Show = ({ device, auth }) => {
                     Request
                   </button>
                 </form>
-
+                <div className='m-4'>
+                  <form  onSubmit={handleSubmitFeedBack}>
+                    <div className='grid grid-cols-1 p-4'>
+                      <label htmlFor="rate">Review:</label>
+                      <StarsReview totalStars={5} onStarClick={handleFeedBackStars}/>
+                      <input onChange={handleFeedBack} className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
+                        type="text" name="comment" id="comment" />
+                      <button>comment</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             )}
           </div>
+
         </div>
         <style>
           {`

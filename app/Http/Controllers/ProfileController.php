@@ -3,7 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\AddonRequest;
+use App\Models\Comment;
+use App\Models\Connection;
+use App\Models\Contact;
+use App\Models\Dashboard;
+use App\Models\device;
+use App\Models\Job;
+use App\Models\PaymentPlan;
+use App\Models\Report;
+use App\Models\Review;
+use App\Models\Schedule;
+use App\Models\Service;
 use App\Models\User;
+use App\Models\Vehicle;
+use App\Models\Purchase;
+use App\Models\WishList;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\RedirectResponse;
@@ -11,15 +28,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Inertia\Response as InertiaResponse;
 use Inertia\Response;
 
 class ProfileController extends Controller
 {
 
-    /**
-     * Display the user's profile form.
-     */
     public function create()
     {
 
@@ -35,22 +48,79 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $user = User::find($request->userID);
-        $infos = [];
-        $role = $request->role;
-
-        try {
-            $infos[0] = $user->id;
-            $infos[1] = $user->name;
-            $infos[2] = $user->email;
-            $infos[3] = $user->role;
-        } catch (\Throwable $th) {
-            throw $th;
+        try {       
+            $paymentPlans=[];
+            $services=[];
+            $wishLists=[];
+            $devices=[];
+            $reviews = [];
+            $comments = []; 
+            $connections = []; 
+            $jobs = []; 
+            $addonRequests = []; 
+            $reports = []; 
+        if($user)
+        if($paymentPlans)
+        $services = $paymentPlans->services;
+    
+    if($user){
+            $paymentPlans = $user->plans->first();
+            $Purchases=$user->purchases;
+            $wishLists = $user->wishLists;
+            $jobs = $user->job;
+            $connections = Connection::where('user_id',$user->id);
+            $addonRequests = AddonRequest::where('user_id',$user->id);
+            $reports = Report::where('user_id',$user->id);
+            if($Purchases){
+            foreach($Purchases as $purchase){
+                $devices[$purchase->id]=$purchase->device;
+            }
+            foreach($devices as $device){
+                $reviews[$device->id]=$device->reviews;
+                $comments[$device->id]=$device->comments;
+            }
+            }
         }
+
+
+
+        $secretKey = Key::createNewRandomKey();
+        $key=$secretKey->saveToAsciiSafeString();
+
+ // Data to be encrypted
+        $userData = [
+            'user' => $user,
+            'services' => $services,
+            'paymentPlans' => $paymentPlans,
+            'reviews' => $reviews,
+            'comments' => $comments,
+            'connections' => $connections,
+            'jobs' => $jobs,
+            'addonRequests' => $addonRequests,
+            'reports' => $reports,
+            'wishLists' => $wishLists,
+            'devices' => $devices,
+        ];
+
+        $jsonUserData = json_encode($userData);
+
+        $base64EncodedData = base64_encode($jsonUserData);
+        $user = User::find($request->userID);
+        $infos = [
+            $user->id,
+            $user->name,
+            $user->email,
+            $user->role,
+        ];
 
         return Inertia::render('Profile/show', [
             'userID' => $infos,
+            'encryptedDataDetails' => $base64EncodedData,
         ]);
+    } catch (\Throwable $th) {
+        return null;
     }
+}
 
     /**
      * Display the user's profile form.
@@ -65,11 +135,11 @@ class ProfileController extends Controller
 
 // ...
 
-    public function updateRole(User $user,Request $request)
+    public function updateRole(User $user, Request $request)
     {
-        $user=User::find($request->user)->first();
+        $user = User::find($request->user)->first();
         $user->update([
-            'role'=>$request->role,
+            'role' => $request->role,
         ]);
         $user->save();
         return Redirect::route('dashboard');
