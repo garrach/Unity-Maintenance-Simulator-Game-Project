@@ -48,7 +48,6 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         Device::create($request->all());
-        Schedule::create($request->all());
         return redirect()->route('devices.index')->with('success', 'Device created successfully.');
     }
 

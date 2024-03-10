@@ -9,12 +9,10 @@ const LandingPage = ({ auth }) => {
         <>
             {loading && <><div className="absolute h-screen flex items-center justify-center"><img className='w-auto h-auto' src="loader2.gif" alt="loading" /></div></>}
 
-            <div className='bg-gray-500 absolute mx-auto scrollter'>
-                Scroll-Zoom
-            </div>
+           
 
             <div className='canvas'>
-              {/*<ThreeCar SetLoading={SetLoading} />*/}
+              {<ThreeCar SetLoading={SetLoading} />}
             </div>
 
             <div className="container mt-4 text-left ml-4 z-40">
@@ -58,10 +56,14 @@ const LandingPage = ({ auth }) => {
             <style>{`
             .callout{
                 position:fixed;
-                width:3rem;
-                height:3rem;
-                background:red;
-
+                width:5rem;
+                height:5rem;
+                color: #ffffff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                max-width: 400px;
+                text-align: center;
             }
             .scrollter{
                 width:10rem;

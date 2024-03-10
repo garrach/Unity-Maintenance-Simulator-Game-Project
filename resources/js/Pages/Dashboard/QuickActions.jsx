@@ -20,12 +20,15 @@ const QuickActions = ({auth,requests}) => {
     
   }
   return (
-    <div className="bg-white dark:bg-transparent p-4 rounded-md shadow-md"> 
+    <div className="bg-white dark:bg-transparent p-4 rounded-md shadow-md w-full"> 
      {auth.user.role==='admin' ? (<>
-      <div className='clientEmployee-requests'>
-        <Link href={route('reports.index')}>{requests.reports}</Link>
-        <span >{requests.requestJob}</span>
-        <span>{requests.notify}</span>
+      <div className='relative float-right p-4 flex justify-around w-auto'>
+        <Link href={route('reports.index')} className=' p-4 ml-4 hover:bg-orange-500  rounded-md text-center block '>
+        Reports:{requests.reports}
+        </Link>
+        <Link href={route('application-list')} className=' p-4 ml-4 hover:bg-orange-500  rounded-md text-center block '>
+        Job Request:{requests.requestJob}
+        </Link>
       </div>
      </>):(<>
      
@@ -65,28 +68,7 @@ const QuickActions = ({auth,requests}) => {
         {auth.user.role==='admin' || auth.user.role==='employee'  ? (<><Navigation/></>):(<></>)}
        
       </div>
-      <style>
-        {`
-        .clientEmployee-requests{
-          display: flex;
-          justify-content: end;
-          width: auto;
-          position: relative;
-        }
-        .clientEmployee-requests span{
-          display: block;
-          position: relative;
-          padding: 0.3rem;
-          width: auto;
-          height: auto;
-          border-radius: 0.2rem;
-          background-color: red;
-          text-align: center;
-          margin: 7px;
-        }
-       
-        `}
-      </style>
+      
     </div>
   );
 };

@@ -109,14 +109,18 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
     })
   }
   return <>
-   {validLogin && <div className="grid grid-cols-3 p-12">
+   {validLogin && <div className="p-12">
       <div className="MongoData bg-gray-300 p-4 rounded m-2">
-        {retriveSt.current ? <h1>{`Unity MongoDB sync:authorized`}</h1> : <h1>{`Unity MongoDB sync:Unauthorized`}</h1>}
+      {retriveSt.current ? (
+              <h1 className="text-xl font-bold">MongoDB Sync: Authorized</h1>
+            ) : (
+              <h1 className="text-xl font-bold">MongoDB Sync: Unauthorized</h1>
+            )}       
         <div>
           <ul>
             {userData && <li>
               <h3>User Data:</h3>
-              <ul>
+              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
                 {userData && userData.map((user, index) => (
                   <li key={index}>{user._id}</li>
                 ))}
@@ -124,7 +128,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
             </li>}
             {devicesData && <li>
               <h3>Devices Data:</h3>
-              <ul>
+              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
                 {devicesData && devicesData.map((device, index) => (
                   <li key={index}>{device._id}</li>
                 ))}
@@ -132,7 +136,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
             </li>}
             {connectionsData && <li>
               <h3>Connections Data:</h3>
-              <ul>
+              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
                 {connectionsData && connectionsData.map((connection, index) => (
                   <li key={connection._id}>{connection._id}</li>
                 ))}
@@ -140,7 +144,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
             </li>}
             {vehiclesData && <li>
               <h3>Vehicles Data:</h3>
-              <ul>
+              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
                 {vehiclesData.map((vehicle, index) => (
                   <li key={index}>{vehicle._id}</li>
                 ))}
@@ -149,10 +153,16 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
           </ul>
         </div>
       </div>
-      <div className="MariaData bg-gray-300 p-4 rounded m-2">
+      
+      <div className="MariaData bg-gray-300 p-4 rounded m-2 h-full overflow-hidden">
+      {retriveSt.current ? (
+              <h1 className="text-xl font-bold">HeidiData Sync MongoDB : Authorized</h1>
+            ) : (
+              <h1 className="text-xl font-bold">HeidiData Sync MongoDB: Unauthorized</h1>
+            )}  
         <ul>
           {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
-            <li key={index}>
+            <li key={index} style={{marginLeft:((index+1)*10)+'rem'}} className={`absolute p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
               <ul>
                 <li>---------------:{dataSync[index]}:-------------</li>
                 {data.map((d, index) => (

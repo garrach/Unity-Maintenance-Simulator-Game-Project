@@ -10,6 +10,8 @@ use App\Models\Vehicle;
 use App\Models\Device;
 use App\Models\Service;
 use App\Models\PaymentPlan;
+use App\Models\job;
+use App\Models\Report;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -22,6 +24,11 @@ class DashboardController extends Controller
         $services = Service::all();
         $plans = PaymentPlan::skip(0)->take(1)->first();
        
+        $reports=Report::all()->toArray();
+        $jobs=job::all()->toArray();
+
+        $reports=count($reports);
+        $jobs=count($jobs);
 
         $user=Auth::user();
         $user=User::where('id',$user->id)->first();
@@ -64,6 +71,8 @@ class DashboardController extends Controller
             'connections'=>$connections,
             'paymentPlan'=>$plans,
             'vehicles'=>$vehicles,
+            'reports'=>$reports,
+            'requestJob'=>$jobs,
             'devices'=>$devices]);
         
     }

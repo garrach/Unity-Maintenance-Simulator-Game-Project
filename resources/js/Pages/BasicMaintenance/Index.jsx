@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
 import React, { useEffect, useRef, useState } from 'react';
 const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
-    const [maintenanceOne, setMaintenanceOne] = useState(Object.values(maintenanceTasksz));
+    const [maintenanceOne, setMaintenanceOne] = useState(maintenanceTasksz);
     // Static maintenance schedule
     const maintenanceSchedule = {
         oilChange: 5000,
@@ -48,11 +48,15 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
         statss.current = [];
         const labels = [];
         const infos = [];
-        const mat = Object.values(maintenanceOne);
-        const usage = Object.values(mat);
-        usage.map((u) => {
-            statss.current.push(u.usage);
-            labels.push(u.device.type);
+        const parser = JSON.parse(maintenanceOne);
+        const mat = Object.values(parser);
+        mat.map((u) => {
+            u.map((obj) => {
+                obj.device.map((DVinfos) => {
+                    labels.push(DVinfos.type)
+                })
+                statss.current.push(obj.usage_count)
+            })
         })
         setLabels(labels);
         setChartSeries(statss.current);
@@ -79,19 +83,16 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Maintenance </h2>
                             <ul>
-                                {maintenanceOne.map((sk, index) => (
-                                    <li className='mt-4' key={index}>
+                                {labels && labels.map((label, index) => (
+                                    <li key={index}>
                                         <ul>
-                                            <li>{`${sk.device.type}`}</li>
-                                            <li>{sk.task && (`${sk.task.description}`)}</li>
-                                            <li>{sk.usage && (`${sk.usage} EXP`)}</li>
+                                            <li>{label}</li>
+                                            <li>{chartSeries[index]}</li>
                                         </ul>
                                     </li>
-                                )
-                                )}
+                                ))}
                             </ul>
                         </div>
-                        
                     </div>
                 </div>
             </AuthenticatedLayout>

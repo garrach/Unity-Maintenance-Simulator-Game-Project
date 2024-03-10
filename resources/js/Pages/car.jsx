@@ -256,7 +256,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     const Carcalls = document.createElement('span');
     const TH3dPointTOscreen = (position, Camera, yo) => {
       Carcalls.classList.add(yo.name);
-      Carcalls.innerHTML = yo.name;
+      //Carcalls.innerHTML = yo.name;
       Carcalls.classList.add('callout');
       mount.current.appendChild(Carcalls);
       const point3D = position;
@@ -294,9 +294,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     init();
     return () => {
       window.removeEventListener('resize', () => { });
-      mount.current.removeEventListener('wheel', () => {});
-      mount.current.removeEventListener('mousemove', (evv) => {});
-      mount.current.removeEventListener('mousedown', (evv) => {});
+      
     };
   }, []);
   return <div ref={mount} />;

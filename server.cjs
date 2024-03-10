@@ -1,11 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const WebSocket = require('ws');
 const { checkApiKey } = require('./resources/js/middleware/ApikeyChecker.cjs');
 const { configureRoutes } = require('./resources/js/config/routesConfig.cjs');
 const { configureWebSocket } = require('./resources/js/config/webSocketConfig.cjs');
+const { connectToDatabase } = require('./resources/js/utils/database.cjs');
 const app = express();
 const port = 3002;
 
@@ -15,24 +15,14 @@ app.use(checkApiKey);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-mongoose.connect('mongodb://localhost:27017/backupplan', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-
-
-//MONGOBD-CONNECTION (SAVE DATA in JSON FORMAT)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-//END
-
+async function yieldingConnetion(){
+const db= await connectToDatabase();
 //WEBSOKET-SERVER (REALTIME COMMUNICATION)
 configureWebSocket(wss,db);
 //API ENDPOINTS
 configureRoutes(app,db);
+}
+yieldingConnetion();
 
 //Start-Servers
 app.listen(port, () => {

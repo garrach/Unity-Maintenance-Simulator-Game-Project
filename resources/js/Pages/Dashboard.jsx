@@ -9,16 +9,15 @@ import { useDynamicContext } from './DynamicContext';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth, usersList }) {
+export default function Dashboard({ auth, usersList, reports,requestJob }) {
 
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');
   const [currentwebSocket, setcurrentwebSocket] = useState(null);
   const [requests, setrequests] = useState({
-    reports: 10,
-    requestJob: 0,
-    notify: 0,
+    reports: reports,
+    requestJob: requestJob,
   });
   const [messageObject, setUserMessage] = useState({ type: 'head', message: 'Welcome, WebSocket to provide realtime data monitoring', data: '' });
 

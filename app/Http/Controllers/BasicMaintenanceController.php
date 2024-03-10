@@ -11,8 +11,10 @@ class BasicMaintenanceController extends Controller
 {
 public function index()
 {
-    $user=Auth::user();
-    $maintenanceTasksz=FullMaintenanceSuiteController::getmaintenanceTasksz();
+    $user = Auth::user();
+    $maintenanceTasksz = [];
+    $maintenanceTasksz[$user->name]=FullMaintenanceSuiteController::getMaintenanceTasks($user);
+    $maintenanceTasksz=json_encode($maintenanceTasksz);
     return Inertia::render('BasicMaintenance/Index',compact('user','maintenanceTasksz'));
 }
 }

@@ -70,24 +70,38 @@ const Show = ({ device, purchase, auth }) => {
     console.log(device)
   }
 
-  const stars=useRef();
-  const comment=useRef();
-  const handleSubmitFeedBack=(e)=>{
+  const stars = useRef();
+  const comment = useRef();
+  const handleSubmitFeedBack = (e) => {
     e.preventDefault();
     setRequestSet(true);
+
     setTimeout(() => {
-      setRequestSet(false);
-      post(route('reviews.store', { rate: stars.current,device_id: data.device.id}));
-      post(route('comments.store',{ text: comment.current,device_id: data.device.id}));
-    }, 2000)
-    console.log(device)
+      post(route('reviews.store', { rate: stars.current, device_id: data.device.id }))
+        .then(() => {
+          // First request completed successfully, now initiate the second request
+          return post(route('comments.store', { text: comment.current, device_id: data.device.id }));
+        })
+        .then(() => {
+          // Both requests have completed
+          setRequestSet(false);
+        })
+        .catch((error) => {
+          // Handle errors if necessary
+          console.error('Error:', error);
+          setRequestSet(false);
+        });
+    }, 2000);
+
+    console.log(device);
+  };
+
+  const handleFeedBackStars = (selectedStars) => {
+    stars.current = selectedStars;
   }
-  const handleFeedBackStars=(selectedStars)=>{
-   stars.current=selectedStars;
-  }
-  const handleFeedBack=(e)=>{
+  const handleFeedBack = (e) => {
     e.preventDefault();
-    comment.current=e.target.value;
+    comment.current = e.target.value;
   }
   return (
     <div className='dark:text-white'>
@@ -159,10 +173,10 @@ const Show = ({ device, purchase, auth }) => {
                   </button>
                 </form>
                 <div className='m-4'>
-                  <form  onSubmit={handleSubmitFeedBack}>
+                  <form onSubmit={handleSubmitFeedBack}>
                     <div className='grid grid-cols-1 p-4'>
                       <label htmlFor="rate">Review:</label>
-                      <StarsReview totalStars={5} onStarClick={handleFeedBackStars}/>
+                      <StarsReview totalStars={5} onStarClick={handleFeedBackStars} />
                       <input onChange={handleFeedBack} className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
                         type="text" name="comment" id="comment" />
                       <button>comment</button>

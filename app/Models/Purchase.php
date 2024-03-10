@@ -12,7 +12,7 @@ class Purchase extends Model
 
     protected $table="purchases";
 
-    protected $fillable = ['user_id', 'device_id','stat'];
+    protected $fillable = ['user_id', 'device_id','date','stat'];
 
     // Define a relationship to the User model
     public function user()
