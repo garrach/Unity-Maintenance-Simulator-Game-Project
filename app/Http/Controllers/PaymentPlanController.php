@@ -10,11 +10,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Http\Controllers\DashboardController;
 
 class PaymentPlanController extends Controller
 {
     public function index()
     {
+
+       
         $paymentPlans = PaymentPlan::all();
         $dashboards = Dashboard::all();
         $services = [count($paymentPlans)];
@@ -22,12 +25,13 @@ class PaymentPlanController extends Controller
             $paymentPlan = $paymentPlans[$i];
             $services[$i] = $paymentPlan->services;
         }
-
-        return Inertia::render('PaymentPlans/Index',
+       
+        
+            return Inertia::render('PaymentPlans/Index',
             ['paymentPlans' => $paymentPlans,
                 'services' => $services,
                 'dashboards' => $dashboards]);
-    }
+            }
 
     public function subNewPlan(Request $request)
     {

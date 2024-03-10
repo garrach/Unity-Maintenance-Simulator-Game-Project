@@ -1,12 +1,8 @@
 <?php
-
 // database/seeders/ReportsTableSeeder.php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
 class ReportsTableSeeder extends Seeder
 {
     /**

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-
 class paymentPlansController extends Controller
 {
    public function create(){
+
     return Inertia::render('Profile/plans');
    }
 }
