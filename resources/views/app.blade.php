@@ -17,7 +17,6 @@
         @inertiaHead
     </head>
     <body>
-         <!-- Scripts <div className="preLoader" style="background: red;position: absolute;width: 100%;height: 100%;"></div>-->
         @inertia
     </body>
 </html>

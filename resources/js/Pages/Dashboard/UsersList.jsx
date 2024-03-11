@@ -11,7 +11,7 @@ const UsersList = ({ vehicle, usersList }) => {
     state: '',
   }]
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md overflow-y-scroll h-full">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md overflow-y-scroll h-80">
       {props.auth.user.role === "admin" ? (<><h2 className="text-lg font-semibold mb-2">Users List</h2>
       </>) : (<><h2 className="text-lg font-semibold mb-2">Client List</h2>
       </>)}

@@ -7,7 +7,8 @@ const { getConnectionById,
     getAllVehicles,
     getAllDevices,
     getAllUsers, } = require('../handlers/RetriveHandler.cjs');
-  
+const WebSocket = require('ws');
+
 // Define message handlers
 const messageHandlers = {};
 
@@ -53,12 +54,28 @@ function handleMovingPart(TMD, clientKey, ws, db) {
 }
 
 async function handleUnityLogin(TMD, clientKey, ws, db) {
-    console.log(TMD.message); 
     await findUser(TMD.data,ws,db)
+
+    ws.send(JSON.stringify({user:clientKey}));
 }
 async function findUser(dataInfoMSG, ws, db) {
-    const arr = await getUserById(dataInfoMSG.user.id, db);
-    ws.send({ user: arr })
+
+     const arr = await getUserById(dataInfoMSG.user.id, db);
+     return arr;
+  }
+async function broadcast(TMD,clientKey, ws, db, clients) {
+    try {
+        
+        clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(TMD));
+            } 
+          });
+          console.log('broadcasting..');
+    } catch (error) {
+        console.log(error)
+    }
+    
   }
 
 module.exports = {
@@ -72,4 +89,5 @@ module.exports = {
     handleRunning,
     handleMovingPart,
     handleUnityLogin,
+    broadcast,
 };

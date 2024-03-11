@@ -11,6 +11,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
   const animaRef = useRef(true);
   const [cammm, setCamm] = useState(null);
   const childs = useRef([]);
+  const exhausttips = useRef()
 
   useEffect(() => {
     let scene, camera, renderer, car, light, distanceCam, myscreenX, myscreenY, particles;
@@ -24,6 +25,51 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       { x: -4.684384394148391, y: 3.3248415450784985, z: 3.2615370701188793 },
       { x: 2.4953740181776554, y: 3.341296773273761, z: -7.298813993342782 },
     ];
+    const ex = ({ x, y, z }, { object }) => {
+
+      const getWorldPosition = () => {
+        const worldPosition = new THREE.Vector3();
+
+        // Traverse the object's ancestors and accumulate their positions
+        const traverseAncestors = (obj) => {
+          if (obj.parent) {
+            traverseAncestors(obj.parent);
+            obj.updateMatrix(); // Ensure the object's matrix is up-to-date
+            worldPosition.applyMatrix4(obj.matrixWorld);
+          }
+        };
+
+        traverseAncestors(object);
+
+        return worldPosition;
+      };
+      getWorldPosition();
+      const textureLoader = new TextureLoader();
+      const texture = textureLoader.load('sm.png');
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particleMaterial = new THREE.PointsMaterial({
+        size: 0.3,
+        map: texture,
+        blending: THREE.AdditiveBlending,
+        depthTest: false,
+        transparent: true,
+        alphaTest: 0.5, // Adjust the alpha threshold as needed
+      });
+      // Define the number of particles
+      const particlesCount = 1000;
+      const particlesPositions = new Float32Array(particlesCount * 3);
+      // Set random positions for the particles within a sphere
+      for (let i = 0; i < particlesCount; i++) {
+        particlesPositions[i * 3] = (Math.random() - 0.5) * x;
+        particlesPositions[i * 3 + 1] = (Math.random() - 0.5) * y;
+        particlesPositions[i * 3 + 2] = (Math.random() - 0.5) * z;
+      }
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPositions, 3));
+      particles = new THREE.Points(particlesGeometry, particleMaterial);
+      particles.position.set(getWorldPosition().x, getWorldPosition().y, getWorldPosition().z)
+      scene.add(particles);
+      return particles;
+    }
     const init = () => {
       // Scene
       scene = new THREE.Scene();
@@ -64,36 +110,13 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       controls.current.minTargetRadius = 3;
       controls.current.minDistance = 6;
       controls.current.maxDistance = 9;
-      const textureLoader = new TextureLoader();
-      const texture = textureLoader.load('sm.png');
+
       // Set the texture to repeat
       /* texture.wrapS = THREE.RepeatWrapping;
        texture.wrapT = THREE.RepeatWrapping;
        const repeatFactor = 1024; // Adjust the repeat factor based on your preference
        texture.repeat.set(repeatFactor, repeatFactor);*/
       // Create particle system for smoke
-      const particlesGeometry = new THREE.BufferGeometry();
-      const particleMaterial = new THREE.PointsMaterial({
-        size: 0.3,
-        map: texture,
-        blending: THREE.AdditiveBlending,
-        depthTest: false,
-        transparent: true,
-        alphaTest: 0.5, // Adjust the alpha threshold as needed
-      });
-      // Define the number of particles
-      const particlesCount = 1000;
-      const particlesPositions = new Float32Array(particlesCount * 3);
-      // Set random positions for the particles within a sphere
-      for (let i = 0; i < particlesCount; i++) {
-        particlesPositions[i * 3] = (Math.random() - 0.5) * 2;
-        particlesPositions[i * 3 + 1] = (Math.random() - 0.5) * 2;
-        particlesPositions[i * 3 + 2] = (Math.random() - 0.5) * 2;
-      }
-      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPositions, 3));
-      particles = new THREE.Points(particlesGeometry, particleMaterial);
-      particles.position.set(0, 2, 6)
-      scene.add(particles);
       // Texture loader
       /*const textureLoader = new TextureLoader();
       const texture = textureLoader.load('mapG0.jpg');
@@ -152,7 +175,9 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       scene.add(hemisphereLight);
       animate();
     };
+    let dying = []
     const animate = () => {
+
       requestAnimationFrame(animate);
       if (PlayState) {
         //car.rotation.z-=Math.PI/1800;
@@ -162,11 +187,14 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       lights.current.position.z = camera.position.z + 1;
       if (car) {
         car.rotation.y -= 0.001;
-        particles.position.set(car.position.x, car.position.y, car.position.z - 6)
+
+        //particles.position.set(car.position.x, car.position.y, car.position.z - 6)
       }
       controls.current.update();
       renderer.render(scene, camera);
     };
+
+
     const lerpFactor = 0.05; // You can adjust this value for the speed of interpolation
     let isAnimPlaying = false;
     const changeScene = (index) => {
@@ -219,36 +247,64 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       }
       //if(Math.abs(camera.position.x>=8) || Math.abs(camera.position.y)>=8 || Math.abs(camera.position.z)>=8 )
     })
-    const Carcalls = document.createElement('span');
-    const TH3dPointTOscreen = (position, Camera, yo) => {
-      Carcalls.classList.add(yo.name);
-      //Carcalls.innerHTML = yo.name;
-      Carcalls.classList.add('callout');
-      mount.current.appendChild(Carcalls);
-      const point3D = position;
-      const point2D = point3D.clone().project(camera);
-      const myscreenWidth = window.innerWidth;
-      const myscreenHeight = window.innerHeight;
-      myscreenX = (point2D.x + 1 + 0.001) * (myscreenWidth / 2);
-      myscreenY = (-point2D.y + 1 + 0.001) * (myscreenHeight / 2);
-      Carcalls.style.top = myscreenY + 'px';
-      Carcalls.style.left = myscreenX + 'px';
-    }
-    let index = 0;
-    const actions = document.querySelectorAll('button');
-    actions.forEach((elemnt) => {
-      elemnt.setAttribute('value', index++)
-      elemnt.addEventListener('click', (eve) => {
-        if (!isAnimPlaying)
-          changeScene(Number(elemnt.getAttribute('value')))
-      })
+    window.addEventListener('keydown', (key) => {
+      exhausttips.current = [];
+      if (key.key == "Enter") {
+
+        // Create a new material with a specific color (e.g., red)
+        const newMaterial = new THREE.MeshStandardMaterial({
+          color: 0x0aaff0, // Hex color for red
+          // Other material properties can be set here, such as roughness, metalness, etc.
+        });
+        childs.current.map((elemnt) => {
+          if (elemnt.name.includes('xxxx')) {
+            exhausttips.current.push(elemnt)
+
+            elemnt.children.map(item => {
+              if (item.material) {
+                item.material = newMaterial;
+                item.rotation.set(0,0,Math.PI/3);
+              }
+            });
+          
+      }
     })
-    init();
-    return () => {
-      window.removeEventListener('resize', () => { });
-      mount.current = null;
-    };
+
+
+
+  }
+
+    })
+const Carcalls = document.createElement('span');
+const TH3dPointTOscreen = (position, Camera, yo) => {
+  Carcalls.classList.add(yo.name);
+  //Carcalls.innerHTML = yo.name;
+  Carcalls.classList.add('callout');
+  mount.current.appendChild(Carcalls);
+  const point3D = position;
+  const point2D = point3D.clone().project(camera);
+  const myscreenWidth = window.innerWidth;
+  const myscreenHeight = window.innerHeight;
+  myscreenX = (point2D.x + 1 + 0.001) * (myscreenWidth / 2);
+  myscreenY = (-point2D.y + 1 + 0.001) * (myscreenHeight / 2);
+  Carcalls.style.top = myscreenY + 'px';
+  Carcalls.style.left = myscreenX + 'px';
+}
+let index = 0;
+const actions = document.querySelectorAll('button');
+actions.forEach((elemnt) => {
+  elemnt.setAttribute('value', index++)
+  elemnt.addEventListener('click', (eve) => {
+    if (!isAnimPlaying)
+      changeScene(Number(elemnt.getAttribute('value')))
+  })
+})
+init();
+return () => {
+  window.removeEventListener('resize', () => { });
+  mount.current = null;
+};
   }, []);
-  return <div ref={mount} />;
+return <div ref={mount} />;
 };
 export default ThreeCar;

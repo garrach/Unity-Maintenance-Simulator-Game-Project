@@ -1,3 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* app.css */
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* Media query for dark mode based on prefers-color-scheme */
+/*@media (prefers-color-scheme: dark) {
+  /* Define dark mode styles 
+  * {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+
+  }
+
+
+}
+
+/* Media query for light mode based on prefers-color-scheme 
+@media (prefers-color-scheme: light) {
+  /* Define light mode styles 
+  * {
+    background: #ffffff !important;
+    color: #333333 !important;
+  }
+
+}
+*/

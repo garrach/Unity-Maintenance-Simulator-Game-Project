@@ -33,11 +33,9 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Log in" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit} className='w-80 mx-auto h-screen '>
-                <div>
+            <form onSubmit={submit} className="w-fit h-max-fit mx-auto mt-56 px-8 py-2 rounded-md shadow-md">    
+                <div className='mt-4'>
                     <InputLabel htmlFor="email" value="Email" />
-
                     <TextInput
                         id="email"
                         type="email"

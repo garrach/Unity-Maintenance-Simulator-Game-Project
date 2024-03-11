@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useRef, useState } from 'react';
+import { Link ,useForm} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 
 const Index = ({ devices, reviews, comments, auth }) => {
@@ -8,10 +8,25 @@ const Index = ({ devices, reviews, comments, auth }) => {
     const [preview, setPreview] = useState(false);
     const [data, setData] = useState(null);
 
+    const deviceRef=useRef();
+    const{post}=useForm();
     const handlPreview = (device) => {
         setData(device);
         setPreview(!preview);
     }
+    const handlwhislist = (e,device) => {
+        e.preventDefault();
+        deviceRef.current=device;
+        console.log(deviceRef.current);
+        setTimeout(() => {
+            if(auth.user){
+                post(route('whishlist.store',{device:deviceRef.current,user:auth.user}))
+            }else{
+                post(route('login'))
+            }
+        }, 1000);
+       
+}
     return (
         <GuestLayout>
             {preview && <div className='fixed z-20 w-full bg-gray-500 mx-auto modelx rounded-lg'>
@@ -55,6 +70,9 @@ const Index = ({ devices, reviews, comments, auth }) => {
                             <li key={device.id} className={`bg-${index % 2 === 0 ? 'gray-100' : 'gray-200'} dark:bg-${index % 2 === 0 ? 'gray-800' : 'gray-700'} p-4 rounded-md shadow-md mb-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                                 <div className="flex justify-between items-center">
                                     <div className='block w-full'>
+                                        <form onSubmit={(e)=>{handlwhislist(e,device)}}>
+                                            <button className='absolute p-0 top-2 right-2 hover:bg-orange-500 rounded-lg w-12 h-auto text-center text-2xl'>+</button>
+                                        </form>
                                         {/*3D Preview*/}
                                         <canvas className='w-full h-56'></canvas>
                                         <p className="text-xl font-semibold mb-1">{`Serial Number: ${device.serial_number}`}</p>

@@ -1,6 +1,7 @@
 import { useForm } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react"
 import axios from 'axios';
+import AlertDialog from "@/Components/AlertDialog";
 const UnityRefresh = ({ DBsync }) => {
   const apiKey = 'YOUR_SECRET_API_KEY'; // Replace with your actual API key
   const arrMariaConnectionsData = useRef()
@@ -17,10 +18,9 @@ const UnityRefresh = ({ DBsync }) => {
     Vehicle: null,
     Device: null,
     User: null,
-    Reminder: null,
     Schedule: null,
   });
-  const dataSync = ['connections', 'Vehicle', 'Device', 'User', 'Reminder', 'Schedule']
+  const dataSync = ['connections', 'Vehicle', 'Device', 'User', 'Schedule']
 const fetchData = async ( endpoint, setDataFunction) => {
   try {
     const response = await axios({
@@ -82,6 +82,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
   useEffect(() => {
     retriveDataFromMongoDB()
     return () => {
+     
     };
   }, [dataIshere])
   useEffect(() => {
@@ -91,13 +92,14 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
       arrMariaConnectionsData.current = []
     };
   }, [])
-  const sysnncronize = (e) => {
-    e.preventDefault();
+  const sysnncronize =() => {
+    console.log('wow did it work')
     try {
       fetchDataPOST('/api/connections',{type:"addConnectin",message:'syncData',data:data.connections},setValidPost);
       fetchDataPOST('/api/vehicles',{type:"addvehicles",message:'syncData',data:data.Vehicle},setValidPost);
       fetchDataPOST('/api/devices',{type:"adddevices",message:'syncData',data:data.Device},setValidPost);
       fetchDataPOST('/api/login',{type:"addUser",message:'syncData',data:data.User},setValidPost);
+
     } catch (error) {
       console.log(data)
     }
@@ -109,7 +111,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
     })
   }
   return <>
-   {validLogin && <div className="p-12">
+   {validLogin && <div className="p-12 bg-gray-300">
       <div className="MongoData bg-gray-300 p-4 rounded m-2">
       {retriveSt.current ? (
               <h1 className="text-xl font-bold">MongoDB Sync: Authorized</h1>
@@ -153,8 +155,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
           </ul>
         </div>
       </div>
-      
-      <div className="MariaData bg-gray-300 p-4 rounded m-2 h-full overflow-hidden">
+      <div className="MariaData fixed bg-gray-300 p-4 rounded m-2">
       {retriveSt.current ? (
               <h1 className="text-xl font-bold">HeidiData Sync MongoDB : Authorized</h1>
             ) : (
@@ -162,13 +163,13 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
             )}  
         <ul>
           {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
-            <li key={index} style={{marginLeft:((index+1)*10)+'rem'}} className={`absolute p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
+            <li key={index} style={{marginLeft:((index+1)*10)+'rem' , marginTop:((index+1)*4)+'rem'}} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
               <ul>
                 <li>---------------:{dataSync[index]}:-------------</li>
                 {data.map((d, index) => (
                   <li key={index}> <ul key={index}>
                     {Object.entries(d).map(([key, value], index) => (
-                      <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
+                                            <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
                     )
                     )}
                   </ul>
@@ -180,11 +181,18 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
         </ul>
       </div>
       <div className="action">
-        {data.connections ? <form onSubmit={sysnncronize}>
-          <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded">SyncDATA</button>
-        </form>: <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
-      </div>
+        {data.connections ?
+        <AlertDialog title='Data Sysnncronize Successfull' message={`The data synchronization process has completed successfully. All systems are now up-to-date with the latest information, ensuring consistency and accuracy across the platform. If you have any questions or encounter any issues, please contact our support team for assistance. Thank you for your attention.`} onClose={sysnncronize()}/>
+        : <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
+      </div> 
+
     </div>}
+    <style>{`
+    .MariaData{
+      top:1rem;
+      right:50rem;
+    }
+    `}</style>
   </>
 }
 export default UnityRefresh;

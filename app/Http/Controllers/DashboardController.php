@@ -8,6 +8,8 @@ use App\Models\Report;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\WishList;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +32,15 @@ class DashboardController extends Controller
         $reports = count($reports);
         $jobs = count($jobs);
         $user = Auth::user();
+        $wishListItems=WishList::where('user_id',$user->id)->get()->toArray();
+        $reference=[];
+        foreach($wishListItems as $wishListItem){
+            $item=WishList::findOrfail($wishListItem['id']);
+            $ref['item']=$item;
+            $ref['Device']=$item->device ;
+            $ref['User']=$item->user;
+            $reference[$item->id]=$ref;
+        }
         $user = User::where('id', $user->id)->first();
         $plans = $user->plans->first();
         if ($plans) {
@@ -68,6 +79,7 @@ class DashboardController extends Controller
                     'vehicles' => $vehicles,
                     'reports' => $reports,
                     'requestJob' => $jobs,
+                    'wishListItems' => $reference,
                     'devices' => $devices]);
         }
     }

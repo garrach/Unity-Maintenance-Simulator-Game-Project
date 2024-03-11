@@ -4,10 +4,26 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-export default function Authenticated({ user, header, children , webSocket}) {
+export default function Authenticated({ user, header, children, webSocket }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const { url } = usePage();
 
+    async function converMode(e) {
+      
+        // Check user preference or system preference
+        const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        // Add or remove dark mode class based on user preference
+        document.documentElement.classList.toggle('dark-mode', userPrefersDark);
+
+        // Toggle dark mode when a button is clicked (you can use any trigger)
+        const toggleButton = e.target;
+        toggleButton.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark-mode');
+            // Store user preference
+            localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark-mode'));
+        });
+    }
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -17,6 +33,7 @@ export default function Authenticated({ user, header, children , webSocket}) {
                             <div className="shrink-0 flex items-center">
                                 {window.location.href.slice(22) !== "dashboard" && (
                                     <>
+                                        <button onClick={(e)=>converMode(e)} className="toggle-dark-mode text-blue-500 mr-12">Dark</button>
                                         <Link href={route('dashboard')} className="text-blue-500 mr-12">Retour</Link>
                                     </>
                                 )}

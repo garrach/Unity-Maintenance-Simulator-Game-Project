@@ -37,7 +37,6 @@ class AddonRequestController extends Controller
             'end_date'=>$newDate,
         ]);
         $schedule->save();
-        return response()->json($Purchase."".$schedule);
-        //return redirect()->route('devices.index')->with('success', 'AddonRequest created successfully.');
+        return redirect()->route('devices.index')->with('success', 'AddonRequest created successfully.');
     }
 }

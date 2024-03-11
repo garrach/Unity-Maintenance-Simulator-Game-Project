@@ -11,7 +11,7 @@ class WishListController extends Controller
     public function index()
     {
         $wishes = WishList::all();
-        return Inertia::render('Wishlist/Index', ['wishes' => $wishes]);
+        return Inertia::render('devicesPreview', ['wishes' => $wishes]);
     }
 
     public function create()
@@ -21,12 +21,15 @@ class WishListController extends Controller
 
     public function store(Request $request)
     {
-        WishList::create($request->validate([
-            'title' => 'required',
-            'description' => 'nullable',
-        ]));
+        $requestData = $request;
 
-        return redirect()->route('wishlist.index');
+        WishList::create([
+            'title' => $requestData->user['role'],
+            'description' => 'WishList Item Added',
+            'device_id' => $request->device['id'],
+            'user_id' => $requestData->user['id'],
+        ]);
+        return redirect()->route('devices.index');
     }
 
     public function edit(WishList $wishlist)

@@ -9,7 +9,7 @@ import { useDynamicContext } from './DynamicContext';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth, usersList, reports,requestJob }) {
+export default function Dashboard({ auth, usersList, reports,requestJob,wishListItems }) {
 
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
@@ -18,6 +18,7 @@ export default function Dashboard({ auth, usersList, reports,requestJob }) {
   const [requests, setrequests] = useState({
     reports: reports,
     requestJob: requestJob,
+    wishListItems:wishListItems,
   });
   const [messageObject, setUserMessage] = useState({ type: 'head', message: 'Welcome, WebSocket to provide realtime data monitoring', data: '' });
 
@@ -100,7 +101,7 @@ export default function Dashboard({ auth, usersList, reports,requestJob }) {
         <div className="py-0">
           {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
 
-          <div className='flex'>
+          <div className={`flex ${auth.user.role==="client" ? "container mx-auto":""}`}>
             {(auth.user.role === "admin" || auth.user.role === "employee") && <div className="sm:flex side-menu dark:bg-gray-900">
               <div className="flex bg-gray-200">
                 <Sidebar auth={auth} expand={false} Children={
@@ -118,7 +119,7 @@ export default function Dashboard({ auth, usersList, reports,requestJob }) {
 
             </div>}
             <div className="relative dark:bg-gray-900 bg-gray-300 menu-content">
-              <DashboardElements requests={requests} auth={auth} usersList={usersList} currentwebSocket={setwebSocketHost} display={data} />
+              <DashboardElements requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={setwebSocketHost} display={data} />
             </div>
           </div>
 

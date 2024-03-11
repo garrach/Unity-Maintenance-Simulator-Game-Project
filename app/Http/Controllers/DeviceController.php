@@ -10,6 +10,7 @@ use App\Models\Schedule;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class DeviceController extends Controller
 {

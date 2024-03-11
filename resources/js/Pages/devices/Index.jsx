@@ -16,9 +16,9 @@ const Index = ({ devices, auth }) => {
           </h2>
         }
       >
-        <div className="my-5 container mx-auto">
+        <div className="container mx-auto">
           <h1 className="text-2xl font-semibold mb-4">Device List</h1>
-          <ul className="space-y-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">
+          <ul className="sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">
             {devices.map((device, index) => (
               <li key={device.id} className={`bg-${index % 2 === 0 ? 'gray-100' : 'gray-200'} dark:bg-${index % 2 === 0 ? 'gray-800' : 'gray-700'} p-4 rounded-md shadow-md mb-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                 <div className="flex justify-between items-center">
