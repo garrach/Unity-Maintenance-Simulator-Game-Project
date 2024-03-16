@@ -32,7 +32,7 @@ const fetchData = async ( endpoint, setDataFunction) => {
       },
     });
     const data = response.data;
-    setDataFunction(data.data); // Assuming the data object has a 'data' property
+    setDataFunction(data.data); 
     retriveSt.current = data.data;
     console.log(response.data);
   } catch (error) {
@@ -52,7 +52,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
       data: data, // Include your data payload here
     });
     const responseData = response.data;
-    setDataFunction(responseData.data); // Assuming the data object has a 'data' property
+    setDataFunction(responseData.data); 
     retriveSt.current = true;
     console.log(response.data);
   } catch (error) {
@@ -169,7 +169,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
                 {data.map((d, index) => (
                   <li key={index}> <ul key={index}>
                     {Object.entries(d).map(([key, value], index) => (
-                                            <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
+                    <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
                     )
                     )}
                   </ul>

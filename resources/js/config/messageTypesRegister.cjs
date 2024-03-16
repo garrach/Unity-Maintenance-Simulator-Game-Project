@@ -3,11 +3,14 @@ const { getConnectionById,
     getVehicleById,
     getDeviceById,
     getUserById,
+    getUserByName,
     getAllConnections,
     getAllVehicles,
     getAllDevices,
     getAllUsers, } = require('../handlers/RetriveHandler.cjs');
 const WebSocket = require('ws');
+const { WebSocketSender } = require('../handlers/WebSocketOperations.cjs');
+const webSocketSender = new WebSocketSender();
 
 // Define message handlers
 const messageHandlers = {};
@@ -17,6 +20,25 @@ function registerHandler(type, handlerFunction) {
     messageHandlers[type] = handlerFunction;
 }
 
+//webClientIdentity handler
+function handlewebClientIdentity(TMD, clientKey, ws) {
+
+    const {type,message}=TMD;
+
+    ws.send(JSON.stringify({type,message,data:clientKey}))
+}
+
+
+let Createdrooms=0;
+
+async function handleUserRoom(TMD, clientKey, ws,clientInfo) {
+    Createdrooms+=1;
+    console.log('ok user in the room now')
+    console.log(TMD)
+    console.log('------------------------------')
+    const message={type:'room establish',message:'User Interface setup, Garage Mode',data:Createdrooms}
+    webSocketSender.sendToClient(clientInfo.clientId,message)
+}
 // ClientKeyRequest handler
 function handleClientKeyRequest(TMD, clientKey, ws) {
     console.log(TMD)
@@ -54,13 +76,12 @@ function handleMovingPart(TMD, clientKey, ws, db) {
 }
 
 async function handleUnityLogin(TMD, clientKey, ws, db) {
-    await findUser(TMD.data,ws,db)
-
-    ws.send(JSON.stringify({user:clientKey}));
+    const user=await findUser(TMD.data,ws,db)
+    console.log(user);
+    ws.send(JSON.stringify({type:"auth",message:"valid user",data:{user:user}}));
 }
 async function findUser(dataInfoMSG, ws, db) {
-
-     const arr = await getUserById(dataInfoMSG.user.id, db);
+     const arr = await getUserByName(dataInfoMSG.username, db);
      return arr;
   }
 async function broadcast(TMD,clientKey, ws, db, clients) {
@@ -80,6 +101,7 @@ async function broadcast(TMD,clientKey, ws, db, clients) {
 
 module.exports = {
     messageHandlers, registerHandler,
+    handlewebClientIdentity,
     handleClientKeyRequest,
     handleInitUniyDevicesLocation,
     handleInitUniyDevicesLocation,
@@ -89,5 +111,6 @@ module.exports = {
     handleRunning,
     handleMovingPart,
     handleUnityLogin,
+    handleUserRoom,
     broadcast,
 };

@@ -29,8 +29,8 @@ const Index = ({ devices, reviews, comments, auth }) => {
 }
     return (
         <GuestLayout>
-            {preview && <div className='fixed z-20 w-full bg-gray-500 mx-auto modelx rounded-lg'>
-                <div className='container mx-auto p-4'>
+            {preview && <div className='fixed z-20 w-full  bg-gray-500 mx-auto modelx rounded-lg'>
+                <div className='container mx-auto p-4 '>
                     <p className="text-4xl font-semibold mb-1">{`Serial Number: ${data.serial_number}`}</p>
                     <p className="text-3xl text-gray-200">{`Type: ${data.type}`}</p>
                     <p className="text-3xl text-gray-200">{`Device Price : ${data.price}`}</p>
@@ -65,7 +65,7 @@ const Index = ({ devices, reviews, comments, auth }) => {
             <div className='dark:text-white'>
                 <div className="container mx-auto">
                     <h1 className="text-2xl font-semibold mb-4">Device List</h1>
-                    <ul className="sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">
+                    <ul className="sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 mt-20 overflow-y-auto h-screen py-40 px-4">
                         {devices.map((device, index) => (
                             <li key={device.id} className={`bg-${index % 2 === 0 ? 'gray-100' : 'gray-200'} dark:bg-${index % 2 === 0 ? 'gray-800' : 'gray-700'} p-4 rounded-md shadow-md mb-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                                 <div className="flex justify-between items-center">

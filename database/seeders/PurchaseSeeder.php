@@ -10,7 +10,6 @@ class PurchaseSeeder extends Seeder
 {
     public function run()
     {
-        // Assuming you have User model and relationships properly defined
         $users = \App\Models\User::all();
 
         $purchasePlans = ['basic', 'standard', 'premium'];

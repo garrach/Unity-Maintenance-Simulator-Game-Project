@@ -10,12 +10,10 @@ const UsersList = ({ auth, users }) => {
 
     const handleUserClick = (user) => {
         console.log('Clicked on user:', user);
-        // Add your custom logic for handling the user click
     };
 
     function generateExp() {
         users.forEach(() => {
-            // Assuming you want a random experience value between 1 and 100
             const randomExp = Math.floor(Math.random() * 100) + 1;
             exp.current.push(randomExp);
         });

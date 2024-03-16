@@ -52,7 +52,6 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
       planstate: 'planstate',
       message: makeJson(dynamicValues.dash),
     })
-    webSocket.send(JSON.stringify({ type: "poke", message: 'reload', data: "client on " + auth.user.name }))
   })
   const handlewebSocket = (useaction) => {
     setcurrentwebSocket(webSocket)
@@ -101,8 +100,8 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
         <div className="py-0">
           {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
 
-          <div className={`flex ${auth.user.role==="client" ? "container mx-auto":""}`}>
-            {(auth.user.role === "admin" || auth.user.role === "employee") && <div className="sm:flex side-menu dark:bg-gray-900">
+          <div className={`flex ${auth.user.role==="client" ? "w-full":""}`}>
+            {(auth.user.role === "admin" || auth.user.role === "employee") ? <div className="sm:flex side-menu dark:bg-gray-900">
               <div className="flex bg-gray-200">
                 <Sidebar auth={auth} expand={false} Children={
                   <ul>
@@ -117,7 +116,13 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
                   </ul>} />
               </div>
 
-            </div>}
+            </div>:(
+            
+              <div className="sm:flex side-menu dark:bg-gray-900">
+              <div className="flex bg-gray-200">
+                <Sidebar auth={auth} expand={false} />
+              </div>
+            </div>)}
             <div className="relative dark:bg-gray-900 bg-gray-300 menu-content">
               <DashboardElements requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={setwebSocketHost} display={data} />
             </div>

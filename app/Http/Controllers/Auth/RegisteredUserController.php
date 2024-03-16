@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\PaymentPlan;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +49,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+
+        $plan=PaymentPlan::all()->first();
+        $user->plans()->attach($plan);
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);

@@ -142,6 +142,21 @@ class ProfileController extends Controller
             'role' => $request->role,
         ]);
         $user->save();
+
+        $userpaymentPlan = $user->plans->first();
+
+        $paymentPlans=PaymentPlan::all();
+
+        if ($request->role=="client") {
+            $user->plans()->sync($paymentPlans->first());
+        }elseif($request->role=="employee"){
+            $user->plans()->sync($paymentPlans->skip(1)->take(1));
+        }elseif ($request->role=="admin") {
+            $user->plans()->sync($paymentPlans->skip(2)->take(1));
+
+        }
+
+
         return Redirect::route('dashboard');
     }
 
@@ -173,7 +188,7 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request):RedirectResponse
     {
         $request->validate([
             'password' => ['required', 'current_password'],
@@ -181,13 +196,21 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        $accountToDelete=$request->editUser;
 
-        $user->delete();
+        if($accountToDelete){
+            $accountToDelete = User::findOrFail($accountToDelete[0]);
+            $accountToDelete->delete();
+            return Redirect::to('/dashboard');
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        }else{
+            $user->delete();
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return Redirect::to('/');
+        }
+       
 
-        return Redirect::to('/');
     }
 }

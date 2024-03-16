@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { clientSocket, TMD } from '../client.cjs';
 
 
-// Assuming your React component is named CarAnalyticsIndex
+
 const CarAnalyticsIndex = ({ auth }) => {
     const socket = clientSocket('car_analystics');
 

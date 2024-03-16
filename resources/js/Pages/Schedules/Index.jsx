@@ -11,7 +11,7 @@ const ScheduleIndex = ({ schedules, user }) => {
     reset,
     errors,
   } = useForm({
-    password: '', // Assuming you have a password field for confirmation
+    password: '', // you have a password field for confirmation
   });
 
   const deleteSchedule = (id) => {

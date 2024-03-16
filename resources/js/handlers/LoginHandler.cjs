@@ -13,11 +13,14 @@ async function handleLogin(res, data, db) {
   if (existingUser) {
     // Handle the case where the user already exists
     console.log({ error: 'User with the same email already exists' });
+    return false;
+
   } else {
     // If the user does not exist, proceed to create and save the new user
     const newUser = new Auth({ username: data.name, email: data.email, password: data.password });
     await newUser.save();
     console.log({ success: 'User registered successfully' });
+    return true;
   }
 }
 const retriveUserByNameAndPass=()=>{};

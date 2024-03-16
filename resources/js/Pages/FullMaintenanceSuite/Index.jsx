@@ -16,7 +16,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
 
   const generateReport = () => {
     const reportData = {
-      scheduledTasks: maintenanceOne,
+      scheduledTasks: setMaintenanceOne.current,
     };
 
     // Create a new PDF document
@@ -44,9 +44,10 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
     // Example: Display scheduled tasks
     pdfDoc.setTextColor(52, 73, 94); // Dark gray color
     pdfDoc.text('Scheduled Tasks', pdfUnit / 4, pdfUnit - 30);
-    reportData.scheduledTasks.forEach(([key, task], index) => {
-      console.log(task)
-      pdfDoc.text(`${index + 1}. Device: ${task.device.type}, Task: ${(task.task) ? task.task.title : 'DONE'}, Status: ${task.status}`, pdfUnit / 5, (pdfUnit - 20) + index * 10);
+    Object.entries(reportData.scheduledTasks).map(([key, task], index) => {
+      Object.values(task).map(item => {
+        pdfDoc.text(`${index + 1}. Device: ${item.device.map(dv => (dv.type))}, Task: ${(item.task) ? item.task.map(title => (title.title)) : 'DONE'}, Status: ${item.status}`, pdfUnit / 5, (pdfUnit - 20) + index * 10);
+      })
     });
 
 
@@ -93,24 +94,27 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
                 {/*setMaintenanceOne.current && DataMain.map((userMaintainanceInfo, index) => {
                   console.log(userMaintainanceInfo.status)
                 })*/}
-                {setMaintenanceOne.current && DataMain.map((task,index) => (
-                  task.device && task.device.map((dv)=>(
-                  <li key={task.purchase_id} className={`bg-${task.status === 1 ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 1 ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
-                    {console.log(users)}
-                    <div>
-                      <h3 className={`text-lg font-semibold mb-2 ${task.status === 1 ? 'dark:text-orange-600' : 'dark:text-gray-500'}`}>{dv.type}</h3>
-                      <p className={`text-sm text-gray-500 ${task.status === 1 ? 'line-through' : ''}`}>{task.status === 1 ? 'Completed' : 'Scheduled'}</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleTaskAction(task.purchase_id, 'complete')}
-                        className={`text-white px-3 py-1 rounded bg-${task.status === 1 ? 'gray' : 'green'}-500 hover:bg-${task.status === 1 ? 'gray' : 'green'}-600`}
-                        disabled={task.status === 'completed'}
-                      >
-                        Mark as Complete
-                      </button>
-                    </div>
-                  </li>)) 
+                {setMaintenanceOne.current && DataMain.map((task, index) => (
+
+                  task.device && task.device.map((dv) => (<>
+                    <h3 className='uppercase text-2xl dark:text-white text-gray-800'>{users[index+1]}</h3>
+                    <li key={task.purchase_id} className={`bg-${task.status === 1 ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 1 ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
+                      <div>
+                        <h3 className={`text-lg font-semibold mb-2 ${task.status === 1 ? 'dark:text-orange-600' : 'dark:text-gray-500'}`}>{dv.type}</h3>
+                        <p className={`text-sm text-gray-500 ${task.status === 1 ? 'line-through' : ''}`}>{task.status === 1 ? 'Completed' : 'Scheduled'}</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleTaskAction(task.purchase_id, 'complete')}
+                          className={`text-white px-3 py-1 rounded bg-${task.status === 1 ? 'gray' : 'green'}-500 hover:bg-${task.status === 1 ? 'gray' : 'green'}-600`}
+                          disabled={task.status === 'completed'}
+                        >
+                          Mark as Complete
+                        </button>
+                      </div>
+                    </li>
+                  </>
+                  ))
                 ))}
               </ul>
             )}

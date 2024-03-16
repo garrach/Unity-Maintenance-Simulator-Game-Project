@@ -4,6 +4,7 @@ import Chart from 'react-apexcharts';
 import React, { useEffect, useRef, useState } from 'react';
 const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
     const [maintenanceOne, setMaintenanceOne] = useState(maintenanceTasksz);
+    const [users, setUsers] = useState();
     // Static maintenance schedule
     const maintenanceSchedule = {
         oilChange: 5000,
@@ -49,6 +50,7 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
         const labels = [];
         const infos = [];
         const parser = JSON.parse(maintenanceOne);
+        setUsers(Object.keys(parser));
         const mat = Object.values(parser);
         mat.map((u) => {
             u.map((obj) => {
@@ -56,6 +58,7 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
                     labels.push(DVinfos.type)
                 })
                 statss.current.push(obj.usage_count)
+                console.log(obj)
             })
         })
         setLabels(labels);
@@ -63,6 +66,7 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
         return () => {
             statss.current = [];
         }
+         
     }, [])
     return (
         <div className='dark:bg-gray-900 dark:text-white'>
@@ -76,7 +80,8 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
                     <div className='grid md:grid-cols-1 gap-4 container mx-auto'>
                         {/* Display Maintenance Schedule Chart */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4 ">
-                            <h2 className="text-xl font-bold mb-2">Maintenance Chart</h2>
+                          {users && <h2 className="text-xl font-bold mb-2 overflow-hidden">Maintenance Chart : {users.map((user,index)=>(
+                          <span className='p-2 uppercase text-xl dark:text-white text-gray-500 hover:bg-orange-500 rounded-lg cursor-pointer'>{user}</span>))}</h2> }
                             {chartSeries && <Chart options={chartOptions} series={chartSeries} type="donut" height={200} />}
                         </div>
                         {/* Display Maintenance Schedule */}

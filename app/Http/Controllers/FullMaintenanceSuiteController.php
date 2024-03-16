@@ -48,8 +48,13 @@ class FullMaintenanceSuiteController extends Controller
         $user = Auth::user();
         $users = User::all();
         $maintenanceTasksz = [];
-
-        $maintenanceTasksz[$user->name] = $this->getMaintenanceTasks($user);
+        if($user->role=='admin'){
+            foreach($users as $displayUser){
+                $maintenanceTasksz[$displayUser->name] = $this->getMaintenanceTasks($displayUser);
+            }
+        }else{
+            $maintenanceTasksz[$user->name] = $this->getMaintenanceTasks($user);
+        }
         
         $maintenanceTasksz=json_encode($maintenanceTasksz);
         return Inertia::render('FullMaintenanceSuite/Index', compact('user', 'maintenanceTasksz'));

@@ -3,7 +3,8 @@ const express = require('express');
 const winston = require('winston');
 
 function configureServer(app) {
-  // Setup Winston logger
+  try {
+    // Setup Winston logger
   const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
@@ -16,6 +17,10 @@ function configureServer(app) {
   // Middleware, etc.
   app.use(cors());
   app.use(express.json());
+  } catch (error) {
+    console.log(error)
+  }
+  
 }
 
 module.exports = { configureServer };

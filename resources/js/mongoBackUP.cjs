@@ -6,7 +6,7 @@ const sendToMongo = async ({data})=>{
     // Inertia POST success callback
     const headers = {
         'Content-Type': 'application/json',
-        'api-key': 'YOUR_SECRET_API_KEY', // Replace with your actual API key
+        'api-key': 'YOUR_SECRET_API_KEY', 
     };
 
     // Second Axios POST request
@@ -19,7 +19,5 @@ const sendToMongo = async ({data})=>{
             console.error('Error:', error.response.data);
 
         });
-
-
 }
 export {sendToMongo};

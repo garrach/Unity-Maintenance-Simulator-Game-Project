@@ -11,7 +11,7 @@ const Create = ({ auth }) => {
     platform: '',
     file_size: '',
     file_path: '',
-    device_ids: [], // Assuming devices are selected using checkboxes
+    device_ids: [], 
   });
 
   const handleChange = (e) => {

@@ -8,8 +8,8 @@ const UnityStatus = ({ webSocket ,auth}) => {
     const [unity,setUnity]=useState();
     const messageRef=useRef();
     useEffect(()=>{
-        
-        webSocket.addEventListener('message',(message)=>{
+        try {
+              webSocket.addEventListener('message',(message)=>{
             try {
                 const data= JSON.parse(message.data);
                 try {
@@ -30,7 +30,11 @@ const UnityStatus = ({ webSocket ,auth}) => {
                 console.log('Error:', {error:'Message Parsing faild..'})
             }
         })
-    },[])
+        } catch (error) {
+            return;
+        }
+      
+    },[webSocket])
   return (
     <div className="bg-white dark:bg-gray-700 p-4 rounded-md shadow-md h-full w-full block relative flex flex-col justify-center text-center">
         {unity ? <><h2 className='dark:text-gray-200 uppercase'>Unity ON</h2></>:<h2 className='dark:text-gray-200 uppercase'>Unity NO Signal</h2>}

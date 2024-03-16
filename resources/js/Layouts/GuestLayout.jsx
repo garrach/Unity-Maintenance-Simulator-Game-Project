@@ -17,7 +17,7 @@ export default function Guest({ children }) {
            <div className='w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg h-screen'>
                {children} 
                <Link href="/" className='this-a'>
-                   <ApplicationLogo className="w-20 mt-12 mx-auto fill-current text-gray-500" />
+                   <ApplicationLogo className="w-20 mt-2 ml-2 mx-auto fill-current text-gray-500" />
                </Link>
            </div>
            </div>
@@ -25,8 +25,8 @@ export default function Guest({ children }) {
                {`
                .this-a{
                 position:absolute;
-                bottom:70%;
-                left:10%;
+                top:1%;
+                left:1%;
                }
                `}
            </style>

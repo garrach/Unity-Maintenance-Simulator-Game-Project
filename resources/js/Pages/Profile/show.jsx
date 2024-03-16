@@ -120,9 +120,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
           </ul>
         </div>
         {props.auth.user.role === "admin" && (<>
-          <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-            <h2 className="text-lg font-bold mb-2">Security</h2>
-          </div>
+         
           <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
             <Link href={route('userAccount.edit', { id: encryptedData })}><h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2></Link>
             <p>This section could include a logout button and an option for account deactivation.</p>

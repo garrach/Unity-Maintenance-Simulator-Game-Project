@@ -5,7 +5,7 @@ const checkApiKey = (req, res, next) => {
   
     // Replace 'YOUR_SECRET_API_KEY' with your actual API key
     if (apiKey && apiKey === 'YOUR_SECRET_API_KEY') {
-      next(); // API key is valid, proceed to the next middleware or route handler
+      next(); 
     } else {
       console.log(req)
       res.status(401).json({ error: 'Unauthorized' });

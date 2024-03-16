@@ -34,6 +34,13 @@ async function getUserById(id, db) {
 }
 
 
+// Retrieve data by name for the Auth model
+async function getUserByName(name, db) {
+  const user = await db.collection('users').findOne({ username: name });
+  return user;
+}
+
+
 // Retrieve all connections
 async function getAllConnections(db) {
     const connections = await db.collection('connections').find().toArray();
@@ -67,4 +74,5 @@ module.exports = {
   getAllVehicles,
   getAllDevices,
   getAllUsers,
+  getUserByName,
 };

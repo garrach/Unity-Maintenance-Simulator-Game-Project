@@ -78,13 +78,11 @@ class ReportController extends Controller
 
     public function edit(Report $report)
     {
-        // Assuming you have an 'Edit' component in the 'resources/js/Pages/Reports' directory
         return Inertia::render('Reports/Edit', ['report' => $report]);
     }
 
     public function show(Report $report)
     {
-        // Assuming you have a 'Show' component in the 'resources/js/Pages/Reports' directory
         return Inertia::render('Reports/Show', ['report' => $report]);
     }
 

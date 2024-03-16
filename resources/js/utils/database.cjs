@@ -7,11 +7,14 @@ if(!offline){
   mongoose.connect(`mongodb+srv://student00:${pass}@cluster0.yg6pdkh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    maxPoolSize:3,
   });
 }else{
   mongoose.connect(`mongodb://localhost:27017/backupplan`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    maxPoolSize:3,
+
   });
 }
    

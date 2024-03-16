@@ -5,17 +5,20 @@ import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' ,editUser}) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm(
+    editUser ? {
+        name: editUser[1] ,
+        email: editUser[2] ,
+    }:{
         name: user.name,
         email: user.email,
     });
 
     const submit = (e) => {
         e.preventDefault();
-
         patch(route('profile.update'));
     };
 
@@ -26,6 +29,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Update your account's profile information and email address.
+                    {console.log(editUser)}
                 </p>
             </header>
 
