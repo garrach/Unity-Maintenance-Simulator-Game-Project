@@ -26,6 +26,7 @@ const Navbar = ({ auth }) => {
       <div className={`flex static-links z-20 ${isMenuOpen ? 'flex' : 'hidden'}`}>
         <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
         <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">contact</Link>
+        <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
         <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
         <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
         <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
@@ -48,8 +49,8 @@ const Navbar = ({ auth }) => {
             position: fixed;
             top: 5%;
             right: 2%;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: auto;
             height: 3rem;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -57,7 +58,7 @@ const Navbar = ({ auth }) => {
 
           @media screen and (min-width: 768px) {
             .static-links {
-              width: 40%;
+              width: 50%;
               max-width: none;
             }
           }

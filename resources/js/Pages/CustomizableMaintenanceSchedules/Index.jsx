@@ -9,19 +9,10 @@ const CustomizableMaintenanceSchedulesIndex = ({ auth, Schedules }) => {
         setMaintenanceSchedules(Schedules);
     }, [Schedules]);
 
-    const handleCreateSchedule = () => {
-        console.log('Creating a new maintenance schedule...');
-        // Placeholder for creating a new maintenance schedule
-    };
 
-    const handleEditSchedule = (scheduleId) => {
-        console.log(`Editing maintenance schedule with ID: ${scheduleId}`);
-        // Placeholder for editing an existing maintenance schedule
-    };
 
     const handleDeleteSchedule = (scheduleId) => {
-        console.log(`Deleting maintenance schedule with ID: ${scheduleId}`);
-        // Placeholder for deleting an existing maintenance schedule
+        window.location.href = '/schedules';
     };
 
     return (
@@ -48,12 +39,7 @@ const CustomizableMaintenanceSchedulesIndex = ({ auth, Schedules }) => {
                                             <p className="text-sm text-gray-500">{`Description: ${schedule.description}`}</p>
                                         </div>
                                         <div className="flex space-x-2">
-                                            <button
-                                                onClick={() => handleEditSchedule(schedule.id)}
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                Edit
-                                            </button>
+                                           
                                             <button
                                                 onClick={() => handleDeleteSchedule(schedule.id)}
                                                 className="text-red-500 hover:underline"
@@ -67,15 +53,6 @@ const CustomizableMaintenanceSchedulesIndex = ({ auth, Schedules }) => {
                         )}
                     </section>
 
-                    <section>
-                        <h2 className="text-xl font-semibold mb-2">Create a New Maintenance Schedule</h2>
-                        <button
-                            onClick={handleCreateSchedule}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
-                        >
-                            Create Schedule
-                        </button>
-                    </section>
                 </div>
             </AuthenticatedLayout>
         </div>

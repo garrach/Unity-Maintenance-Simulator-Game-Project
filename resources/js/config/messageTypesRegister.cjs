@@ -3,6 +3,7 @@ const { getConnectionById,
     getVehicleById,
     getDeviceById,
     getUserById,
+    getDeviceByDBId,
     getUserByName,
     getAllConnections,
     getAllVehicles,
@@ -10,7 +11,10 @@ const { getConnectionById,
     getAllUsers, } = require('../handlers/RetriveHandler.cjs');
 const WebSocket = require('ws');
 const { WebSocketSender } = require('../handlers/WebSocketOperations.cjs');
+const { retriveUserDevices } = require('./routesConfig.cjs');
+
 const webSocketSender = new WebSocketSender();
+const unityInstance=new Map();
 
 // Define message handlers
 const messageHandlers = {};
@@ -31,14 +35,37 @@ function handlewebClientIdentity(TMD, clientKey, ws) {
 
 let Createdrooms=0;
 
-async function handleUserRoom(TMD, clientKey, ws,clientInfo) {
-    Createdrooms+=1;
-    console.log('ok user in the room now')
-    console.log(TMD)
-    console.log('------------------------------')
-    const message={type:'room establish',message:'User Interface setup, Garage Mode',data:Createdrooms}
-    webSocketSender.sendToClient(clientInfo.clientId,message)
+async function handleUserRoom(TMD, clientKey, ws, db, clients,clientInfo) {
+    console.log(clientInfo.clientId)
+    retriveUserDevices(false,TMD.data,ws,null,db);
 }
+async function handleUserInstance(TMD, clientKey, ws, db, clients,clientInfo) {
+    const currentUser=await getUserByName(TMD.data.user.name,db);
+    if(unityInstance.get('unity')){
+        ws.send(JSON.stringify({type:"login",message:"unity instanceRunning",data:{client:currentUser,socket:unityInstance.get('unity')}}))
+    }
+}
+
+
+
+
+async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients,clientInfo) {
+
+    const currentUser=await getUserByName(TMD.data.user.name,db);
+    if(unityInstance.get('unity')){
+        ws.send(JSON.stringify({type:"vehicleStat",message:"unity instanceRunning (Vehicle)",data:{vehicle:null}}))
+    }
+
+}
+
+async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients,clientInfo) {
+
+    const currentUser=await getUserByName(TMD.data.user.name,db);
+    if(unityInstance.get('unity')){
+        ws.send(JSON.stringify({type:"deviceStat",message:"unity instanceRunning (Device)",data:{device:null}}))
+    }
+}
+
 // ClientKeyRequest handler
 function handleClientKeyRequest(TMD, clientKey, ws) {
     console.log(TMD)
@@ -74,11 +101,17 @@ function handleRunning(TMD, clientKey, ws, db) {
 function handleMovingPart(TMD, clientKey, ws, db) {
     console.log(TMD.message); 
 }
-
-async function handleUnityLogin(TMD, clientKey, ws, db) {
+async function handleUnityLogin(TMD, clientKey, ws, db, clients,clientInfo) {
+    
     const user=await findUser(TMD.data,ws,db)
     console.log(user);
-    ws.send(JSON.stringify({type:"auth",message:"valid user",data:{user:user}}));
+    if(user){
+        unityInstance.set('unity',ws);
+        broadcast({type:"auth",message:"valid user",data:{user:user}},clientKey, ws, db, clients)
+       // ws.send(JSON.stringify());
+    }else{
+        ws.send(JSON.stringify({type:"unregistred",message:"valid user",data:'unregistred'}))
+    }
 }
 async function findUser(dataInfoMSG, ws, db) {
      const arr = await getUserByName(dataInfoMSG.username, db);
@@ -100,8 +133,11 @@ async function broadcast(TMD,clientKey, ws, db, clients) {
   }
 
 module.exports = {
+    unityInstance,
     messageHandlers, registerHandler,
     handlewebClientIdentity,
+    handleUserInstanceVehicle,
+handleUserInstanceDevice,
     handleClientKeyRequest,
     handleInitUniyDevicesLocation,
     handleInitUniyDevicesLocation,
@@ -112,5 +148,6 @@ module.exports = {
     handleMovingPart,
     handleUnityLogin,
     handleUserRoom,
+    handleUserInstance,
     broadcast,
 };

@@ -82,8 +82,6 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
       >
         <Head title="Full Maintenance Suite" />
         <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">
-          <h1 className="text-2xl font-semibold mb-4">Welcome to the Full Maintenance Suite</h1>
-
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-2">Scheduled Maintenance</h2>
 
@@ -97,21 +95,24 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
                 {setMaintenanceOne.current && DataMain.map((task, index) => (
 
                   task.device && task.device.map((dv) => (<>
-                    <h3 className='uppercase text-2xl dark:text-white text-gray-800'>{users[index+1]}</h3>
+                    <h3 className='uppercase text-2xl dark:text-white text-gray-800'>{`${task.user.name} : ${task.user.role}`}</h3>
                     <li key={task.purchase_id} className={`bg-${task.status === 1 ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 1 ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
                       <div>
                         <h3 className={`text-lg font-semibold mb-2 ${task.status === 1 ? 'dark:text-orange-600' : 'dark:text-gray-500'}`}>{dv.type}</h3>
                         <p className={`text-sm text-gray-500 ${task.status === 1 ? 'line-through' : ''}`}>{task.status === 1 ? 'Completed' : 'Scheduled'}</p>
                       </div>
-                      <div className="flex space-x-2">
+                      {(auth.user.role==="admin" || auth.user.role==="employee") && (
+                        <div className="flex space-x-2">
                         <button
                           onClick={() => handleTaskAction(task.purchase_id, 'complete')}
                           className={`text-white px-3 py-1 rounded bg-${task.status === 1 ? 'gray' : 'green'}-500 hover:bg-${task.status === 1 ? 'gray' : 'green'}-600`}
-                          disabled={task.status === 'completed'}
+                          disabled={task.status === 'completed'} 
                         >
                           Mark as Complete
                         </button>
                       </div>
+                      )}
+                      
                     </li>
                   </>
                   ))
@@ -120,15 +121,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
             )}
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold mb-2">Generate Maintenance Report</h2>
-            <button
-              onClick={generateReport}
-              className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
-            >
-              Generate Report
-            </button>
-          </section>
+          
         </div>
       </AuthenticatedLayout>
     </div>

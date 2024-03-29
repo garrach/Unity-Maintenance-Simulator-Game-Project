@@ -7,24 +7,32 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Connection;
 use App\Models\Vehicle;
 use App\Models\Device;
+use App\Models\Purchase;
+use App\Models\User;
 class ConnectedServicesController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
         $vehicles=[];
+        $tmp=[];
         $devices=[];
-        $connections = Connection::all();
+        $purchases=[];
+        $connections = Purchase::all();
 
-        $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
-        $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
+        $vehicleIds = $connections->pluck('user_id')->toArray();
+        $vehicles = User::whereIn('id', $vehicleIds)->get();
 
-        $deviceIds = $connections->pluck('device_id')->toArray();
+        foreach($vehicles as $vehicle){
+            $purchases[$vehicle->id]=Purchase::where('user_id',$vehicle->id)->get();
 
-        for ($i=0; $i < count($vehicleIds) ; $i++) { 
-            $devices[$i] = $vehicles[$i]->devices;
+            foreach($purchases[$vehicle->id] as $purchase ){
+                $tmp[$purchase->id]=Device::find($purchase->device_id);
+            }    
+            $devices[$vehicle->id]=$tmp;
         }
         
+
         return Inertia::render('ConnectedServices/Index', [
             'user' => $user,
             'vehicles' => $vehicles,

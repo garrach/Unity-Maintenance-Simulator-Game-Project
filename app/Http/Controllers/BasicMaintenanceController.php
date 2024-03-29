@@ -13,14 +13,22 @@ class BasicMaintenanceController extends Controller
 public function index()
 {
     $user = Auth::user();
-        $users = User::all();
+        $users = [];
+
+
+        $usersUsage=DeviceUsage::all();
+
+        foreach($usersUsage as $usage){
+            $users[$usage->id]=$usage->user;
+        }
+
         $maintenanceTasksz = [];
-        if($user->role=='admin'){
+        if($user->role=='admin' || $user->role=='employee'){
             foreach($users as $displayUser){
-                $maintenanceTasksz[$displayUser->name]=FullMaintenanceSuiteController::getMaintenanceTasks($displayUser);
+                $maintenanceTasksz[$displayUser->name]=FullMaintenanceSuiteController::getMaintenanceTasks($displayUser,false);
             }
         }else{
-            $maintenanceTasksz[$user->name]=FullMaintenanceSuiteController::getMaintenanceTasks($user);
+            $maintenanceTasksz[$user->name]=FullMaintenanceSuiteController::getMaintenanceTasks($user,false);
         }
         
     $maintenanceTasksz=json_encode($maintenanceTasksz);

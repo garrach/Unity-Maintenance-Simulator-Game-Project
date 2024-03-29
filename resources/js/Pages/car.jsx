@@ -195,7 +195,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     };
 
 
-    const lerpFactor = 0.05; // You can adjust this value for the speed of interpolation
+    const lerpFactor = 0.05; 
     let isAnimPlaying = false;
     const changeScene = (index) => {
       const targetPosition = scenes[index];

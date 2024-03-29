@@ -3,13 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faHome, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 const Sidebar = ({ Children, auth, expand }) => {
-    const routesArr = ['basic-maintenance', 'car-analytics', 'connected-services', 'reminder-notifications',
-        'full-maintenance-suite', 'customizable-maintenance-schedules', 'exclusive-discounts', 'priority-customer-support',
-        'priority-customer-support', 'advanced-maintenance-reports']
     const { props } = usePage();
     const servicesRef = useRef();
     servicesRef.current = props.services;
-    const [ssi, setSsi] = useState(false);
+    const [ssi, setSsi] = useState(expand);
     useEffect(() => {
     }, [ssi])
     const handlSideBar = () => {
@@ -118,7 +115,7 @@ const Sidebar = ({ Children, auth, expand }) => {
                                 <img src="" alt="" />
                             </span>
                             <ul>
-                                <li ><Link href={route('myaccount')}> {auth.user.name}</Link></li>
+                                <li><Link href={route('myaccount')}> {auth.user.name}</Link></li>
                             </ul>
                         </div>
                     </aside></>)}

@@ -14,7 +14,6 @@ class AssetBundlesSeeder extends Seeder
     public function run()
     {
         AssetBundles::factory(3)->create()->each(function ($assetBundle) {
-            // Generate a file content (you can modify this part based on your needs)
             $fileContent = "This is the content of the file for AssetBundle ID: {$assetBundle->id}";
 
             // Generate a unique file name

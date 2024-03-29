@@ -13,7 +13,6 @@ class PriorityCustomerSupportController extends Controller
 public function index()
 {
     $user=Auth::user();
-
     return Inertia::render('PriorityCustomerSupport/Index',compact('user'));
 }
 }

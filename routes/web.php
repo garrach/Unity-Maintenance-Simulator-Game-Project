@@ -24,10 +24,17 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WishListController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\UnityDevicesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 use Inertia\Inertia;
 //static Pages Routes
+Route::get('/documentation',function(){
+    return Inertia::render('Documentation');
+})->name('documentation');
 
     Route::get('/', function () {
         return Inertia::render('Welcome', [
@@ -43,6 +50,12 @@ use Inertia\Inertia;
     Route::get('/preview/devices', [DeviceController::class, 'preview'])->name('devices.preview');
 //Authenticated Routes
 Route::middleware(('auth'))->group(function () {
+
+
+    //client and Admin and Employees
+
+    Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
+
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');
     Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
@@ -58,7 +71,8 @@ Route::middleware(('auth'))->group(function () {
     Route::get('/basic-maintenance', [BasicMaintenanceController::class, 'index'])->name('basic-maintenance');
     Route::get('/car-analytics', [CarAnalyticsController::class, 'index'])->name('car-analytics');
     Route::get('/meeting', function () {return Inertia::render('meeting');})->name('meeting.index');
-    Route::get('/webPreview/unity', function () {return Inertia::render('preview/Index');});
+    Route::get('/webPreview/unity', [UnityDevicesController::class,'index'])->name('unity.index');
+    Route::post('/webPreview/unity', [UnityDevicesController::class,'move'])->name('unity.move');
     Route::get('/unity-refresh', [DBsyncController::class, 'index'])->name('unityRefresh'); 
 
     Route::middleware(('Admin'))->group(function () {
@@ -69,12 +83,11 @@ Route::middleware(('auth'))->group(function () {
         Route::resource('connections', ConnectionController::class);
         Route::resource('schedules', ScheduleController::class);
         Route::resource('assetBundles', AssetBundlesController::class);
-        Route::resource('comments', CommentsController::class);
-        Route::resource('reviews', ReviewsController::class);
         Route::resource('reports', ReportController::class);
         Route::resource('whishlist', WishListController::class);
     });
 
+    //client and Employees
     Route::resource('vehicles', VehicleController::class)->only(['show', 'index']);
     Route::resource('devices', DeviceController::class)->only(['show', 'index']);
     Route::resource('services', ServicesController::class)->only(['show', 'index']);
@@ -85,6 +98,7 @@ Route::middleware(('auth'))->group(function () {
     Route::resource('reports', ReportController::class);
     Route::resource('whishlist', WishListController::class);
 
+    //client and Employees
     Route::post('/paymentPlans/subscription', [PaymentPlanController::class, 'subNewPlan'])->name('subscription.store');
     Route::get('/connected-services', [ConnectedServicesController::class, 'index'])->name('connected-services');
     Route::get('/full-maintenance-suite', [FullMaintenanceSuiteController::class, 'index'])->name('full-maintenance-suite');

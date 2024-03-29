@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const ConnectionSchema = new mongoose.Schema({
-  U_id:String,
-  V_id:String,
-  D_id:String,
+  UDB_id:Number,
+  DDB_id:Number,
 });
 const Connection = mongoose.model('connections', ConnectionSchema);
 async function handleConnectionMessages(res, data, db) {
@@ -13,7 +12,7 @@ async function handleConnectionMessages(res, data, db) {
     console.log({ error: 'Connection with the same vehicle_id already exists' });
   } else {
     // If the connection does not exist, proceed to create and save the new connection
-    const newConnection = new Connection({ V_id: data.vehicle_id, D_id: data.device_id, U_id: data.user_id });
+    const newConnection = new Connection({ DDB_id: data.device_id, UDB_id: data.user_id });
     await newConnection.save();
     console.log({ success: 'Connection added successfully' });
   }

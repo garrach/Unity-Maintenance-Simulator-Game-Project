@@ -10,15 +10,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Userexpcoin;
 
 class FullMaintenanceSuiteController extends Controller
 {
-    public static function getMaintenanceTasks($user)
+    public static function getMaintenanceTasks($user,$employee)
     {
         $maintenanceTasks = [];
 
-        $purchases = Purchase::where('user_id', $user->id)->get();
+        if($employee){
 
+            $purchases = Purchase::where('user_id', $user->id)->get();
+        }
+        else{
+
+            $purchases = DeviceUsage::where('user_id', $user->id)->get();
+        }
+        
         foreach ($purchases as $purchase) {
             $devices = Device::where('id', $purchase->device_id)->get()->toArray();
 
@@ -27,13 +35,25 @@ class FullMaintenanceSuiteController extends Controller
 
             $schedules = Schedule::where('user_id', $user->id)->get();
 
-            $maintenanceTasks[] = [
-                'purchase_id' => $purchase->id,
-                'device' => $devices,
-                'task' => $schedules,
-                'status' => $purchase->stat,
-                'usage_count' => $usageCount,
-            ];
+            if($employee){
+                $maintenanceTasks[] = [
+                    'purchase_id' => $purchase->id,
+                    'device' => $devices,
+                    'task' => $schedules,
+                    'status' => $purchase->stat,
+                    'usage_count' => $usageCount,
+                    'user'=>$user,
+                ];
+            }else{
+                $maintenanceTasks[] = [
+                    'usage_id' => $purchase->id,
+                    'device' => $devices,
+                    'task' => $schedules,
+                    'usage_count' => $usageCount,
+                    'user'=>$user,
+                ];
+            }
+          
         }
 
         if($purchases){
@@ -48,12 +68,12 @@ class FullMaintenanceSuiteController extends Controller
         $user = Auth::user();
         $users = User::all();
         $maintenanceTasksz = [];
-        if($user->role=='admin'){
+        if($user->role=='admin' || $user->role=='employee'){
             foreach($users as $displayUser){
-                $maintenanceTasksz[$displayUser->name] = $this->getMaintenanceTasks($displayUser);
+                $maintenanceTasksz[$displayUser->name] = $this->getMaintenanceTasks($displayUser,true);
             }
         }else{
-            $maintenanceTasksz[$user->name] = $this->getMaintenanceTasks($user);
+            $maintenanceTasksz[$user->name] = $this->getMaintenanceTasks($user,true);
         }
         
         $maintenanceTasksz=json_encode($maintenanceTasksz);
@@ -83,12 +103,18 @@ class FullMaintenanceSuiteController extends Controller
                 'usage_count' => 100,
             ]);
         }
+
+        $user = Auth::user();
+        $score=Userexpcoin::where('user_id',$user->id)->get()->first();
+        $score->update([
+            'experience'=>$score->experience+10,
+            'coins'=>$score->coins+10,
+        ]);
         /*if($Purchase){
         $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
         $Schedule->delete();
         }*/
 
-        $user = Auth::user();
         return redirect()->route('basic-maintenance');
     }
 }

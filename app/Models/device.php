@@ -9,7 +9,7 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['serial_number', 'type', 'installation_date'];
+    protected $fillable = ['serial_number', 'type', 'installation_date','image'];
 
     public function vehicles()
     {

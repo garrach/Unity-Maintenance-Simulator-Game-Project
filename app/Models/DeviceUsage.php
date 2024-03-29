@@ -11,4 +11,10 @@ class DeviceUsage extends Model
 
     protected $fillable = ['user_id', 'device_id', 'usage_count'];
 
+    public function user(){
+        return $this->BelongsTo(User::class);
+    }
+    public function device(){
+        return $this->BelongsTo(Device::class);
+    }
 }

@@ -65,7 +65,8 @@ export default function Authenticated({ user, header, children, webSocket }) {
                                         <Dropdown.Link href={route('dashboard')}>My Progress</Dropdown.Link>
                                         <Dropdown.Link href={route('myaccount', ['user' == { user }])}>My Account</Dropdown.Link>
                                         <Dropdown.Link href={route('services.index')}>My Services</Dropdown.Link>
-                                        <Dropdown.Link href={route('paymentPlans.index')}>PaymentPlan</Dropdown.Link>
+                                        
+                                        {user.role==="admin" && <Dropdown.Link href={route('paymentPlans.index')}>PaymentPlan</Dropdown.Link>}
                                         <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -116,7 +117,7 @@ export default function Authenticated({ user, header, children, webSocket }) {
                             <ResponsiveNavLink href={route('dashboard')}>My Progress</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('myaccount', ['user' == { user }])}>My Account</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('services.index')}>My Services</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('paymentPlans.index')}>PaymentPlan</ResponsiveNavLink>
+                            {user.role==="admin" &&   <ResponsiveNavLink href={route('paymentPlans.index')}>PaymentPlan</ResponsiveNavLink>}
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
                         </div>
                     </div>

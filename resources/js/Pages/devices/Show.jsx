@@ -31,13 +31,13 @@ const Show = ({ device, purchase, auth }) => {
   };
 
   useEffect(() => {
-    Object.entries(device).map((elemnt, index) => {
-      setFormatData((formatData) => [...formatData, index + " : " + elemnt + "\n"]);
+    Object.entries(device).map(([key, value], index) => {
+      setFormatData((formatData) => [...formatData, key +" : "+ value + "\n"]);
     })
   }, [device])
 
   function formatedData(data) {
-    let ready = "Devices:\n";
+    let ready = "Device:\n";
     data.forEach(element => {
       ready += "\n" + element;
     });
@@ -74,27 +74,39 @@ const Show = ({ device, purchase, auth }) => {
   const comment = useRef();
   const handleSubmitFeedBack = (e) => {
     e.preventDefault();
-    setRequestSet(true);
+    // Extract the device ID from data
+    const deviceId = data.device.id;
 
-    setTimeout(() => {
-      post(route('reviews.store', { rate: stars.current, device_id: data.device.id }))
+    // Extract the review and comment data
+    const reviewData = { rate: stars.current, device_id: deviceId };
+    const commentData = { text: comment.current, device_id: deviceId };
+
+    // Create an array of promises for both review and comment requests
+    const requests = [
+        post(route('reviews.store', reviewData)),
+        post(route('comments.store', commentData))
+    ];
+
+    // Execute both requests in parallel
+    Promise.all(requests)
         .then(() => {
-          // First request completed successfully, now initiate the second request
-          return post(route('comments.store', { text: comment.current, device_id: data.device.id }));
-        })
-        .then(() => {
-          // Both requests have completed
-          setRequestSet(false);
+            // Both requests completed successfully
+            setRequestSet(true);
+
+            console.log('Review and comment posted successfully.');
+            setTimeout(() => {
+              setRequestSet(false);
+              window.location.href='/dashboard'
+            }, 2000);
         })
         .catch((error) => {
-          // Handle errors if necessary
-          console.error('Error:', error);
-          setRequestSet(false);
+            // Handle errors if any request fails
+            console.error('Error:', error);
+            setRequestSet(false);
+            // Optionally display an error message to the user
         });
-    }, 2000);
+};
 
-    console.log(device);
-  };
 
   const handleFeedBackStars = (selectedStars) => {
     stars.current = selectedStars;
@@ -104,113 +116,155 @@ const Show = ({ device, purchase, auth }) => {
     comment.current = e.target.value;
   }
   return (
-    <div className='dark:text-white'>
-      <AuthenticatedLayout
-        user={auth.user}
-        header={
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Dashboard - {auth.user.role}
-          </h2>
-        }
-      >
-        {console.log(purchase)}
-        {requestSent && <div className='relative text-center slide-down bg-green-500 w-auto h-auto p-4 mx-auto'>Request Sent</div>}
-        <div className="my-4 max-w-md mx-auto bg-white dark:bg-gray-800 p-6 rounded-md shadow-md mb-4 transition duration-300 ease-in-out transform hover:shadow-lg hover:scale-105">
-          <h1 className="text-2xl font-semibold mb-4">Device Details</h1>
-          {auth.user.role === "admin" || (purchased && installded && auth.user.role === "client") ? (<>
-            <div className='absolute top-0 right-4 mt-4 '>Detach</div>
-          </>) : (<>
-            {(auth.user.role === "client" && (!installded && purchased)) || (auth.user.role === "employee" && !installded) ? (<>
-              <div className='absolute top-0 right-4 mt-4 '>Pending</div>
-            </>) : (<>
-              {(auth.user.role === "employee" && installded) || (auth.user.role === "client" && (installded && purchased)) ? (<>
-                <div className='absolute top-0 right-4 mt-4 '>Detach</div>
-              </>) : (<>
-                <div className='absolute top-0 right-4 mt-4 '>Attach</div>
-              </>)}
-            </>)}
-          </>)}
+<div className="dark:text-white">
+  <AuthenticatedLayout
+    user={auth.user}
+    header={
+      <h2 className="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+        Dashboard - {auth.user.role}
+      </h2>
+    }
+  >
+    {requestSent && (
+      <div className="relative text-center bg-green-500 text-white p-4 mx-auto rounded">
+        Request Sent
+      </div>
+    )}
+    <div className="max-w-full mx-auto bg-white dark:bg-gray-800 p-6 rounded-md shadow-md mb-4 transition duration-300 ease-in-out transform hover:shadow-lg ">
+      <h1 className="text-3xl font-bold mb-4">Device Details</h1>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 place-content-center">
+        {/* Side for QR code and download button */}
+        <div className="flex flex-col justify-center items-center md:items-start ml-32">
+          <div className="border flex justify-center bg-gray-100 p-4 rounded-lg hover:scale-105">
+            {formatData && <QRCode value={formatedData(formatData)} renderAs="canvas" />}
+          </div>
+          <button
+            className="block mt-4 ml-6 px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md shadow-md"
+            onClick={(e) => { e.preventDefault(); handleDownload(device.serial_number) }}
+          >
+            Download
+          </button>
+        </div>
+
+        {/* Side for device details */}
+        <div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-md">
             <ul className="space-y-4">
               <li className="text-lg font-semibold">{`Serial Number: ${device.serial_number}`}</li>
               <li className="text-lg font-semibold">{`Type: ${device.type}`}</li>
               <li>
-                {auth.user.role === "admin" || (purchased && installded && auth.user.role === "client") ? (<>
-                  <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
-                </>) : (<>
-                  {(auth.user.role === "client" && (!installded && purchased)) || (auth.user.role === "employee" && !installded) ? (<>
-                    <p className="text-sm text-gray-500">{`Installation pending..`}</p>
-                  </>) : (<>
-                    {(auth.user.role === "employee" && installded) || (auth.user.role === "client" && (installded && purchased)) ? (<>
-                      <p className="text-sm text-gray-500">{`Installation Date: ${device.installation_date}`}</p>
-                    </>) : (<>
-                      <p className="text-sm text-gray-500">{`Device Price : $...`}</p>
-                    </>)}
-                  </>)}
-                </>)}
+                {auth.user.role === "admin" || (purchased && installded && auth.user.role === "client") ? (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{`Installation Date: ${device.installation_date}`}</p>
+                ) : (
+                  <>
+                    {(auth.user.role === "client" && (!installded && purchased)) || (auth.user.role === "employee" && !installded) ? (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Installation pending..</p>
+                    ) : (
+                      <>
+                        {(auth.user.role === "employee" && installded) || (auth.user.role === "client" && (installded && purchased)) ? (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{`Installation Date: ${device.installation_date}`}</p>
+                        ) : (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Device Price : $...</p>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
               </li>
             </ul>
-
-            {formatData && (
-              <div className="mt-6">
-                <div className='border flex justify-center bg-gray-100 p-4'>
-                  {<QRCode value={formatedData(formatData)} renderAs="canvas" />}
-                </div>
-                <button
-                  className='p-2 dark:text-white hover:bg-orange-500 bg-gray-900 uppercase mt-4 rounded'
-                  onClick={(e) => { e.preventDefault(); handleDownload(device.serial_number) }}
-                >
-                  Download
-                </button>
-
-                <form onSubmit={handleSubmit} className='relative h-6'>
-
-                  <button
-                    className='absolute p-1 dark:text-white hover:bg-green-500 bg-orange-500 uppercase right-0 rounded'
-                  >
-                    Request
-                  </button>
-                </form>
-                <div className='m-4'>
-                  <form onSubmit={handleSubmitFeedBack}>
-                    <div className='grid grid-cols-1 p-4'>
-                      <label htmlFor="rate">Review:</label>
-                      <StarsReview totalStars={5} onStarClick={handleFeedBackStars} />
-                      <input onChange={handleFeedBack} className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
-                        type="text" name="comment" id="comment" />
-                      <button>comment</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
           </div>
 
+          <div className="mt-6">
+            <form onSubmit={handleSubmitFeedBack}>
+              <div className="grid grid-cols-1 gap-4">
+                <label htmlFor="rate" className="text-gray-700 dark:text-gray-400">Review:</label>
+                <StarsReview totalStars={5} onStarClick={handleFeedBackStars} />
+                <input onChange={handleFeedBack} className="px-3 dark:text-gray-900 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:focus:ring-gray-500" type="text" name="comment" id="comment" />
+                <button className="px-4 py-2 text-white bg-blue-500 hover:bg-indigo-600 rounded-md shadow-md">
+                  Comment
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <style>
-          {`
-        
-          .slide-down {
-            animation: slideDown 0.5s ease-in;
-          }
-          
-          @keyframes slideDown {
-            from {
-              transform: translateY(-100%);
-              opacity: 0;
-            }
-            to {
-              transform: translateY(0);
-              opacity: 1;
-            }
-          }
-          
-          
-          `}
-        </style>
-      </AuthenticatedLayout>
+      </div>
+
+      {/* Request Button */}
+      <div className="mt-6">
+        <form onSubmit={handleSubmit} className='flex justify-center'>
+          <button className='absolute top-6 right-6 p-2 dark:text-white hover:bg-green-500 bg-orange-500 uppercase rounded'>
+            Request
+          </button>
+        </form>
+      </div>
+
+
     </div>
+    <style>
+      {`
+        .slide-down {
+          animation: slideDown 0.5s ease-in;
+        }
+        @keyframes slideDown {
+          from {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}
+    </style>
+
+    <div className="mt-8">
+  <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-700 sm:rounded-lg">
+    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead className="bg-gray-50 dark:bg-gray-800">
+        <tr>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+          >
+            Device Description
+          </th>
+          <th
+            scope="col"
+            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+          >
+            Config
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-800">
+        {/* Replace the following tr elements with your data */}
+        <tr>
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Connector Type</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{device.connectorType}</td>
+        </tr>
+        <tr>
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Included Components </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{device.includedComponents}</td>
+        </tr>
+        <tr>
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Color</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{device.color}</td>
+        </tr>
+        <tr>
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">Mounting Type</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{device.mountingType}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  </AuthenticatedLayout>
+</div>
+
 
   );
 };

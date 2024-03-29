@@ -1,7 +1,9 @@
 // configureWebSocket.js
 const crypto = require('crypto');
 const { WebSocketSender } = require('../handlers/WebSocketOperations.cjs');
-const {messageHandlers, registerHandler, handleClientKeyRequest, handlewebClientIdentity, handleInitUniyDevicesLocation ,handleUnityLogin,handleUserRoom} = require('./messageTypesRegister.cjs');
+const {messageHandlers,unityInstance, registerHandler, handleClientKeyRequest, handlewebClientIdentity, handleInitUniyDevicesLocation
+   ,handleUnityLogin,handleUserRoom,handleUserInstance,handleUserInstanceVehicle,
+   handleUserInstanceDevice} = require('./messageTypesRegister.cjs');
 
 const clients = new Set();
 const clientsInfo = new Map();
@@ -55,12 +57,11 @@ function configureWebSocket(wss, db) {
       });
   
       ws.on('message', async (msg) => {
-        console.log(`Received message from ${clientInfo.clientId}: ${msg}`);
-  
-        // Parse the received message
         let parsedMessage = msg;
+        // Parse the received message
         try {
           parsedMessage = JSON.parse(msg);
+          console.log(`Received message from ${clientInfo.clientId}: ${parsedMessage.message}`);
         } catch (error) {
           console.error('Error parsing JSON:', error);
           return;
@@ -84,14 +85,26 @@ function configureWebSocket(wss, db) {
         webSocketSender.removeClient(clientInfo.clientId);
         clientsInfo.delete(clientInfo.clientId);
         clients.delete(ws);
-      });
-    });
+
+        for (let [key, value] of unityInstance.entries()) {
+          if (value === ws) {
+              unityInstance.delete(key);
+              webSocketSender.broadcast({type:'unityInstanceOff',message:'unity Instance Off',data:null})
+              break; // Assuming you only want to delete the first occurrence
+          }
+      }
+
+      }); 
+    }); 
   
     registerHandler('webClientIdentity', handlewebClientIdentity);
     registerHandler('clientKeyRequest', handleClientKeyRequest);
     registerHandler('initUniyDevicesLocation', handleInitUniyDevicesLocation);
     registerHandler('login', handleUnityLogin);
     registerHandler('roomState', handleUserRoom);
+    registerHandler('unityStat', handleUserInstance);
+    registerHandler('unityStatVH', handleUserInstanceVehicle);
+    registerHandler('unityStatDV', handleUserInstanceDevice);
   
     console.log('WebSocket server configured');
   } catch (error) {

@@ -6,31 +6,20 @@ import { useDynamicContext } from '../DynamicContext';
 
 const SystemStatus = ({ currentWebSocket, display }) => {
   const { dynamicValues, updateValues } = useDynamicContext();
-  currentWebSocket=dynamicValues.socket;
-  const [webSocketLive, setwebSocketLive] = useState(null);
-  const message = useRef(false);
-  const [sys, setSys] = useState();
+  const [sys, setSys] = useState(false);
   const { props } = usePage();
 
   const handlUnityRuntime=()=>{
-    const unityMsg=display.message.message;
-    if(unityMsg=="deviceTracking"){
-      message.current=true;
-      setSys('unity ON');
-      console.log('unity ON')
-    }else if(unityMsg=="disconnected"){
-      message.current=false;
-      console.log('unity shut')
-      setSys('unity shut');
-    }else{
-      //setSys(display.message.message);
-    }
-    
-    return message.current;
+    dynamicValues.socket.send(JSON.stringify({type:'webClientIdentity',message:'webClient Socket on',data:display}))
   }
   useEffect(()=>{
-    handlUnityRuntime();
-  },[display.message])
+   
+    return()=>{
+        handlUnityRuntime()
+        console.log(dynamicValues.socket)
+      setSys(true)
+    }
+  },[sys])
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">System Status</h2>

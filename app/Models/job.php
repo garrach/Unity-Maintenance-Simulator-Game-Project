@@ -13,6 +13,9 @@ class job extends Model
         'description',
         'resume',
         'hash',
+        'user_id'
     ];
-    
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

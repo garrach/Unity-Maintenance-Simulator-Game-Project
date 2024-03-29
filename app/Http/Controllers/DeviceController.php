@@ -48,7 +48,23 @@ class DeviceController extends Controller
 
     public function store(Request $request)
     {
-        Device::create($request->all());
+        $request->validate([
+            'serial_number' => 'required',
+            'type' => 'required',
+            'installation_date' => 'required|date',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust file type and size as needed
+        ]);
+
+        $imagePath = $request->file('image')->store('public/images'); // Store the uploaded image
+
+        // Create device with uploaded image path
+        $device = new Device();
+        $device->serial_number = $request->serial_number;
+        $device->type = $request->type;
+        $device->installation_date = $request->installation_date;
+        $device->image = $imagePath; // Save the image path in the database
+        $device->save();
+
         return redirect()->route('devices.index')->with('success', 'Device created successfully.');
     }
 
@@ -70,7 +86,32 @@ class DeviceController extends Controller
 
     public function update(Request $request, Device $device)
     {
-        $device->update($request->all());
+        $request->validate([
+            'serial_number' => 'required',
+            'type' => 'required',
+            'installation_date' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust file type and size as needed
+        ]);
+
+        // Check if an image file was uploaded
+        if ($request->hasFile('image')) {
+            // Delete previous image if exists
+            if ($device->image) {
+                // Delete the previous image file
+                Storage::delete($device->image);
+            }
+
+            // Store the new image and update the image path in the database
+            $imagePath = $request->file('image')->store('public/images');
+            $device->image = $imagePath;
+        }
+
+        // Update other device details
+        $device->serial_number = $request->serial_number;
+        $device->type = $request->type;
+        $device->installation_date = $request->installation_date;
+        $device->save();
+
         return redirect()->route('devices.index')->with('success', 'Device updated successfully.');
     }
 

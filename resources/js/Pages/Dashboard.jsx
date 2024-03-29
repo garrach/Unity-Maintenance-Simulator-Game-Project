@@ -9,7 +9,7 @@ import { useDynamicContext } from './DynamicContext';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
-export default function Dashboard({ auth, usersList, reports,requestJob,wishListItems }) {
+export default function Dashboard({ auth, usersList, reports,requestJob,wishListItems,userExp }) {
 
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
@@ -77,11 +77,14 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
       }
     })
   }
-  useEffect(() => {
-    handlewebSocket(false);
-  }, [])
   const [clientReq, setClientReq] = useState()
+  useEffect(()=>{
+    handlewebSocket(false);
 
+    return ()=>{
+      handlewebSocket(false);
+    }
+  },[])
 
   return (
     <>
@@ -89,9 +92,8 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
         webSocket={currentwebSocket}
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}
-          <span className='flex w-56 m-2 justify-around'><>
-            <Link href={route('meeting.index')}>Meet</Link>
-            <Link href={route('unityRefresh')}>unityRefresh</Link>
+          <span className='flex w-56 m-2 justify-around p-2 hover:bg-orange-500 rounded-md'><>
+            <Link href={route('unityRefresh')}>Unity Refresh</Link>
           </></span></h2>}
       >
 
@@ -103,7 +105,7 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
           <div className={`flex ${auth.user.role==="client" ? "w-full":""}`}>
             {(auth.user.role === "admin" || auth.user.role === "employee") ? <div className="sm:flex side-menu dark:bg-gray-900">
               <div className="flex bg-gray-200">
-                <Sidebar auth={auth} expand={false} Children={
+                <Sidebar auth={auth} expand={true} Children={
                   <ul>
                     
                       <li className='text-gray-200 mt-4 hover:text-white'>                
@@ -120,11 +122,11 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
             
               <div className="sm:flex side-menu dark:bg-gray-900">
               <div className="flex bg-gray-200">
-                <Sidebar auth={auth} expand={false} />
+                <Sidebar auth={auth} expand={true} />
               </div>
             </div>)}
             <div className="relative dark:bg-gray-900 bg-gray-300 menu-content">
-              <DashboardElements requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={setwebSocketHost} display={data} />
+              <DashboardElements requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={setwebSocketHost} display={data} userExp={userExp}/>
             </div>
           </div>
 

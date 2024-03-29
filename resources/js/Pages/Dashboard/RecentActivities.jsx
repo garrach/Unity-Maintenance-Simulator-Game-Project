@@ -26,8 +26,8 @@ const RecentActivities = ({ activities, display }) => {
       <ul>
       {webSocketLive && <li>Client ON :{display.message.data.ID}</li>}
       <li><strong>Users Feed:</strong> </li>
-      {acts.map((conn)=>(
-        <li>{conn}</li>
+      {acts.map((conn,index)=>(
+        <li key={index}>{conn}</li>
       ))}
       </ul>
   </div>

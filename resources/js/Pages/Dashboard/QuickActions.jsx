@@ -5,7 +5,8 @@ import Navigation from '../Navigation';
 import { clientSocket ,TMD} from '../client.cjs';
 
 
-const QuickActions = ({auth,requests}) => {
+const QuickActions = ({auth,requests , userExp}) => {
+  console.log(userExp)
   const sendRoleRequest=(e)=>{
     e.preventDefault();
     const socket=clientSocket('dashdoard_sentRequest');
@@ -32,11 +33,13 @@ const QuickActions = ({auth,requests}) => {
       </div>
      </>):(<>
      
-      <div className='clientEmployee-requests flex flex-[2_2_0%]'>
-      <form onSubmit={sendRoleRequest}>
-        <button>report_issue</button>
-      </form>
-        <span>notify</span>
+      <div className='flex right-0 w-full'>
+        <span className='w-full h-12 p-2'>
+        <Link href='#' className='p-2 hover:bg-orange-500 rounded-md'>coins:{userExp.coins}</Link>
+          </span>
+        <span className='h-12 p-2'>
+        <Link href='#' className='p-2 hover:bg-orange-500 rounded-md'>exp:{userExp.experience}</Link>
+          </span>
       </div>
      
      </>)}
@@ -48,6 +51,10 @@ const QuickActions = ({auth,requests}) => {
           <>
       <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-blue-600">
       <Link href='/vehicles'>Add Vehicle</Link></button>
+
+      <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-blue-600">
+      <Link href='/devices'>Add Device</Link></button>
+      
       <button className="bg-blue-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">
       <Link href={route('services.create')}>Create new Plan</Link></button>
       <button className="bg-green-500 text-white ml-2 px-4 py-2 rounded-full hover:bg-green-600">

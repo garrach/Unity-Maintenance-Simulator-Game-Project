@@ -33,6 +33,7 @@ const instantiatePlaces = (arr) => {
 };
 const instantiatePlaces2 = async (socket) => {
     const arr=[];
+    const elements=[];
     const jsonUrl = '../spawn.json';
     console.log('retrive from json')
     try {
@@ -49,7 +50,7 @@ const instantiatePlaces2 = async (socket) => {
                 }
             };
             arr.push(vector3);
-            
+            elements.push(place);
             moveObject(place,socket);
 
             place.setAttribute('value', JSON.stringify({ data: vector3 }));
@@ -66,6 +67,6 @@ const instantiatePlaces2 = async (socket) => {
     } catch (error) {
         console.log(error);
     }
-    return arr;
+    return {arr:arr,elements:elements};
 };
 export {instantiatePlaces,instantiatePlaces2}

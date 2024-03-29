@@ -19,6 +19,13 @@ async function getVehicleById(id, db) {
 }
 
 // Retrieve data by ID for the Device model
+async function getDeviceByDBId(id, db) {
+  const device = await db.collection('userdvs').findOne({ DB_id: id });
+  return device;
+}
+
+
+// Retrieve data by ID for the Device model
 async function getDeviceById(id, db) {
   _id=new ObjectId(id);
   const device = await db.collection('userdvs').findOne({ _id: _id });
@@ -40,6 +47,11 @@ async function getUserByName(name, db) {
   return user;
 }
 
+// Retrieve all connections
+async function getAllConnectionsByUser(BD_id,db) {
+  const connections = await db.collection('connections').find({UDB_id:BD_id}).toArray();
+  return connections;
+}
 
 // Retrieve all connections
 async function getAllConnections(db) {
@@ -69,10 +81,12 @@ module.exports = {
   getConnectionById,
   getVehicleById,
   getDeviceById,
+  getDeviceByDBId,
   getUserById,
   getAllConnections,
   getAllVehicles,
   getAllDevices,
+  getAllConnectionsByUser,
   getAllUsers,
   getUserByName,
 };

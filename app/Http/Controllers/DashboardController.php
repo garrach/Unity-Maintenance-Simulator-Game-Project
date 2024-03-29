@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 use App\Models\Connection;
 use App\Models\job;
 use App\Models\PaymentPlan;
+use App\Models\Purchase;
 use App\Models\Report;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\WishList;
+use App\Models\Userexpcoin;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +20,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
         $route = Route::currentRouteName();
         $valid = $this->checkRole($route);
 
@@ -25,13 +28,18 @@ class DashboardController extends Controller
         $vehicles = [];
         $devices = [];
         $connections = Connection::all();
+        $Purchases = Purchase::all();
+
+        $findExp=Userexpcoin::where('user_id',$user->id)->first();
+
+        $userExp=['experience'=>$findExp->experience,'coins'=>$findExp->coins];
+
         $services = Service::all();
         $plans = PaymentPlan::skip(0)->take(1)->first();
         $reports = Report::all()->toArray();
         $jobs = job::all()->toArray();
         $reports = count($reports);
         $jobs = count($jobs);
-        $user = Auth::user();
         $wishListItems=WishList::where('user_id',$user->id)->get()->toArray();
         $reference=[];
         foreach($wishListItems as $wishListItem){
@@ -67,6 +75,7 @@ class DashboardController extends Controller
         for ($i = 0; $i < count($vehicleIds); $i++) {
             $devices[$i] = $vehicles[$i]->devices;
         }
+
         if ($valid == "Unauthorized") {
             return response()->json($valid);
         } else {
@@ -76,9 +85,11 @@ class DashboardController extends Controller
                     'services' => $services,
                     'connections' => $connections,
                     'paymentPlan' => $plans,
+                    'Purchases' => $Purchases,
                     'vehicles' => $vehicles,
                     'reports' => $reports,
                     'requestJob' => $jobs,
+                    'userExp'=>$userExp,
                     'wishListItems' => $reference,
                     'devices' => $devices]);
         }
@@ -99,6 +110,6 @@ class DashboardController extends Controller
                 }
             }
         }
-        return response()->json('Unauthorized - not in ur league'); 
+        return response()->json('Unauthorized'); 
     }
 }

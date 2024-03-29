@@ -21,9 +21,7 @@ class CommentsController extends Controller
 
     public function store(Request $request)
     {
-        // Validation can be added here
         Comment::create($request->all());
-        return redirect()->route('home');
     }
 
     public function show($id)

@@ -9,13 +9,24 @@ const Create = ({ auth }) => {
     serial_number:'',
     type:'',
     installation_date: format(new Date(), 'yyyy-MM-dd'),
+    image:"",
   });
 
   const handleChange = (e) => {
+    e.preventDefault();
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setData((prevData) => ({
+      ...prevData,
+      image: file,
     }));
   };
 
@@ -39,10 +50,9 @@ const Create = ({ auth }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="serial_number" className="block text-sm dark:text-gray-200 font-medium text-gray-600">
-              serial number:
+              Serial Number:
               </label>
               <input
-              
                 type="text"
                 id="serial_number"
                 name="serial_number"
@@ -53,15 +63,27 @@ const Create = ({ auth }) => {
             </div>
             <div>
               <label htmlFor="type" className="block text-sm dark:text-gray-200 font-medium text-gray-600">
-              type:
+              Type:
               </label>
               <input
-              
                 type="text"
                 id="type"
                 name="type"
                 value={data.type}
                 onChange={handleChange}
+                className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
+              />
+            </div>
+            <div>
+              <label htmlFor="image" className="block text-sm dark:text-gray-200 font-medium text-gray-600">
+              Image:
+              </label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
               />
             </div>

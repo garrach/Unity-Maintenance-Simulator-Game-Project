@@ -93,7 +93,6 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
     };
   }, [])
   const sysnncronize =() => {
-    console.log('wow did it work')
     try {
       fetchDataPOST('/api/connections',{type:"addConnectin",message:'syncData',data:data.connections},setValidPost);
       fetchDataPOST('/api/vehicles',{type:"addvehicles",message:'syncData',data:data.Vehicle},setValidPost);
@@ -163,7 +162,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
             )}  
         <ul>
           {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
-            <li key={index} style={{marginLeft:((index+1)*10)+'rem' , marginTop:((index+1)*4)+'rem'}} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
+            <li key={index} style={{marginLeft:((index+1)*10)+'rem' , marginTop:((index+1)*4)+'rem', display:'none'}} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
               <ul>
                 <li>---------------:{dataSync[index]}:-------------</li>
                 {data.map((d, index) => (

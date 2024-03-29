@@ -37,7 +37,7 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
 
 
 
-const MainContent = ({ children, auth, usersList, currentwebSocket, display, requests }) => {
+const MainContent = (  {children, auth, usersList, currentwebSocket, display, requests }) => {
     const { props } = usePage();
     return (
         <main className="flex-2 p-4">
@@ -63,12 +63,12 @@ const MainContent = ({ children, auth, usersList, currentwebSocket, display, req
     );
 };
 
-const ClientMainContent = ({ children, auth, usersList, currentwebSocket, webSocket, display, requests }) => {
+const ClientMainContent = ({ userExp, children, auth, usersList, currentwebSocket, webSocket, display, requests  }) => {
     return (
         <main className="p-4">
             <div className="grid sm:grid-cols-1 md:grid-cols-9 lg:grid-cols-9 gap-4">
                 <DashboardCard number="74.89b" icon="ic_glass_buy.png" span={true} margin="col-span-4">
-                    <QuickActions requests={requests} auth={auth} />
+                    <QuickActions userExp={userExp} requests={requests} auth={auth} />
                 </DashboardCard>
                 <DashboardCard number="2" icon="ic_glass_users.png" span={true} margin="col-span-2">
                     <UnityStatus webSocket={webSocket} auth={auth} />
@@ -80,10 +80,10 @@ const ClientMainContent = ({ children, auth, usersList, currentwebSocket, webSoc
                     <PaymentPlanOverview auth={auth} />
                 </DashboardCard>
                 <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2">
-                    <Analytics stat={true} auth={auth} />
+                    <Analytics webSocket={webSocket} stat={true} auth={auth} />
                 </DashboardCard>
                 <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin="col-span-5 row-span-4">
-                    <Analytics stat={false} auth={auth} />
+                    <Analytics webSocket={webSocket} stat={false} auth={auth} />
                 </DashboardCard>
                 <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin=" col-span-6">
                     <RecentConnections auth={auth} />
@@ -134,7 +134,7 @@ const EmployeeMainContent = ({ children, auth, usersList, currentwebSocket, disp
     );
 };
 
-const DashboardElements = ({ children, auth, usersList, currentwebSocket, display, requests, webSocket }) => {
+const DashboardElements = ({ children, auth, usersList, currentwebSocket, display, requests, webSocket, userExp}) => {
     const { dynamicValues, updateValues } = useDynamicContext();
 
     return (<>
@@ -144,11 +144,11 @@ const DashboardElements = ({ children, auth, usersList, currentwebSocket, displa
                 {children}
             </MainContent>}
         {auth.user.role === "client" &&
-            <ClientMainContent requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={currentwebSocket} display={display} >
+            <ClientMainContent userExp={userExp} requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={currentwebSocket} display={display} >
                 {children}
             </ClientMainContent>}
         {auth.user.role === "employee" &&
-            <ClientMainContent requests={requests} auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
+            <ClientMainContent userExp={userExp}  requests={requests} auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
                 {children}
             </ClientMainContent>}
 

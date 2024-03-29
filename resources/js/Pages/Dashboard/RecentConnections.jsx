@@ -41,17 +41,11 @@ const RecentConnections = ({ connection, webSocket }) => {
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
       <ul>
-        {props.connections && Object.entries(props.connections).map(([key, value], index) => (
-          Object.entries(value).map(([field, content], index2) => (
-            <li key={index2}>
-              <ul>
-                {field === 'vehicle_id' && (<li>{`Vehicle:${content}`}</li>)}
-                {field === 'device_id' && (<li>{`Device:${content}`}</li>)}
-                {field === 'installationdate' && (<li>{`Installation Date:${content}`}</li>)}
-              </ul>
-            </li>
-          ))
-        ))}
+       {Object.values(props.Purchases).map((purchase,index)=>(
+        <li key={index} className='uppercase p-4 hover:bg-gray-900 rounded-md shadow-md transition-transform transform hover:scale-105'>{`purchase ID:${purchase.id} user ID:${purchase.user_id} Device ID:${purchase.device_id} Date:${purchase.date}`}</li>
+       )
+       )}
+        
       </ul>
     </div>
   );

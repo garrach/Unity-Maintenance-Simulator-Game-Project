@@ -38,8 +38,7 @@ const deleteReport = (id) => {
                 <li key={report.id} className="border rounded-md shadow-md p-4 bg-gray-800 dark:bg-gray-700">
                   <h2 className="text-xl font-semibold text-white dark:text-gray-200">{report.title}</h2>
                   <p className="text-gray-400 dark:text-gray-400">{report.description}</p>
-                  <p className="text-gray-400 dark:text-gray-400">Application Date: {report.application_date}</p>
-                  <p className="text-gray-400 dark:text-gray-400">Application Status: {report.application_status}</p>
+                  <p className="text-gray-400 dark:text-gray-400">Report Date: {report.application_date}</p>
                   <div className="flex mt-2">
                     <Link
                       href={route('reports.show', { report: report.id })}

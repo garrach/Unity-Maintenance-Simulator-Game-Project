@@ -23,7 +23,6 @@ class ReviewsController extends Controller
     public function store(Request $request)
     {
         Review::create($request->all());
-        return redirect()->route('home');
     }
 
     public function show($id)

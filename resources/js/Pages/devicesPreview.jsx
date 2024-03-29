@@ -1,106 +1,91 @@
 import React, { useRef, useState } from 'react';
-import { Link ,useForm} from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 
 const Index = ({ devices, reviews, comments, auth }) => {
-    const purchased = false;
-    const installded = false;
     const [preview, setPreview] = useState(false);
-    const [data, setData] = useState(null);
+    const [selectedDevice, setSelectedDevice] = useState(null);
+    const deviceRef = useRef();
+    const { post } = useForm();
 
-    const deviceRef=useRef();
-    const{post}=useForm();
-    const handlPreview = (device) => {
-        setData(device);
-        setPreview(!preview);
-    }
-    const handlwhislist = (e,device) => {
-        e.preventDefault();
-        deviceRef.current=device;
-        console.log(deviceRef.current);
-        setTimeout(() => {
-            if(auth.user){
-                post(route('whishlist.store',{device:deviceRef.current,user:auth.user}))
-            }else{
-                post(route('login'))
-            }
-        }, 1000);
-       
-}
+    const handlePreview = (device) => {
+        setSelectedDevice(device);
+        setPreview(true);
+    };
+
+    const handleWishlist = (device) => {
+        if (auth.user) {
+            post(route('whishlist.store', { device, user: auth.user }));
+        } else {
+            post(route('login'));
+        }
+    };
+
     return (
         <GuestLayout>
-            {preview && <div className='fixed z-20 w-full  bg-gray-500 mx-auto modelx rounded-lg'>
-                <div className='container mx-auto p-4 '>
-                    <p className="text-4xl font-semibold mb-1">{`Serial Number: ${data.serial_number}`}</p>
-                    <p className="text-3xl text-gray-200">{`Type: ${data.type}`}</p>
-                    <p className="text-3xl text-gray-200">{`Device Price : ${data.price}`}</p>
-
-                    <div className='device-reviews-comments'>
-                        <label className='text-3xl text-white'>Average Reviews:</label>
-                        <ul>
-                            {reviews[data.id].map((review, index) => (
-
-                                <li key={index} className='text-2xl text-gray-300'>{review.rate}</li>
-
-                            ))}
-                        </ul>
-                        <label className='text-3xl text-white'>Comments</label>
-
-                        <ul>
-                            {comments[data.id].map((comment, index) => (
-
-                                <li key={index} className='text-2xl text-gray-300 block'>
-                                    {comment.text}
-                                </li>
-
-                            ))}
-                        </ul>
+            <div className='overflow-y-auto h-screen bg-gray-100 dark:bg-gray-800'>
+                {preview && selectedDevice && (
+                    <div className='fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-50 flex items-center justify-center'>
+                        <div className='relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-lg'>
+                            <div className='p-8'>
+                                <button onClick={() => setPreview(false)} className='absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200'>
+                                    <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12'></path>
+                                    </svg>
+                                </button>
+                                <img src={'../' + selectedDevice.image} alt='' className='mx-auto mb-4 w-full h-40 object-cover rounded-lg shadow-md' />
+                                <p className='text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200'>{`Serial Number: ${selectedDevice.serial_number}`}</p>
+                                <p className='text-gray-600 dark:text-gray-400 mb-2'>{`Type: ${selectedDevice.type}`}</p>
+                                <p className='text-gray-600 dark:text-gray-400 mb-6'>{`Device Price: ${selectedDevice.price}`}</p>
+                                <div className='border-t border-gray-200 dark:border-gray-600 pt-4'>
+                                    <h2 className='text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200'>Reviews</h2>
+                                    <ul>
+                                        {reviews[selectedDevice.id].map((review, index) => (
+                                            <li key={index} className='text-gray-600 dark:text-gray-400'>{review.rate}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className='border-t border-gray-200 dark:border-gray-600 pt-4'>
+                                    <h2 className='text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200'>Comments</h2>
+                                    <ul>
+                                        {comments[selectedDevice.id].map((comment, index) => (
+                                            <li key={index} className='text-gray-600 dark:text-gray-400'>{comment.text}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className='text-center mt-6'>
+                                    <Link href={route('devices.show', { device: selectedDevice.id })} className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-400'>See more..</Link>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <Link href={route('devices.show', { device: data.id })} className="text-2xl text-gray-300">see more..</Link>
-                </div>
-                <button onClick={handlPreview} className="text-xl absolute right-0 mr-4 top-0 mt-4 text-gray-200">Close</button>
-
-            </div>}
-
-            <div className='dark:text-white'>
-                <div className="container mx-auto">
-                    <h1 className="text-2xl font-semibold mb-4">Device List</h1>
-                    <ul className="sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 mt-20 overflow-y-auto h-screen py-40 px-4">
+                )}
+                <div className='container mx-auto mt-12'>
+                    <h1 className='text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200'>Device List</h1>
+                    <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
                         {devices.map((device, index) => (
-                            <li key={device.id} className={`bg-${index % 2 === 0 ? 'gray-100' : 'gray-200'} dark:bg-${index % 2 === 0 ? 'gray-800' : 'gray-700'} p-4 rounded-md shadow-md mb-4 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
-                                <div className="flex justify-between items-center">
-                                    <div className='block w-full'>
-                                        <form onSubmit={(e)=>{handlwhislist(e,device)}}>
-                                            <button className='absolute p-0 top-2 right-2 hover:bg-orange-500 rounded-lg w-12 h-auto text-center text-2xl'>+</button>
-                                        </form>
-                                        {/*3D Preview*/}
-                                        <canvas className='w-full h-56'></canvas>
-                                        <p className="text-xl font-semibold mb-1">{`Serial Number: ${device.serial_number}`}</p>
-                                        <p className="text-sm text-gray-500">{`Type: ${device.type}`}</p>
-                                        <p className="text-sm text-gray-500">{`Device Price : ${device.price}`}</p>
-                                        <button onClick={(e) => { e.preventDefault(); handlPreview(device) }} className="text-sm text-gray-500">View</button>
+                            <li key={device.id} className={`bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
+                                <div className='flex flex-col justify-between h-full'>
+                                    <div>
+                                        <button onClick={() => handleWishlist(device)} className='absolute top-2 right-2 bg-gray-200 dark:bg-gray-700 hover:bg-orange-500 dark:hover:bg-orange-600 text-gray-800 dark:text-gray-200 hover:text-white rounded-full w-8 h-8 flex items-center justify-center'>
+                                            +
+                                        </button>
+                                        <img src={'../' + device.image} alt='' className='mx-auto mb-4 w-full h-40 object-cover rounded-lg shadow-md' />
+                                        <p className='text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200'>{`Serial Number: ${device.serial_number}`}</p>
+                                        <p className='text-sm text-gray-600 dark:text-gray-400 mb-1'>{`Type: ${device.type}`}</p>
+                                        <p className='text-sm text-gray-600 dark:text-gray-400'>{`Device Price: ${device.price}`}</p>
                                     </div>
+                                    <button onClick={() => handlePreview(device)} className='text-sm text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-400 mt-2'>
+                                        View
+                                    </button>
                                 </div>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
-            <style>
-                {`
-                .device-reviews-comments{
-                    position:relative;
-                    left:50%;
-                    top:0;
-                    height:75vh;
-                    overflow:auto;
-                }
-                .modelx{
-                    transform:scale(0.6);
-                }`}
-            </style>
         </GuestLayout>
-
     );
 };
+
 export default Index;

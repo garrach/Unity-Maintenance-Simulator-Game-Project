@@ -1,24 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head,Link } from '@inertiajs/react';
 import Chart from 'react-apexcharts';
 import React, { useEffect, useRef, useState } from 'react';
 const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
     const [maintenanceOne, setMaintenanceOne] = useState(maintenanceTasksz);
+    console.log(maintenanceTasksz)
     const [users, setUsers] = useState();
-    // Static maintenance schedule
-    const maintenanceSchedule = {
-        oilChange: 5000,
-        inspections: 10000,
-        tireRotation: 7500,
-        brakeFluidCheck: 15000,
-        airFilterReplacement: 20000,
-        // Add other maintenance tasks and intervals as needed
-    };
-    // Static reminder settings
-    const reminderSettings = {
-        emailNotifications: true,
-        smsNotifications: false,
-    };
+
     const [labels, setLabels] = useState([]);
     const chartOptions = {
         chart: {
@@ -35,8 +23,8 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
         labels: labels,
         legend: {
             show: true,
-            position: 'right', // You can change the position if needed
-            horizontalAlign: 'left', // You can adjust alignment if needed
+            position: 'right', 
+            horizontalAlign: 'left', 
             fontSize: '14px',
             labels: {
                 colors: ['#ff0000', '#00ff00', '#0000ff'], // Set the legend label colors here
@@ -57,10 +45,14 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
                 obj.device.map((DVinfos) => {
                     labels.push(DVinfos.type)
                 })
-                statss.current.push(obj.usage_count)
-                console.log(obj)
+                if(obj.usage_count){
+
+                    statss.current.push(obj.usage_count)
+                }
             })
         })
+        {console.log(statss.current)}
+
         setLabels(labels);
         setChartSeries(statss.current);
         return () => {
@@ -70,6 +62,7 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
     }, [])
     return (
         <div className='dark:bg-gray-900 dark:text-white'>
+
             <AuthenticatedLayout
                 user={auth.user}
                 header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Basic Maintenance</h2>}
@@ -83,7 +76,8 @@ const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
                           {users && <h2 className="text-xl font-bold mb-2 overflow-hidden">Maintenance Chart : {users.map((user,index)=>(
                           <span className='p-2 uppercase text-xl dark:text-white text-gray-500 hover:bg-orange-500 rounded-lg cursor-pointer'>{user}</span>))}</h2> }
                             {chartSeries && <Chart options={chartOptions} series={chartSeries} type="donut" height={200} />}
-                        </div>
+                        </div>                    <Link className='bg-blue-500 hover:bg-green-500 p-4' href={route('full-maintenance-suite')}>settings</Link>
+
                         {/* Display Maintenance Schedule */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Maintenance </h2>

@@ -24,10 +24,7 @@ const PaymentPlanOverview = ({ paymentPlan }) => {
             {servicesRef.current &&(servicesRef.current.map((feature,index)=>
             <li key={index}>{feature.name}</li>
             ) )}
-            </ul>
-           
-            <p><b>Subscribe:</b></p>
-           
+            </ul>           
           </li>
       
       </ul>

@@ -11,15 +11,14 @@ const UsersList = ({ vehicle, usersList }) => {
     state: '',
   }]
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md  overflow-y-auto h-80">
-      {props.auth.user.role === "admin" ? (<><h2 className="text-lg font-semibold mb-2">Users List</h2>
-      </>) : (<><h2 className="text-lg font-semibold mb-2">Client List</h2>
-      </>)}
+    <div className="bg-white dark:bg-gray-800 p-2 rounded-md shadow-md h-full">
+     <h2 className="text-lg font-semibold mb-2">Users List</h2>
+
       <ul>
         {usersList.map((user, Index) => (
 
-          <li key={Index}>
-           <ul className='flex'>
+          <li key={Index} className='hover:bg-gray-900 rounded-md shadow-md transition-transform transform hover:scale-105'>
+           <ul className='flex items-baseline'>
   <li className='mb-4 mr-2'><strong className='uppercase mr-2'>Name:</strong> {user.name}</li>
   {props.auth.user.role === "admin" ? (
     <>

@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
-const JobsList = ({ auth, jobs }) => {
+const JobsList = ({ auth, jobs,users }) => {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -19,11 +19,14 @@ const JobsList = ({ auth, jobs }) => {
                 key={index}
                 className='relative bg-gray-800 p-4 rounded-md shadow-md transition-transform transform hover:scale-105 cursor-pointer'
               >
+                {console.log(users)}
+              <Link href={route('userAccount.show', { userID: users[job.id].id })}>
                 <div className='text-white'>
                   <div className='w-full h-56 bg-gray-900 mt-6'></div>
                   <p className='text-lg font-semibold mt-2'>{job.title}</p>
                   <p className='text-gray-400'>{renderDescription(job.description)}</p>
                 </div>
+                </Link>
                 
               </li>
             ))}

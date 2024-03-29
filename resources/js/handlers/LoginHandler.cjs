@@ -5,6 +5,7 @@ const authlogin = new mongoose.Schema({
   email: String,
   password: String,
   role: String,
+  BD_id:Number,
 });
 const Auth = mongoose.model('users', authlogin);
 async function handleLogin(res, data, db) {
@@ -17,9 +18,9 @@ async function handleLogin(res, data, db) {
 
   } else {
     // If the user does not exist, proceed to create and save the new user
-    const newUser = new Auth({ username: data.name, email: data.email, password: data.password });
+    const newUser = new Auth({ BD_id:data.id, username: data.name, email: data.email, password: data.password });
     await newUser.save();
-    console.log({ success: 'User registered successfully' });
+    console.log({ success: 'User registered successfully' }); 
     return true;
   }
 }

@@ -18,12 +18,13 @@ use App\Models\User;
 use App\Models\WishList;
 use App\Models\Reminder;
 use App\Models\Schedule;
+use App\Models\Purchase;
 
 
 class DBsyncController extends Controller
 {
     public function index(){
-        $connections=AddonRequest::all()->toArray();
+        $connections=Purchase::all()->toArray();
         $Vehicle=Vehicle::all()->toArray();
         $Device=Device::all()->toArray();
         $User=User::all()->toArray();

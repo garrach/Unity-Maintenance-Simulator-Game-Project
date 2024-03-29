@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const DeviceSchema = new mongoose.Schema({
   name: String,
   type: String,
-  id: Number,
-  U_id:Number,
+  DB_id:Number,
 });
 const Device = mongoose.model('userDV', DeviceSchema);
 async function handleDeviceMessages(res, data, db) {
@@ -14,7 +13,7 @@ async function handleDeviceMessages(res, data, db) {
     console.log({ error: 'Device with the same serial_number already exists' });
   } else {
     // If the device does not exist, proceed to create and save the new device
-    const newDevice = new Device({ name: data.serial_number, type: data.type , id:data.id, U_id:data.U_id});
+    const newDevice = new Device({DB_id:data.id, name: data.serial_number, type: data.type});
     await newDevice.save();
     console.log({ success: 'Device added successfully' });
   }

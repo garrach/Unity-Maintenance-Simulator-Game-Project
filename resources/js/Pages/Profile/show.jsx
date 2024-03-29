@@ -8,6 +8,10 @@ const Show = ({ userID, encryptedDataDetails }) => {
   const carDetails = { make: "(N/A)", model: "(N/A)", year: "(N/A)" };
   const colors = ['blue', 'green', 'red', 'yellow'];
   const decData = useRef({});
+
+  const [userHistory,setUserHistory]=useState();
+
+
   const decryptUserData = (encryptedDataDetails) => {
     try {
       decData.current=atob(encryptedDataDetails);
@@ -68,6 +72,8 @@ const Show = ({ userID, encryptedDataDetails }) => {
   useEffect(() => {
    async function fetchJsonRAw(){
      console.log(await orgnizeData()); 
+     const userData=await orgnizeData();
+     setUserHistory(userData)
    }
    fetchJsonRAw();
   },[])
@@ -117,6 +123,11 @@ const Show = ({ userID, encryptedDataDetails }) => {
         <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
           <h2 className="text-lg font-bold mb-2">Maintenance History</h2>
           <ul>
+            {userHistory && Object.values(userHistory.devices).map((item,index)=>(
+              <li key={index}>
+                {`item purchase: ${item.type}`}
+              </li>
+            ))}
           </ul>
         </div>
         {props.auth.user.role === "admin" && (<>
@@ -125,9 +136,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
             <Link href={route('userAccount.edit', { id: encryptedData })}><h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2></Link>
             <p>This section could include a logout button and an option for account deactivation.</p>
           </div></>)}
-        <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
-          <h2 className="text-lg font-bold mb-2">Connected Services</h2>
-        </div>
+        
       </div>
       <style>
         {`

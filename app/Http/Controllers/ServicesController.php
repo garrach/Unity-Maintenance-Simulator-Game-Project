@@ -46,7 +46,7 @@ class ServicesController extends Controller
         return Inertia::render('Services/Edit', ['service' => $service]);
     }
 
-    public function update(Request $request, Service $service): Response
+    public function update(Request $request, Service $service)
     {
         // Validation logic here, if needed
 

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
+use Illuminate\Support\Facades\Auth;
+
+
 class ReportController extends Controller
 {
     public function apply(Request $request)
@@ -56,7 +59,15 @@ class ReportController extends Controller
     public function index()
     {
         $jobs = Report::with(['user', 'job'])->get();
-        $reports = Report::all();
+
+
+        $user=Auth::user();
+
+        if($user->role=="admin"){
+            $reports = Report::all();
+        }else
+        $reports = Report::where('user_id',$user->id)->get();
+
 
         return Inertia::render('Reports/Index', ['reports' => $reports, 'jobs' => $jobs]);
     }
