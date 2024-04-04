@@ -85,7 +85,7 @@ const Preview = () => {
             <h2>Retrive from Unity Live Client</h2>
             <ul>
                 {messageArr.current.map((element, index) => (
-                    <li key={index}>{`ID:${index} position: Vector3 (x:${element.position.x},y:${element.position.y},z:${element.position.z})`}</li>
+                    <li key={index}>{`ID:${index} position: Vector3 (x: ${element.position.x}, y: ${element.position.y}, z: ${element.position.z})`}</li>
                 ))}
             </ul>
         </>) : (<>
@@ -94,7 +94,7 @@ const Preview = () => {
                 {deviceRef.current && (
                     <ul>
                         {deviceRef.current.arr.map((element, index) => (
-                            <li key={index}>{`ID:${index} position: Vector3 (x:${element.position.x},y:${element.position.y},z:${element.position.z})`}</li>
+                            <li key={index}>{`ID:${index} position: Vector3 (x: ${element.position.x}, y: ${element.position.y}, z: ${element.position.z})`}</li>
                         ))}
                     </ul>)}
             </>) : (<>

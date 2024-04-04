@@ -32,8 +32,12 @@ use Illuminate\Support\Facades\Auth;
 
 use Inertia\Inertia;
 //static Pages Routes
+Route::get('/api/key',function(){
+    return response()->json(['key'=>env('APP_WEBSOCKET_KEY')]);
+});
 Route::get('/documentation',function(){
-    return Inertia::render('Documentation');
+    $key=env('APP_WEBSOCKET_KEY');
+    return Inertia::render('Documentation',compact('key'));
 })->name('documentation');
 
     Route::get('/', function () {

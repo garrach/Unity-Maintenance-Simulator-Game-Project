@@ -53,16 +53,17 @@ async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients,clientI
 
     const currentUser=await getUserByName(TMD.data.user.name,db);
     if(unityInstance.get('unity')){
-        ws.send(JSON.stringify({type:"vehicleStat",message:"unity instanceRunning (Vehicle)",data:{vehicle:null}}))
+        ws.send(JSON.stringify())
+        broadcast({type:"vehicleStat",message:"unity instanceRunning (Vehicle)",data:{vehicle:TMD.data}},clientKey, ws, db, clients)
     }
 
 }
 
 async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients,clientInfo) {
 
-    const currentUser=await getUserByName(TMD.data.user.name,db);
+    //const currentUser=await getUserByName(TMD.data.user.name,db);
     if(unityInstance.get('unity')){
-        ws.send(JSON.stringify({type:"deviceStat",message:"unity instanceRunning (Device)",data:{device:null}}))
+        broadcast({type:"deviceStat",message:"unity instanceRunning (Device)",data:{device:TMD.data}},clientKey, ws, db, clients)
     }
 }
 
@@ -73,8 +74,11 @@ function handleClientKeyRequest(TMD, clientKey, ws) {
     ws.send(JSON.stringify({TMD:TMD,client:clientKey.ID,Key:clientKey.key}))
 }
 
-function handleInitUniyDevicesLocation(TMD) {
+function handleInitUniyDevicesLocation(TMD, clientKey, ws, db, clients,clientInfo) {
     console.log(TMD.message); 
+    if(unityInstance.get('unity')){
+        broadcast({type:"devicesPlacement",message:"sent devices placemnet instanceRunning (Device)",data:TMD.data},clientKey, ws, db, clients)
+    }
 }
 // Placeholder handler functions
 function handleInitUniyDevicesLocation(TMD, clientKey, ws, db) {
@@ -137,9 +141,8 @@ module.exports = {
     messageHandlers, registerHandler,
     handlewebClientIdentity,
     handleUserInstanceVehicle,
-handleUserInstanceDevice,
+    handleUserInstanceDevice,
     handleClientKeyRequest,
-    handleInitUniyDevicesLocation,
     handleInitUniyDevicesLocation,
     handlePoke,
     handleDeviceMoved,

@@ -148,7 +148,7 @@ const DashboardElements = ({ children, auth, usersList, currentwebSocket, displa
                 {children}
             </ClientMainContent>}
         {auth.user.role === "employee" &&
-            <ClientMainContent userExp={userExp}  requests={requests} auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
+            <ClientMainContent userExp={userExp} webSocket={webSocket}  requests={requests} auth={auth} usersList={usersList} currentwebSocket={currentwebSocket} display={display} >
                 {children}
             </ClientMainContent>}
 

@@ -16,7 +16,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 async function yieldingConnetion(){
-const db= await connectToDatabase(true);
+const db= await connectToDatabase(true); 
 //WEBSOKET-SERVER (REALTIME COMMUNICATION)
 configureWebSocket(wss,db);
 //API ENDPOINTS

@@ -1,5 +1,28 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import React from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+
+
+const fetchData = async (endpoint, apiKey, setDataFunction) => {
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: `http://localhost:3002/api/${endpoint}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': apiKey,
+            },
+        });
+        setDataFunction(response.data);
+    } catch (error) {
+        console.error(`Error fetching data from ${endpoint}:`, error);
+    }
+};
+
+
 
 
 const SideMenu = () => {
@@ -13,6 +36,7 @@ const SideMenu = () => {
                     <li className="py-2"><Link href="#authenticated-routes" className="hover:bg-gray-700 dark:hover:bg-gray-800 block px-4">Authenticated Routes</Link></li>
                     <li className="py-2"><Link href="#admin-routes" className="hover:bg-gray-700 dark:hover:bg-gray-800 block px-4">Admin Routes</Link></li>
                     <li className="py-2"><Link href="#employee-role" className="hover:bg-gray-700 dark:hover:bg-gray-800 block px-4">Employee Role</Link></li>
+                    <li className="py-2"><Link href="#api-test" className="hover:bg-gray-700 dark:hover:bg-gray-800 block px-4">Test Api</Link></li>
 
 
 
@@ -22,19 +46,25 @@ const SideMenu = () => {
         </div>
     );
 };
+const Documentation = (key) => {
+    const { props } = usePage();
+    const apiKey = props.key;
+    const [userData, setUserData] = useState(null);
+    const [devicesData, setDevicesData] = useState(null);
+    const [connectionsData, setConnectionsData] = useState(null);
+    const [vehiclesData, setVehiclesData] = useState(null);
+    useEffect(() => {
+        fetchData('login', apiKey, setUserData);
+        console.log({ apiKey: props })
+    }, [])
 
-
-
-
-
-const Documentation = () => {
     return (
         <>
-            <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen grid grid-cols-3">
+            <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex">
                 <div>
                     {SideMenu()}
                 </div>
-                <div className="container mx-auto py-12">
+                <div className="container mx-auto p-32">
                     <h1 className="text-4xl font-bold text-center mb-8">Application Routes Documentation</h1>
                     {/* Introduction Section */}
                     <section id='introduction' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
@@ -43,6 +73,17 @@ const Documentation = () => {
                             This document provides an overview of the routes in our Laravel application along with their functionalities and access permissions.
                         </p>
                     </section>
+
+
+                    {/* Download Unity Garage simulator */}
+                    <section id='Download' class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-md">
+                        <h2 class="text-3xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Unity Garage Simulator</h2>
+                        <p class="text-lg text-gray-700 dark:text-gray-300">
+                            Welcome to the Unity Garage Simulator! Step into the world of automotive innovation and exploration. Experience the thrill of customizing and interacting with intricately detailed car interiors. From tinkering with dashboard displays to adjusting seat configurations, this simulator offers a unique glimpse into the inner workings of vehicle technology.
+                        </p>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Download Now</button>
+                    </section>
+
 
                     {/* Public Routes Section */}
                     <section id='public-routes' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
@@ -98,19 +139,38 @@ const Documentation = () => {
                         </ul>
                     </section>
 
-                   {/* Employee Role Section */}
-                   <section id="employee-role"  className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
+                    {/* Employee Role Section */}
+                    <section id="employee-role" className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
                         <h2 className="text-2xl font-semibold mb-4">Employee Role</h2>
-                        <p className="text-gray-300">
+                        <p className="text-gray-500 dark:text-gray-300">
                             Employees in our application have access to the following routes and functionalities to manage client data and provide support:
                         </p>
                         <ul className="list-disc ml-6 mt-4">
-                            <li><span className='px-2 bg-gray-900 dark:bg-gray-700 rounded-full'>(Route: /connected-services)</span>: Displays connected services information.</li>
-                            <li><span className='px-2 bg-gray-900 dark:bg-gray-700 rounded-full'>(Route: /full-maintenance-suite)</span>: Displays full maintenance suite information.</li>
-                            <li><span className='px-2 bg-gray-900 dark:bg-gray-700 rounded-full'>(Route: /customizable-maintenance-schedules)</span>: Displays customizable maintenance schedules information.</li>
-                            <li><span className='px-2 bg-gray-900 dark:bg-gray-700 rounded-full'>(Route: /leaderboard)</span>: Displays the leaderboard showing employee performance.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /connected-services)</span>: Displays connected services information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /full-maintenance-suite)</span>: Displays full maintenance suite information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /customizable-maintenance-schedules)</span>: Displays customizable maintenance schedules information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /leaderboard)</span>: Displays the leaderboard showing employee performance.</li>
                         </ul>
                     </section>
+
+
+                    {/* API  Section */}
+
+                    <div id="api-test" className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
+                        <span title='user authentication' className={`${userData ? 'bg-green-500' : 'bg-red-500'} w-6 h-6 rounded-full relative block float-right`}></span>
+
+                        <h2 className="text-2xl font-semibold mb-4">API  Section</h2>
+                        <p className="text-gray-300">
+                            user fetch data:
+                        </p>
+
+                        <ul className="list-disc ml-6 mt-4">
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/login)</span>: Displays login services information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Devices)</span>: Displays full Devices information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Connections)</span>: Displays Connections in maintenance schedules information.</li>
+                            <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Vehicles)</span>: Displays the Listed Vehicles.</li>
+                        </ul>
+                    </div>
 
                     {/* Conclusion Section */}
                     <section id='conclusion' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
