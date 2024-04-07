@@ -100,9 +100,9 @@ Ce projet représente une fusion innovante entre le développement de jeux et le
 
 1. Documentation de [Laravel](https://laravel.com/docs)
 2. Documentation de [Vue.js](https://vuejs.org/v2/guide/)
-5. Documentation de [Express js](https://docs.unity3d.com/Manual/index.html)
+5. Documentation de [Express js](https://expressjs.com/en/4x/api.html)
 3. Documentation de [MongoDB Atlas](https://docs.atlas.mongodb.com/)
-4. Documentation de [Unity](https://expressjs.com/en/4x/api.html)
+4. Documentation de [Unity](https://docs.unity3d.com/Manual/index.html)
 
 
 ---
