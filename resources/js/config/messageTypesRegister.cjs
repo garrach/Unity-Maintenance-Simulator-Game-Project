@@ -32,6 +32,10 @@ function handlewebClientIdentity(TMD, clientKey, ws) {
     ws.send(JSON.stringify({type,message,data:clientKey}))
 }
 
+async function handleDeviceMovement(TMD, clientKey, ws, db, clients,clientInfo){
+
+    console.log(TMD);
+}
 
 let Createdrooms=0;
 
@@ -51,10 +55,11 @@ async function handleUserInstance(TMD, clientKey, ws, db, clients,clientInfo) {
 
 async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients,clientInfo) {
 
-    const currentUser=await getUserByName(TMD.data.user.name,db);
+    console.log(TMD);
+    //const currentUser=await getUserByName(TMD.data.user.name,db);
     if(unityInstance.get('unity')){
         ws.send(JSON.stringify())
-        broadcast({type:"vehicleStat",message:"unity instanceRunning (Vehicle)",data:{vehicle:TMD.data}},clientKey, ws, db, clients)
+        broadcast({type:"vehicleStat",message:"unity instanceRunning (Vehicle)",data:TMD.data},clientKey, ws, db, clients)
     }
 
 }
@@ -63,7 +68,8 @@ async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients,clientIn
 
     //const currentUser=await getUserByName(TMD.data.user.name,db);
     if(unityInstance.get('unity')){
-        broadcast({type:"deviceStat",message:"unity instanceRunning (Device)",data:{device:TMD.data}},clientKey, ws, db, clients)
+        broadcast({type:"deviceStat",message:"unity instanceRunning (Device)",data:TMD.data},clientKey, ws, db, clients)
+
     }
 }
 
@@ -140,6 +146,7 @@ module.exports = {
     unityInstance,
     messageHandlers, registerHandler,
     handlewebClientIdentity,
+    handleDeviceMovement,
     handleUserInstanceVehicle,
     handleUserInstanceDevice,
     handleClientKeyRequest,

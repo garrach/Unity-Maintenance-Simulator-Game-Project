@@ -70,7 +70,8 @@ const Documentation = (key) => {
                     <section id='introduction' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
                         <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
                         <p className="text-gray-700 dark:text-gray-300">
-                            This document provides an overview of the routes in our Laravel application along with their functionalities and access permissions.
+                        This document serves as both the documentation and final report for the game and web application development project. This innovative endeavor seamlessly merges the realms of video game development and web development to craft an engaging, interactive experience for users.
+
                         </p>
                     </section>
 

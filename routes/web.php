@@ -26,6 +26,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WishListController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\UnityDevicesController;
+use App\Http\Controllers\UnityDataMonitorController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,7 @@ Route::middleware(('auth'))->group(function () {
     //client and Admin and Employees
 
     Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
+    Route::get('/data-monitoring',[UnityDataMonitorController::class, 'index'])->name('data-monitoring');
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');

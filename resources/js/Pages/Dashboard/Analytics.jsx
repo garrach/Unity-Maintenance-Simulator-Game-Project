@@ -20,6 +20,7 @@ const Analytics = ({webSocket,stat,auth}) => {
 
   const [unity,setUnity]=useState(null);
   const messageRef=useRef();
+  const IsTestingRef=useRef(false);
   useEffect(()=>{
     if(stat){
       try {
@@ -57,7 +58,7 @@ const Analytics = ({webSocket,stat,auth}) => {
     }
     }else
       try {
-          webSocket.send(JSON.stringify({type:"unityStatVH",message:"ask for vehicleStat Running",data:auth}))
+          webSocket.send(JSON.stringify({type:"unityStatVH",message:"ask for vehicleStat Running",data:{auth}}))
           webSocket.addEventListener('message',(message)=>{ 
               try {
                   const data= JSON.parse(message.data);
@@ -92,7 +93,11 @@ const Analytics = ({webSocket,stat,auth}) => {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md h-full">
-      <h2 className="text-lg font-semibold mb-2">Graphs/Analytics <span className='ml-2'>{stat ? <>{`${LiveFeedElemnt.Devices[0].name} : ${LiveFeedElemnt.Devices[0].id}`}</>:
+      {console.log(LiveFeedElemnt.Devices[0].id)}
+      <h2 className="text-lg font-semibold mb-2 dark:text-gray-200">Graphs/Analytics <span className='ml-2'>
+
+        {stat ? <>{`${LiveFeedElemnt.Devices[0].name} : ${(typeof LiveFeedElemnt.Devices[0].id =="string") ? LiveFeedElemnt.Devices[0].id:auth.user.name}`}</>:
+
       <>{`${LiveFeedElemnt.Vehicles[0].name} : ${LiveFeedElemnt.Vehicles[0].id}`}</> }</span></h2>
       
       {/* Conditionally rendering components based on LiveFeedAvailable */}

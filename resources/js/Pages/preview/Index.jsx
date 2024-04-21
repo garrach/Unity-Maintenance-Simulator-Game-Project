@@ -43,44 +43,10 @@ const Preview = () => {
     useEffect(() => {
         loadDataX(socket)
     }, [unityTracking])
-    useEffect(() => {
-        const cords = {
-            x: 0,
-            y: 0
-        }
-        const newcords = {
-            x: 0,
-            y: 0
-        }
-        window.addEventListener('mouseup', (ent) => {
-            if (ent.target.nodeName == "SPAN") {
-                newcords.x = Math.abs(ent.clientX - cords.x);
-                newcords.y = Math.abs(ent.clientY - cords.y);
-                let pos = ent.target.getAttribute('value');
-                pos = JSON.parse(pos);
-                console.log(Number(pos.data.position.x) - (newcords.x * 0.01));
-                console.log(Number(pos.data.position.x));
-                setMoveingTest(`Device pos : ${Number(pos.data.position.x) / 10 + 25} : Moved${newcords.x * 0.01}`);
-            }
-        })
-        window.addEventListener('mousedown', (ent) => {
-            if (ent.target.nodeName == "SPAN") {
-                let pos = ent.target.getAttribute('value');
-                pos = JSON.parse(pos);
-                //console.log(Number(pos.data.position.x));
-                cords.x = ent.clientX;
-                cords.y = ent.clientY;
-                console.log(cords)
-            }
-        })
-        return () => {
-            window.removeEventListener('mousedown', () => { });
-            window.removeEventListener('mouseup', () => { });
-        }
-    }, [])
     return (<>
-        <h1>Devices Placemnt:</h1>
-        <button className="p-4 bg-gray-300" onClick={(e) => (movingListener(e, moveingArr.current))}>Snyc positions</button>
+      <div className="place">
+        </div>
+        <h1 className="text-white dark:text-white">Devices Placemnt:</h1>
         {unityTracking ? (<>
             <h2>Retrive from Unity Live Client</h2>
             <ul>
@@ -89,20 +55,20 @@ const Preview = () => {
                 ))}
             </ul>
         </>) : (<>
-            {deviceRef.current ? (<>
+            {deviceRef.current ? (<div className="text-white dark:text-white w-fit z-10 fixed">
+            <button className="p-4 bg-gray-300" onClick={(e) => (movingListener(e, moveingArr.current))}>Snyc positions</button>
                 <h2>Retrive from json Generated file</h2>
                 {deviceRef.current && (
                     <ul>
                         {deviceRef.current.arr.map((element, index) => (
-                            <li key={index}>{`ID:${index} position: Vector3 (x: ${element.position.x}, y: ${element.position.y}, z: ${element.position.z})`}</li>
+                            <li id={index} title={element.name} className="p-2 mb-4 hover:bg-orange-500 w-fit cursor-pointer" key={index}>{`ID:${index} position: Vector3 (x: ${element.position.x}, y: ${element.position.y}, z: ${element.position.z})`}</li>
                         ))}
                     </ul>)}
-            </>) : (<>
+            </div>) : (<>
                 <h2>Retrive from Unity Live Client, jsonFail</h2>
             </>)}
         </>)}
-        <div className="place">
-        </div>
+      
         <style>
             {`
             .placement{
@@ -114,6 +80,16 @@ const Preview = () => {
             .placement:hover{
                 background:red !important;
             }
+            .place {
+                position:fixed;
+                top:0;
+                z-index:1;
+                width: 100%; /* Adjust width as needed */
+                height: 100vh; /* Adjust height as needed */
+                background-image: linear-gradient(rgba(0,0,0,0) 1px, black 1px),
+                                  linear-gradient(90deg, rgba(0,0,0,0) 1px, black 1px);
+                background-size: 20px 20px; /* Adjust grid dimensions */
+              }
             `}
         </style>
     </>)

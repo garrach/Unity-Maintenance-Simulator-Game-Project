@@ -72,8 +72,8 @@ class DashboardController extends Controller
         $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
         $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
         $deviceIds = $connections->pluck('device_id')->toArray();
-        for ($i = 0; $i < count($vehicleIds); $i++) {
-            $devices[$i] = $vehicles[$i]->devices;
+        for ($i = 0; $i < count($Purchases); $i++) {
+            $devices[$Purchases[$i]->id] = $Purchases[$i]->device;
         }
 
         if ($valid == "Unauthorized") {

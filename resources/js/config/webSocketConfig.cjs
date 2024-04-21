@@ -2,7 +2,7 @@
 const crypto = require('crypto');
 const { WebSocketSender } = require('../handlers/WebSocketOperations.cjs');
 const {messageHandlers,unityInstance, registerHandler, handleClientKeyRequest, handlewebClientIdentity, handleInitUniyDevicesLocation
-   ,handleUnityLogin,handleUserRoom,handleUserInstance,handleUserInstanceVehicle,
+   ,handleUnityLogin,handleUserRoom,handleUserInstance,handleUserInstanceVehicle,handleDeviceMovement,
    handleUserInstanceDevice} = require('./messageTypesRegister.cjs');
 
 const clients = new Set();
@@ -105,6 +105,7 @@ function configureWebSocket(wss, db) {
     registerHandler('unityStat', handleUserInstance);
     registerHandler('unityStatVH', handleUserInstanceVehicle);
     registerHandler('unityStatDV', handleUserInstanceDevice);
+    registerHandler('movingPart', handleDeviceMovement);
   
     console.log('WebSocket server configured');
   } catch (error) {

@@ -76,19 +76,13 @@ const ClientMainContent = ({ userExp, children, auth, usersList, currentwebSocke
                 <DashboardCard number="15m" icon="ic_glass_message.png" span={true} margin="col-span-3">
                     <WishList wishListItems={requests.wishListItems} auth={auth} />
                 </DashboardCard>
+                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin=" col-span-7">
+                    <RecentConnections auth={auth} />
+                </DashboardCard>
                 <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2">
                     <PaymentPlanOverview auth={auth} />
                 </DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin="col-span-2">
-                    <Analytics webSocket={webSocket} stat={true} auth={auth} />
-                </DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin="col-span-5 row-span-4">
-                    <Analytics webSocket={webSocket} stat={false} auth={auth} />
-                </DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin=" col-span-6">
-                    <RecentConnections auth={auth} />
-                </DashboardCard>
-                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin=" col-span-3">
+                <DashboardCard number="32.5k" icon="ic_glass_buy.png" span={true} margin=" col-span-5">
                     <UsersList auth={auth} usersList={usersList} />
                 </DashboardCard>
 

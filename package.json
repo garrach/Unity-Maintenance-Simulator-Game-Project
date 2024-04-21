@@ -8,6 +8,7 @@
         "express": "nodemon server.cjs",
         "expressProd": "node server.cjs",
         "vite:client": "nodemon /resources/js/Pages/client.cjs",
+        "testProd":"npx concurrently \"npm run php\" \"npm run expressProd\" \"npm run dev\"",
         "start": "npx concurrently \"npm run php\" \"npm run express\" \"npm run dev\"",
         "pro": "npx concurrently \"npm run expressProd\" \"npx vite build\" \"php artisan serve\"",
         "start:express": "npm run express",
