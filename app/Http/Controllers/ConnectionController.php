@@ -15,6 +15,9 @@ use App\Models\Device;
 use App\Models\Purchase;
 class ConnectionController extends Controller
 {
+    public static function getTendingConnections(){
+        return ["Connections"=>Connection::all()->toArray(),"Users"=>User::all()->toArray(),"Vehicles"=>Vehicle::all()->toArray()];
+    }
     public function getDevicesForVehicle($vehicleId)
     {
 

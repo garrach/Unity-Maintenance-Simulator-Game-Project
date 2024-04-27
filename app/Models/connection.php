@@ -9,10 +9,10 @@ class Connection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['vehicle_id','device_id'];
+    protected $fillable = ['vehicle_id','device_id','name','installationdate'];
 
     public function vehicles()
     {
-        return $this->hasManyThrough(Vehicle::class,Device::class,'id','id');
+        return $this->hasMany(Vehicle::class);
     }
 }

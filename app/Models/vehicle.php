@@ -15,8 +15,8 @@ class Vehicle extends Model
     {
         return $this->BelongsToMany(Device::class,'connections','vehicle_id','device_id');
     }
-    public function connections()
+    public function connection()
     {
-        return $this->hasManyThrough(Connection::class,Device::class,'id','id');
+        return $this->belongsTo(Connection::class);
     }
 }

@@ -47,6 +47,7 @@ Route::get('/documentation',function(){
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
+            'tending'=>ConnectionController::getTendingConnections(),
         ]);
     })->name('home');
     Route::get('/aboutUs', function () {return Inertia::render('About');})->name('about');

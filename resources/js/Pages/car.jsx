@@ -80,7 +80,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       setCamm(camera);
       // Renderer
       renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth-30, window.innerHeight);
       renderer.shadowMap.enabled = true;
       mount.current.appendChild(renderer.domElement);
       // Create cylinder
@@ -302,7 +302,6 @@ actions.forEach((elemnt) => {
 init();
 return () => {
   window.removeEventListener('resize', () => { });
-  mount.current = null;
 };
   }, []);
 return <div ref={mount} />;

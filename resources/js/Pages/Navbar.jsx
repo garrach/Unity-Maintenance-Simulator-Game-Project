@@ -25,7 +25,7 @@ const Navbar = ({ auth }) => {
       </span>
       <div className={`flex static-links z-20 ${isMenuOpen ? 'flex' : 'hidden'}`}>
         <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
-        <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">contact</Link>
+        <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Contact</Link>
         <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
         <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
         <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>

@@ -6,6 +6,9 @@ use App\Models\Device;
 use App\Models\DeviceUsage;
 use App\Models\Purchase;
 use App\Models\Schedule;
+use App\Models\Connection;
+use App\Models\Vehicle;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,6 +113,16 @@ class FullMaintenanceSuiteController extends Controller
             'experience'=>$score->experience+10,
             'coins'=>$score->coins+10,
         ]);
+
+        $vehicle=Vehicle::all()->first();
+
+        Connection::create([
+            'name'=>$Purchase->user->name.": ".$Purchase->device->type.". Connected",
+            'vehicle_id'=>$vehicle->id,
+            'device_id'=>$Purchase->device->id,
+            'installationdate'=> date("Y-m-d")
+        ]);
+
         /*if($Purchase){
         $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
         $Schedule->delete();

@@ -6,18 +6,19 @@ import { clientSocket, TMD } from '../client.cjs';
 
 
 
-const CarAnalyticsIndex = ({ auth,vehicle,devices }) => {
+const CarAnalyticsIndex = ({ auth, vehicle, devices, connection }) => {
     const socket = clientSocket('car_analystics');
 
     const [dataType, setDataType] = useState({
         vehicle: vehicle,
         devices: devices,
+        connection: connection,
         analytics: {},
         performance: {}
     });
 
     useEffect(() => {
-        setDataType({ vehicle: vehicle, devices: devices })
+        setDataType({ vehicle: vehicle, devices: devices, connection: connection })
     }, [])
 
     return (
@@ -44,19 +45,24 @@ const CarAnalyticsIndex = ({ auth,vehicle,devices }) => {
                             </ul>
                         </div>
 
-                        
+
 
                         {/* Display Connected Devices */}
                         <div className="dark:text-white bg-white dark:bg-gray-800 p-4 rounded-md shadow mb-4">
                             <h2 className="text-xl font-bold mb-2">Connected Devices</h2>
                             <ul>
-                                {Object.values(dataType.devices).map((device, index) => (
-                                    <li key={index} className="mb-2">{device.type}</li>
+                                {Object.values(dataType.connection).map((value, index) => (
+                                    <li key={index}>
+                                        <ul>
+                                            <li className="mb-2">{`${value.name}`}</li>
+                                            <li className="mb-2">{`${value.installationdate}`}</li>
+                                        </ul>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
 
-                        
+
                     </div>
                 </div>
             </AuthenticatedLayout>

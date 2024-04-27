@@ -66,7 +66,7 @@ export default function Authenticated({ user, header, children, webSocket }) {
                                         <Dropdown.Link href={route('myaccount', ['user' == { user }])}>My Account</Dropdown.Link>
                                         <Dropdown.Link href={route('services.index')}>My Services</Dropdown.Link>
                                         
-                                        {user.role==="admin" && <Dropdown.Link href={route('paymentPlans.index')}>PaymentPlan</Dropdown.Link>}
+                                        {user.role==="admin" && <Dropdown.Link href={route('paymentPlans.index')}>Services Plans</Dropdown.Link>}
                                         <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
