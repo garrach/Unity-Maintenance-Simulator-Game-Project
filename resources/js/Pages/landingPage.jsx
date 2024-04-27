@@ -38,43 +38,126 @@ const LandingPage = ({ auth }) => {
                             <div className='absolute -ml-5 mt-5 w-20 h-10 rounded bg-orange-600 py-2'><p className='mx-auto'>New</p></div>
                         </div>
                     </div>
+                    <h1 className="text-6xl text-white font-bold md:font-sans-serif lg:text-46 z-10 relative mt-32 bottom-0">Revamp Your Ride with <br /> Car Maintain</h1>
                 </div>
-                <h1 className="text-6xl text-white font-bold md:font-sans-serif lg:text-46 z-10 absolute top-200">Revamp Your Ride with <br /> Car Maintain</h1>
                 <style>{`.centdiv{
     background-color:#e2e6ee;
 }`}</style>
             </div>
             <div className='tending h-screen w-full dark:text-white' >
-                
-                <div className='UnityGarage'>
+
+                <div className='serviceDetails'>
                     <div className='grid grid-cols-2 gap-0 w-full h-full'>
-                        <div className='dark:bg-red-500 relative h-full'>
+                        <div className='dark:bg-white-500 relative h-full '>
+                            <center className='mt-32 p-4'>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900  font-bold'>Sauvegarde dans la Base de Données</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'>Your information is securely stored in our <b className='underline decoration-sky-500'>MongoDB</b> database, ensuring reliability and scalability.
+                                    Experience seamless data storage and retrieval with MongoDB Compass, our intuitive database management tool.</p>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900  font-bold'>Synchronisation avec Cloud</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'>Experience the power of cloud synchronization with <b className='underline decoration-sky-500'>MongoDB Atlas</b>.
+                                    Your data is seamlessly synced between your local database and the cloud, providing redundancy and availability for uninterrupted access.</p>
+                            </center>
+
                         </div>
-                        <div className='dark:bg-orange-500 relative h-full'>
-                            <div className='absolute dark:bg-gray-500 w-56 h-36 bottom-2 -left-20'></div>
+                        <div className='dark:bg-white-500 relative h-full'>
+                            <img src="why-us.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <div className='absolute dark:bg-white-500 dotsCon w-56 h-20 bottom-10 -left-20'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <defs>
+                                        <pattern id="dots" width="5" height="20" patternUnits="userSpaceOnUse">
+                                            <circle cx="5" cy="5" r="2" fill="#808080" />
+                                        </pattern>
+                                    </defs>
+                                    <rect x="0" y="0" width="100" height="100" fill="url(#dots)" />
+                                </svg>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-                <ul className='grid grid-cols-3 p-4 mt-12 bg-gray-300 dark:bg-gray-800'>
+                <ul className='grid grid-cols-3 py-4 px-32 bg-gray-300 dark:bg-gray-800'>
                     {
                         Object.entries(props.tending).map(([keys, att], index) => (
-                            <li key={index} className='text-3xl p-4'>
+                            <li key={index} className='text-3xl p-4 flex justify-center'>
                                 {`+${att.length} \n ${keys}`}
                             </li>
                         ))
                     }
                 </ul>
-                <div className='UnityTestMode'>
+
+                <div className='serviceDetails'>
                     <div className='grid grid-cols-2 gap-0 w-full h-full'>
-                        <div className='dark:bg-orange-500 relative h-full'>
+                        <div className='dark:bg-white-500 relative h-full'>
+                            <img src="equipe-de-developpeur-web.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
                         </div>
-                        <div className='dark:bg-red-500 relative h-full'>
-                        <div className='absolute dark:bg-gray-500 w-56 h-36 bottom-2 -left-20'></div>
+                        <div className='dark:bg-white-500 relative h-full '>
+                            <center className='mt-32 p-4'>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900 mt-10 font-bold'>Communication entre Application Web et Serveur</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'>Experience real-time communication between our web application and backend server.
+                                    With <b className='underline decoration-sky-500'>HTTP</b> requests or <b className='underline decoration-sky-500'>WebSocket</b> connections,
+                                    data flows seamlessly to ensure instant updates and responsiveness.</p>
+
+                            </center>
+                        </div>
+
+                    </div>
+                </div>
+                <div className='serviceDetails'>
+                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                        <div className='dark:bg-white-500 relative h-full '>
+                            <center className='mt-32 p-4'>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900 mt-10 font-bold'>Moteur de Jeu</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'> Immerse yourself in captivating <b className='underline decoration-sky-500'>3D worlds</b> created with industry-leading game engines like <b className='underline decoration-sky-500'>Unity</b> Discover stunning graphics,
+                                    immersive environments, and thrilling <b className='underline decoration-sky-500'>Gameplay</b> that push the boundaries of interactive entertainment.</p>
+                            </center>
+                        </div>
+                        <div className='dark:bg-white-500 relative h-full'>
+                            <img src="game.png" alt="" className='relative top-20 left-56 w-auto h-80' />
                         </div>
                     </div>
                 </div>
+                <div className='serviceDetails'>
+                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='dark:bg-white-500 relative h-full'>
+                            <img src="e-commerce.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+                        </div>
+
+                        <div className='dark:bg-white-500 relative h-full '>
+                            <center className='mt-32 p-4'>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900 mt-10 font-bold'>Coins and Experience Earning Service</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'><b>Coins and Experience Rewards:</b> Earn <b className='underline decoration-sky-500'>coins</b> and <b className='underline decoration-sky-500'>experience points</b> as you engage with our platform's features and complete <b>tasks</b>. 
+                                From developing applications to playing and testing games, every action contributes to your progress and unlocks exciting rewards.
+                                <b>Gamified Development Environment:</b> Immerse yourself in a <b>gamified</b> development environment where progress is rewarded and achievements are celebrated. 
+                                Level up your <b>skills</b>, unlock <b>badges</b>, and compete with friends and colleagues on <b className='underline decoration-sky-500'>leaderboards</b> for ultimate bragging rights.</p>
+                            </center>
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div className='serviceDetails'>
+                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                      
+                        <div className='dark:bg-white-500 relative h-full '>
+                            <center className='mt-32 p-4'>
+                                <p className='text-3xl text-gray-300 dark:text-gray-900 mt-10 font-bold'>Future Update: Enhanced SaaS Platform for Web and Game Development</p>
+                                <p className='text-xl dark:text-gray-900 indent-8 mt-2'> Coming soon, our Enhanced <b className='underline decoration-sky-500'>SaaS</b>  Platform will revolutionize the way developers create web applications and games.
+                                    Building upon our existing infrastructure,
+                                    this update will introduce new features and improvements aimed at further streamlining the <b className='underline decoration-sky-500'>development process</b> and <b className='underline decoration-sky-500'>enhancing</b>  user experiences.</p>
+                            </center>
+                        </div>
+                        <div className='dark:bg-white-500 relative h-full'>
+                            <img src="skills02.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                        </div>
+                    </div>
+                </div>
+
+             
             </div>
             <style>{`
+            .dotsCon{
+
+            }
             .callout{
                 position:fixed;
                 width:5rem;
@@ -85,6 +168,8 @@ const LandingPage = ({ auth }) => {
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 max-width: 400px;
                 text-align: center;
+                background-image: url('home_mouse_icon.png');
+                background-size: cover;
             }
             .scrollter{
                 width:10rem;
@@ -154,12 +239,11 @@ to{
     margin-left:5rem;
 }
     }
-    .UnityGarage, .UnityTestMode {
+    .serviceDetails {
         display: block;
   position: relative;
-  height: 64vh;
+  height: 60vh;
   background: white;
-  margin-top: 2rem;
     }
             `}</style>
         </>)
