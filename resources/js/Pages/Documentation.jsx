@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import Navbar from './Navbar';
 
 
 
@@ -60,6 +61,8 @@ const Documentation = (key) => {
 
     return (
         <>
+                            <Navbar />
+
             <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex">
                 <div>
                     {SideMenu()}

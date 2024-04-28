@@ -5,7 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import {sendToMongo} from '../../mongoBackUP.cjs'
+import { sendToMongo } from '../../mongoBackUP.cjs'
 
 export default function Register() {
     const apiEndpoint = 'http://127.0.0.1:3002/api/login';
@@ -29,7 +29,7 @@ export default function Register() {
     const submit = async (e) => {
         e.preventDefault();
         post(route('register'), {
-            onSuccess: () => {sendToMongo(data)}
+            onSuccess: () => { sendToMongo(data) }
         });
 
 
@@ -41,16 +41,42 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit}>
-                <div className='flex'>
+                <div className='grid grid-cols-1 grid-cols-2 justify-center items-center'>
                     {props.user.role !== "" && (<>
+                        <div className='flex bg-orange-300 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'>
+                            <img src="shape02.png" alt="" className='absolute z-0 w-auto h-full' />
+                            <div className='z-10 w-full h-56'>
+                                <center>
+                                    <div className='grid grid-cols-1 justify-items-center justify-center items-center'>
+                                        <h1 className='text-5xl text-gray-900 '>Welcome Back</h1>
+                                        <p className='text-xl text-gray-800 bg-gray-100 p-2 bg-opacity-50 rounded-lg'>Hi there! </p>
+                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Welcome aboard to the community! We're over the moon to have you with us.</p>
+                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Get ready for exclusive insights, tips, and a whole lot of fun.</p>
+                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg mb-4'>Don't hesitate to reach out if you need anything. We're in this together!Cheers</p>
 
-                        <div className='flex bg-gray-800 h-screen w-full p-12 flex-col sm:justify-center items-center dark:bg-gray-900'></div>
+                                        <Link
+                                            href={route('login')}
+                                            className="bg-white uppercase w-32 px-4 w- 56 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                        >
+                                           <b>Sign in</b> 
+                                        </Link>
+                                    </div>
+                                </center>
+                            </div>
+
+                            <div className='absolute dark:bg-gray-900 dotsCon w-56 h-20 bottom-10 -left-20'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <defs>
+                                        <pattern id="dots" width="5" height="20" patternUnits="userSpaceOnUse">
+                                            <circle cx="5" cy="5" r="2" fill="#808080" />
+                                        </pattern>
+                                    </defs>
+                                    <rect x="0" y="0" width="100" height="100" fill="url(#dots)" />
+                                </svg>
+                            </div>
+                        </div>
                     </>)}
-
-
-
-                    <div className='flex regbox flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
-
+                    <div className='flex flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
                         <div>
                             <InputLabel htmlFor="name" value="Name" />
 
@@ -67,7 +93,6 @@ export default function Register() {
 
                             <InputError message={errors.name} className="mt-2" />
                         </div>
-
                         <div className="mt-4">
                             <InputLabel htmlFor="email" value="Email" />
 
@@ -120,12 +145,6 @@ export default function Register() {
                         </div>
 
                         <div className="flex items-center justify-end mt-4">
-                            <Link
-                                href={route('login')}
-                                className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                            >
-                                Already registered?
-                            </Link>
 
                             <PrimaryButton className="ms-4" disabled={processing}>
                                 Register
@@ -133,16 +152,6 @@ export default function Register() {
                         </div>
                     </div>
 
-
-
-                    <style>
-                        {`
-    
-    .regbox{
-        box-shadow: 28px -26px 27px 0px #96969638 inset;
-    }
-    `}
-                    </style>
                 </div>
             </form>
         </GuestLayout>

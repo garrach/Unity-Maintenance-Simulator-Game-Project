@@ -13,7 +13,7 @@ export default function Guest({ children }) {
         <div className="flex sm:justify-center items-center p-0 bg-gray-100 dark:bg-gray-900">
            
             
-           <div style={{ maxWidth: '100%' }} className="w-full bg-white dark:bg-gray-800 overflow-hidden sm:rounded-lg">
+           <div style={{ maxWidth: '100%' }} className="w-full bg-gray-100 dark:bg-gray-800 overflow-hidden sm:rounded-lg">
            <div className='w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg h-screen'>
                {children} 
                <Link href="/" className='this-a'>

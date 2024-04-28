@@ -27,11 +27,13 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
             <form onSubmit={submit} className="w-fit h-max-fit mx-auto mt-56 px-8 py-2 rounded-md shadow-md">
                 <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-8'>
                     <img src="application-sur-mesure.png.webp" alt="" className='w-auto' />
+
                     <div>
+                    {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+
                         <div className='mt-4'>
                             <InputLabel htmlFor="email" value="Email" />
                             <TextInput
