@@ -1,58 +1,56 @@
 import GuestLayout from '@/Layouts/GuestLayout';
-
 import React from 'react';
 
 const About = () => {
   return (
     <GuestLayout>
-    <div className="dark:bg-gray-800 dark:text-white bg-gray-100">
-      <header className="py-8 bg-gray-800 text-white text-center">
-        <h1 className="text-4xl font-bold">About Us</h1>
-        <p className="mt-2">Learn more about our amazing team!</p>
-      </header>
+      <div className="dark:bg-gray-800 dark:text-white bg-gray-100 pt-56">
+        <header className="py-8 dark:bg-gray-800 dark:text-white text-center">
+          <h1 className="text-4xl font-bold">About Us</h1>
+        </header>
 
-      <main className="container mx-auto my-8">
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            eleifend, sapien vitae vehicula fermentum, odio nisl ultricies
-            libero, a luctus dui ex sit amet quam.
-          </p>
-        </section>
+        <main className="container mx-auto my-8">
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Example team member card */}
-            <div className="dark:bg-gray-700 bg-white p-4 rounded shadow-md">
-              <img
-                src="https://placekitten.com/150/150"
-                alt="Team Member"
-                className="rounded-full mb-4"
-              />
-              <h3 className="text-lg font-bold">John Doe</h3>
-              <p className="dark:text-gray-100 text-gray-600">Co-founder & Developer</p>
+
+          <div className='serviceDetails'>
+            <div className='grid md:grid-cols-2 sm:grid-cols-1 gap-0 w-full h-full'>
+              <div className='dark:bg-gray-800 relative h-full'>
+                <img src="application-sur-mesure.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+              </div>
+              <div className='dark:bg-gray-800 relative h-full'>
+                <div className='container mx-auto py-8'>
+                  <p className='dark:text-gray-300 text-gray-800 text-xl text-justify indent-8'>We offer a dynamic project that seamlessly integrates game development and web development expertise.
+                    Our solution synchronizes resources, processes user-provided information, and securely stores data in both a local database and MongoDB Atlas Cloud.
+                    Leveraging our team's academic knowledge and experience, we've developed an innovative web application powered by Express.js.
+                    This application analyzes user data in real-time, providing dynamic responses tailored to the user's interactions.
+                    Additionally, our 3D game environment provides immersive visualization of resources, complete with required authentication for security.
+                    Users can interact with the virtual world using standard input devices like a mouse and keyboard.
+                    With our comprehensive solution, clients benefit from efficient resource management, secure data handling, and seamless integration between web and gaming environments.
+                  </p>
+                </div>
+
+              </div>
+
             </div>
-
-            {/* Add more team member cards as needed */}
           </div>
-        </section>
 
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
-          <p>
-            Have questions or want to get in touch? Feel free to email us at{' '}
-            <a href="mailto:info@example.com" className="text-blue-500">
-              info@example.com
-            </a>
-            .
-          </p>
-        </section>
-      </main>
-    </div>
+
+
+
+        </main>
+      </div>
+      <style>
+        {`
+        
+        .serviceDetails {
+          display: block;
+          position: relative;
+          height: 60vh;
+          background: white;
+      }
+        `}
+      </style>
     </GuestLayout>
-
   );
 };
 

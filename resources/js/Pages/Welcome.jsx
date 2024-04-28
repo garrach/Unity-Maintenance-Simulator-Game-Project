@@ -2,12 +2,11 @@ import { Link, Head } from '@inertiajs/react';
 import LandingPage from './landingPage';
 import { useEffect, useRef, useState } from 'react';
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
-
-    const landingPage=useRef(false);
+    const landingPage=useRef(true);
     useEffect(()=>{
         landingPage.current=true;
         return()=>{  
-            landingPage.current=false;
+            //landingPage.current=false;
             console.log('out..')
         }
     })

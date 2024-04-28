@@ -223,7 +223,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth-30, window.innerHeight);
     });
     const calcDistance = (initPos, target) => {
       //a2+b2=c2
