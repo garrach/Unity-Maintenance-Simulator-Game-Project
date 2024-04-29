@@ -63,8 +63,9 @@ class ReportController extends Controller
 
         $user=Auth::user();
 
-        if($user->role=="admin"){
+        if($user->role=="admin" || $user->role=="employee"){
             $reports = Report::all();
+            
         }else
         $reports = Report::where('user_id',$user->id)->get();
 
@@ -94,7 +95,7 @@ class ReportController extends Controller
 
     public function show(Report $report)
     {
-        return Inertia::render('Reports/Show', ['report' => $report]);
+        return Inertia::render('Reports/Show', ['report' => $report,'RepUser'=>$report->user]);
     }
 
     public function update(Request $request, Report $report)

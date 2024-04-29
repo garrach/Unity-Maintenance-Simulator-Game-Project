@@ -43,17 +43,22 @@ class ProfileController extends Controller
         $qt = strip_tags($qt);
         $auth = Auth::user();
         $inboxs=$auth->messages; 
+        $users=[]; 
+        foreach($inboxs as $inbox){
+            $users[$inbox->id]=$inbox->user; 
+        }
         return Inertia::render('Profile/Account', [
             'user' => $auth,
             'qt' => $qt,
             'inbox'=>$inboxs,
+            'users'=>$users,
         ]);
     }
     public function sendMessage(Request $request)
     {   
         $msg=Message::create($request->all());
         $msg->save();
-        return $msg;
+        //return $msg;
     }
     
 
@@ -123,6 +128,7 @@ class ProfileController extends Controller
         $user = User::find($request->userID);
         $infos = [
             $user->id,
+            $user->nickname,
             $user->name,
             $user->email,
             $user->role,

@@ -27,23 +27,19 @@ const Account = () => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold mb-4">{qt}</h1>
           </div>
-
           <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
             <p>Inbox</p><span>{`${props.inbox.length}`}</span>
           </div>
-          {showInbox && <div className='absolute top-36 right-56 w-auto h-auto dark:bg-gray-200 rounded-md shadow-md'>
+          {showInbox && <div className='absolute top-36 right-56 w-auto h-80 overflow-y-auto overflow-x-hidden dark:bg-gray-700 rounded-md shadow-md p-2 border border-gray-500'>
             <table>
               {props.inbox.map((message, index) => (
                 <>
-                  <tr>              
-                    <td className='dark:text-gray-800 p-4' >{`${message.sender_id}`}</td>
+                  <tr>
+                    <td className='dark:text-gray-200 p-4 hover:border-b-4 hover:border-indigo-500' >{`${Object.values(props.users)[index].name}`}</td>
                   </tr>
-                  <tr key={index}>
-                    <td className='dark:text-gray-800 p-4' >{`${message.recipient_id}`}</td>
-                    <td className='dark:text-gray-800 p-4' >{`${message.sender_id}`}</td>
-                    <td className='dark:text-gray-800 p-4' >{`${message.subject}`}</td>
-                    <td className='dark:text-gray-800 p-4' >{`${message.body}`}</td>
-                    <td className='dark:text-gray-800 p-4' >{`${message.read_at}`}</td>
+                  <tr key={index} className='bg-gray-500 p-2'>
+                    <td className='dark:text-gray-300 p-4' >{`${message.subject}`}</td>
+                    <td className='dark:text-gray-400 p-4' >{`${message.body}`}</td>
                   </tr>
                 </>
 

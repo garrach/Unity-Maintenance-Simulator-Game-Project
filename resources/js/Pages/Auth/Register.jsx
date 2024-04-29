@@ -93,6 +93,8 @@ export default function Register() {
 
                             <InputError message={errors.name} className="mt-2" />
                         </div>
+
+                       
                         <div className="mt-4">
                             <InputLabel htmlFor="email" value="Email" />
 

@@ -90,7 +90,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
     >
       <Head title="My Account" />
       <ul className='bg-red-500 mx-auto'>{userID.map((user, index) => (
-        <li key={index}>{handluserinfo(userID[0], userID[1], userID[2], userID[3])}</li>
+        <li key={index}>{handluserinfo(userID[0], userID[2], userID[3], userID[4])}</li>
       ))
       }
       </ul>
@@ -101,7 +101,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
         <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
           <span>Message</span>
         </div>
-        {showInbox && <SendMessage sender={props.auth.user.id} recipient={userInfo.id}/>}
+        {showInbox && <SendMessage sender={props.auth.user.id} recipient={userInfo.id} action={toggleInbox}/>}
         <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-md mb-6">
           <h2 className="text-lg font-bold mb-4">User Profile Information</h2>
           <p className="mb-2"><strong>Name:</strong> {userInfo.name}</p>

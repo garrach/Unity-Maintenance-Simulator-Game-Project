@@ -1,59 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
-import jsPDF from 'jspdf';
+import { PDFViewer } from '@react-pdf/renderer';
+import FullMaintenancePDF from './FullMaintenancePDF';
 
 const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
+
+  const [data, setData] = useState({ rep: '', user: '' });
+  const [printReport, setPrintReport] = useState(false);
+
   const setMaintenanceOne = useRef();
   const [users, setUsers] = useState();
   const [DataMain, setDataMain] = useState([{}]);
 
   const { post } = useForm();
-
-  const pdfUnit = 71;
-
-  const pdfUnitInPixels = pdfUnit * (96 / 72);
-
-  const generateReport = () => {
-    const reportData = {
-      scheduledTasks: setMaintenanceOne.current,
-    };
-
-    // Create a new PDF document
-    const pdfDoc = new jsPDF();
-
-    // Set font and style for the title
-    pdfDoc.setFont('helvetica', 'bold');
-    pdfDoc.setFontSize(18);
-    pdfDoc.setTextColor(44, 62, 80); // Dark blue color
-    pdfDoc.text('Maintenance Report', 20, 20);
-
-    pdfDoc.setFont('helvetica', 'bold');
-    pdfDoc.setFontSize(11);
-    pdfDoc.setTextColor(44, 62, 80); // Dark blue color
-    pdfDoc.text(auth.user.name, pdfUnitInPixels * 2 - 20, 20);
-
-    // Add a horizontal line below the title
-    pdfDoc.setLineWidth(0.5);
-    pdfDoc.line(20, 25, 190, 25);
-
-    // Set font and style for section headers
-    pdfDoc.setFont('helvetica', 'normal');
-    pdfDoc.setFontSize(14);
-
-    // Example: Display scheduled tasks
-    pdfDoc.setTextColor(52, 73, 94); // Dark gray color
-    pdfDoc.text('Scheduled Tasks', pdfUnit / 4, pdfUnit - 30);
-    Object.entries(reportData.scheduledTasks).map(([key, task], index) => {
-      Object.values(task).map(item => {
-        pdfDoc.text(`${index + 1}. Device: ${item.device.map(dv => (dv.type))}, Task: ${(item.task) ? item.task.map(title => (title.title)) : 'DONE'}, Status: ${item.status}`, pdfUnit / 5, (pdfUnit - 20) + index * 10);
-      })
-    });
-
-
-    // Save or open the PDF
-    pdfDoc.save('Maintenance_Report.pdf');
-  };
 
   const handleTaskAction = (taskId, action) => {
     console.log(`Task ${taskId} ${action}`);
@@ -74,6 +34,12 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
       setDataMain(null);
     }
   }, [])
+  const PrintReport = (id) => {
+    setPrintReport(!printReport);
+  };
+  useEffect(() => {
+    setData({ rep: {title:'Full Maintenance Suite',dataMain:DataMain}, user: auth.user })
+  }, [setMaintenanceOne.current])
   return (
     <div>
       <AuthenticatedLayout
@@ -81,6 +47,9 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Full Maintenance Suite</h2>}
       >
         <Head title="Full Maintenance Suite" />
+        {printReport && <PDFViewer width={window.innerWidth - 20} height={window.innerHeight}>
+          <FullMaintenancePDF data={data} />
+        </PDFViewer>}
         <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-2">Scheduled Maintenance</h2>
@@ -121,6 +90,12 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
             )}
           </section>
 
+          { (auth.user.role=="admin" || auth.user.role=="employee") && 
+          <button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+              onClick={(e) => { e.preventDefault(); PrintReport() }}
+            >
+              Generate Report
+            </button>}
           
         </div>
       </AuthenticatedLayout>

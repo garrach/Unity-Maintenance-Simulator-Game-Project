@@ -67,6 +67,8 @@ const QuickActions = ({auth,requests , userExp}) => {
       <Link href='/devices'>request device</Link></button>
       <button className="bg-green-500 text-white uppercase ml-2 px-4 py-2 rounded-full hover:bg-green-600">
       <Link href={route('priority-customer-support')}>Apply for job</Link></button>
+      <button className="bg-green-500 text-white uppercase ml-2 px-4 py-2 rounded-full hover:bg-green-600">
+      <Link href={route('reports.create')}>Report</Link></button>
         </>)
         }
         {auth.user.role==='admin' || auth.user.role==='employee'  ? (<><Navigation/></>):(<></>)}

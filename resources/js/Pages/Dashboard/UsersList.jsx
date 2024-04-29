@@ -11,7 +11,7 @@ const UsersList = ({ vehicle, usersList }) => {
     state: '',
   }]
   return (
-    <div className="p-2 dark:text-white text-gray-800 h-full">
+    <div className="p-2 dark:text-white text-gray-800 h-56 overflow-y-auto overflow-x-hidden">
       <h2 className="text-lg font-semibold mb-2">Users List</h2>
 
       <table className='w-full'>

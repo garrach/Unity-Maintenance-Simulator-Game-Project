@@ -20,7 +20,7 @@ const RecentActivities = ({ activities, display }) => {
     }
   },[display.currentwebSocket])
   return (
-    <div className="bg-white h-56 overflow-y-auto dark:bg-gray-800 p-4 rounded-md shadow-md">
+    <div className=" dark:text-white text-gray-800 h-56 overflow-y-auto p-4 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Recent Activities</h2>
       {/*display.message.message &&(<h2 className="text-lg font-semibold mb-2">{display.message.message}</h2>)*/}
       <ul>

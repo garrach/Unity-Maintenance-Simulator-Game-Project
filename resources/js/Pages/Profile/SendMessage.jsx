@@ -1,6 +1,6 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
-const SendMessage = ({sender,recipient}) => {
+const SendMessage = ({sender,recipient,action}) => {
     const { data, setData, post, processing } = useForm({
         sender_id: sender, // Assuming sender_id will be set in the backend
         recipient_id: recipient,
@@ -27,6 +27,7 @@ const SendMessage = ({sender,recipient}) => {
                     subject: '',
                     body: '',
                 });
+                action(e);
             },
         });
     };

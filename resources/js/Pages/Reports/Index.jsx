@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 const Index = ({ reports, auth, that }) => {
   const { props } = usePage();
@@ -11,15 +12,17 @@ const Index = ({ reports, auth, that }) => {
     processing,
     reset,
     errors,
-} = useForm({
+  } = useForm({
     password: '',
-});
+  });
 
-const deleteReport = (id) => {
+  const deleteReport = (id) => {
     if (confirm('Are you sure you want to delete this report?')) {
-        destroy(route('reports.destroy', { report: id }));
+      destroy(route('reports.destroy', { report: id }));
     }
-};
+  };
+
+
   return (
     <div>
       <AuthenticatedLayout
@@ -39,7 +42,7 @@ const deleteReport = (id) => {
                   <h2 className="text-xl font-semibold text-white dark:text-gray-200">{report.title}</h2>
                   <p className="text-gray-400 dark:text-gray-400">{report.description}</p>
                   <p className="text-gray-400 dark:text-gray-400">Report Date: {report.application_date}</p>
-                  <div className="flex mt-2">
+                  <div className="flex mt-2 relative">
                     <Link
                       href={route('reports.show', { report: report.id })}
                       className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 mr-2"
@@ -54,10 +57,12 @@ const deleteReport = (id) => {
                     </Link>
                     <button
                       className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-                      onClick={(e)=>{e.preventDefault(); deleteReport(report.id)}}
+                      onClick={(e) => { e.preventDefault(); deleteReport(report.id) }}
                     >
                       Delete
                     </button>
+
+                    
                   </div>
                 </li>
               ))}

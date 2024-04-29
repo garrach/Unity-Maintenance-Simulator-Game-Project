@@ -30,7 +30,9 @@ const UsersList = ({ auth, users , userexp}) => {
                                 onClick={() => handleUserClick(user)}
                             >
                                 <div className='text-white'>
-                                    <div className='w-full h-56 bg-gray-900 mt-6'></div>
+                                    <div className='w-full h-56 bg-gray-900 mt-6 text-white flex justify-center items-center text-3xl'>
+                                        {user.name}
+                                    </div>
                                     <p className='text-lg font-semibold mt-2'>{user.name}</p>
                                     <p className='text-gray-400'>{user.email}</p>
                                     <p className='text-gray-400 mt-2 absolute top-0 right-2'>

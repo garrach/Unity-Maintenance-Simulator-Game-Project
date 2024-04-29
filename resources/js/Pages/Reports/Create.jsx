@@ -42,7 +42,6 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
-        {console.log(auth)}
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-semibold mb-4 dark:text-gray-200">Create Report</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

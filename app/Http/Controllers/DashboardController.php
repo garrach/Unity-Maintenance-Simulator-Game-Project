@@ -32,7 +32,11 @@ class DashboardController extends Controller
 
         $findExp=Userexpcoin::where('user_id',$user->id)->first();
 
-        $userExp=['experience'=>$findExp->experience,'coins'=>$findExp->coins];
+        if($findExp){
+            $userExp=['experience'=>$findExp->experience,'coins'=>$findExp->coins];
+        }else{
+            return redirect()->route('users');
+        }
 
         $services = Service::all();
         $plans = PaymentPlan::skip(0)->take(1)->first();
@@ -40,6 +44,7 @@ class DashboardController extends Controller
         $jobs = job::all()->toArray();
         $reports = count($reports);
         $jobs = count($jobs);
+        $users=[];
         $wishListItems=WishList::where('user_id',$user->id)->get()->toArray();
         $reference=[];
         foreach($wishListItems as $wishListItem){
@@ -107,14 +112,21 @@ class DashboardController extends Controller
         }
 
         $hisPlan = $user->plans->first();
-        if ($user->role == 'client') {
-            $services = $hisPlan->services;
-            foreach ($services as $service) {
-                if ($service->route == $route) {
-                    return response()->json('authorized');
+        if($hisPlan){
+            if ($user->role == 'client') {
+                $services = $hisPlan->services;
+                foreach ($services as $service) {
+                    if ($service->route == $route) {
+                        return response()->json('authorized');
+                    }
                 }
             }
+        }else{
+            $plans = PaymentPlan::skip(0)->take(1)->first();
+
+            $user->plans()->attach($plans);
         }
+        
         return response()->json('Unauthorized'); 
     }
 }
