@@ -3,18 +3,19 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import CryptoJS from 'crypto-js';
+import SendMessage from './SendMessage';
 const Show = ({ userID, encryptedDataDetails }) => {
   const { props } = usePage();
   const carDetails = { make: "(N/A)", model: "(N/A)", year: "(N/A)" };
   const colors = ['blue', 'green', 'red', 'yellow'];
   const decData = useRef({});
 
-  const [userHistory,setUserHistory]=useState();
+  const [userHistory, setUserHistory] = useState();
 
 
   const decryptUserData = (encryptedDataDetails) => {
     try {
-      decData.current=atob(encryptedDataDetails);
+      decData.current = atob(encryptedDataDetails);
       return decData.current;
     } catch (error) {
       console.error('Decryption failed:', error);
@@ -67,16 +68,21 @@ const Show = ({ userID, encryptedDataDetails }) => {
   const DataManager = useRef();
   async function orgnizeData() {
     decData.current = await JSON.parse(decryptUserData(encryptedDataDetails));
-    return await decData.current ;
+    return await decData.current;
   }
   useEffect(() => {
-   async function fetchJsonRAw(){
-     console.log(await orgnizeData()); 
-     const userData=await orgnizeData();
-     setUserHistory(userData)
-   }
-   fetchJsonRAw();
-  },[])
+    async function fetchJsonRAw() {
+      console.log(await orgnizeData());
+      const userData = await orgnizeData();
+      setUserHistory(userData)
+    }
+    fetchJsonRAw();
+  }, [])
+  const [showInbox, setShowInbox] = useState(false);
+  const toggleInbox = (e) => {
+    e.preventDefault();
+    setShowInbox(!showInbox)
+  }
   return (
     <AuthenticatedLayout
       user={props.auth.user}
@@ -88,10 +94,14 @@ const Show = ({ userID, encryptedDataDetails }) => {
       ))
       }
       </ul>
-      <div className="container mx-auto mt-6 p-6 bg-white dark:text-white dark:bg-gray-800 rounded-md shadow-md">
+      <div className="container mx-auto mt-6 p-6 bg-white dark:text-white dark:bg-gray-800 relative rounded-md shadow-md">
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-4">{props.qt}</h1>
         </div>
+        <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
+          <span>Message</span>
+        </div>
+        {showInbox && <SendMessage sender={props.auth.user.id} recipient={userInfo.id}/>}
         <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-md mb-6">
           <h2 className="text-lg font-bold mb-4">User Profile Information</h2>
           <p className="mb-2"><strong>Name:</strong> {userInfo.name}</p>
@@ -123,7 +133,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
         <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
           <h2 className="text-lg font-bold mb-2">Maintenance History</h2>
           <ul>
-            {userHistory && Object.values(userHistory.devices).map((item,index)=>(
+            {userHistory && Object.values(userHistory.devices).map((item, index) => (
               <li key={index}>
                 {`item purchase: ${item.type}`}
               </li>
@@ -131,12 +141,12 @@ const Show = ({ userID, encryptedDataDetails }) => {
           </ul>
         </div>
         {props.auth.user.role === "admin" && (<>
-         
+
           <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
             <Link href={route('userAccount.edit', { id: encryptedData })}><h2 className="text-lg font-bold mb-2">Logout and Account Deactivation</h2></Link>
             <p>This section could include a logout button and an option for account deactivation.</p>
           </div></>)}
-        
+
       </div>
       <style>
         {`

@@ -18,6 +18,8 @@ use App\Models\Service;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Purchase;
+use App\Models\Message;
+
 use App\Models\WishList;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
@@ -36,14 +38,24 @@ class ProfileController extends Controller
     public function create()
     {
 
+        
         $qt = (Inspiring::quote());
         $qt = strip_tags($qt);
         $auth = Auth::user();
+        $inboxs=$auth->messages; 
         return Inertia::render('Profile/Account', [
             'user' => $auth,
             'qt' => $qt,
+            'inbox'=>$inboxs,
         ]);
     }
+    public function sendMessage(Request $request)
+    {   
+        $msg=Message::create($request->all());
+        $msg->save();
+        return $msg;
+    }
+    
 
     public function show(Request $request)
     {
@@ -88,6 +100,8 @@ class ProfileController extends Controller
         $key=$secretKey->saveToAsciiSafeString();
 
  // Data to be encrypted
+
+
         $userData = [
             'user' => $user,
             'services' => $services,
@@ -100,6 +114,7 @@ class ProfileController extends Controller
             'reports' => $reports,
             'wishLists' => $wishLists,
             'devices' => $devices,
+           
         ];
 
         $jsonUserData = json_encode($userData);

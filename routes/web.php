@@ -60,11 +60,13 @@ Route::middleware(('auth'))->group(function () {
 
     //client and Admin and Employees
 
+
     Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
     Route::get('/data-monitoring',[UnityDataMonitorController::class, 'index'])->name('data-monitoring');
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');
+    Route::post('/send-message', [ProfileController::class, 'sendMessage'])->name('send-message');
     Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
     Route::get('/userAccount/user/{id?}', [ProfileController::class, 'editUser'])->name('userAccount.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
