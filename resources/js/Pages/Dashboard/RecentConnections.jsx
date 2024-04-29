@@ -4,30 +4,43 @@ import React from 'react';
 import { useRef } from 'react';
 const RecentConnections = ({ connection, webSocket }) => {
   const { props } = usePage();
-  const devices=useRef();
-  const devicesArr=useRef([]);
+  const devices = useRef();
+  const devicesArr = useRef([]);
+  const users = useRef();
+  const usersArr = useRef([]);
 
 
-  devices.current=Object.entries(props.devices);
-  devices.current.map(([key,element]) => {
+  devices.current = Object.entries(props.devices);
+  devices.current.map(([key, element]) => {
     devicesArr.current.push(element);
   });
+  users.current = Object.entries(props.users);
+  users.current.map(([key, element]) => {
+    usersArr.current.push(element);
+  });
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
+    <div className="p-4 dark:text-white text-gray-800">
       <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
-      <ul>
-       {Object.values(props.Purchases).map((purchase,index)=>(
-        <li key={index} className='uppercase p-4 hover:bg-gray-900 rounded-md shadow-md transition-transform transform hover:scale-105'>
-          {`
-          purchase ID:${purchase.id} 
-          user ID:${purchase.user_id} 
-          Device :${devicesArr.current[index].type} 
-          Date:${purchase.date}`}
-          </li>
-       )
-       )}
-        
-      </ul>
+      <table className='w-full'>
+        {Object.values(props.Purchases).map((purchase, index) => (
+          <tr className='uppercase p-4 hover:bg-gray-900 rounded-md shadow-md transition-transform transform hover:scale-105'>
+            <td>
+              <span><b>{`purchase (ID:${purchase.id}) `}</b></span>
+            </td>
+            <td>
+              <span >{` user : ${usersArr.current[index].name} `}</span>
+            </td>
+            <td>
+              <span> Device : <b><span className='underline decoration-sky-500' >{devicesArr.current[index].type}</span></b></span>
+            </td>
+            <td>
+              <span>{` Date: ${purchase.date}`}</span>
+            </td>
+          </tr>
+
+        )
+        )}
+      </table>
     </div>
   );
 };

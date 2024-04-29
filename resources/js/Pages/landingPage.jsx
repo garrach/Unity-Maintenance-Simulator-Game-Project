@@ -58,7 +58,7 @@ const LandingPage = ({ auth }) => {
             <div className='tending h-screen w-full dark:text-white' >
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
 
                         <div className='dark:bg-gray-900 relative h-full col-span-2'>
                             <div className='mt-32 p-10'>
@@ -83,7 +83,7 @@ const LandingPage = ({ auth }) => {
                 </div>
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full col-span-2'>
                             <center className='mt-32 p-4'>
                                 <p className='text-3xl text-gray-900 dark:text-gray-300 mt-10 font-bold'>Our Team</p>
@@ -122,7 +122,7 @@ const LandingPage = ({ auth }) => {
                     }
                 </ul>
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
                                 <p className='text-3xl text-gray-900 dark:text-gray-300  font-bold'>Database Backup</p>
@@ -153,7 +153,7 @@ const LandingPage = ({ auth }) => {
 
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <img src="equipe-de-developpeur-web.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
                         </div>
@@ -170,7 +170,7 @@ const LandingPage = ({ auth }) => {
                     </div>
                 </div>
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
                                 <p className='text-3xl text-gray-900 dark:text-gray-300 mt-10 font-bold'>Game Engine</p>
@@ -184,7 +184,7 @@ const LandingPage = ({ auth }) => {
                     </div>
                 </div>
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <img src="e-commerce.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
                         </div>
@@ -213,7 +213,7 @@ const LandingPage = ({ auth }) => {
                 </div>
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
 
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -230,7 +230,7 @@ const LandingPage = ({ auth }) => {
                 </div>
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <img src="application-sur-mesure.png.webp" alt="" className='relative top-20 left-56 w-auto h-80 ' />
                         </div>
@@ -246,7 +246,7 @@ const LandingPage = ({ auth }) => {
 
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
 
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -261,7 +261,7 @@ const LandingPage = ({ auth }) => {
                 </div>
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
 
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -276,7 +276,7 @@ const LandingPage = ({ auth }) => {
                 </div>
 
                 <div className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full'>
+                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <img src="application-sur-mesure.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
                         </div>
@@ -293,7 +293,7 @@ const LandingPage = ({ auth }) => {
 
 
                 <footer className='serviceDetails'>
-                    <div className='grid grid-cols-2 gap-0 w-full h-full '>
+                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full '>
                         <div className='dark:bg-gray-900 relative h-full flex justify-center items-center p-4 col-span-2'>
                                 <p className='text-center text-gray-500'>© 2024 YourCompany. All rights reserved.</p>
                                 <p className='text-center text-gray-500'>Designed with ❤️ by You</p>
@@ -428,7 +428,7 @@ to{
     .serviceDetails {
         display: block;
   position: relative;
-  height: 60vh;
+  height: 60%;
   background: white;
     }
             `}</style>

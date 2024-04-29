@@ -72,9 +72,14 @@ class DashboardController extends Controller
         $vehicleIds = $connections->pluck('vehicle_id')->unique()->toArray();
         $vehicles = Vehicle::whereIn('id', $vehicleIds)->get();
         $deviceIds = $connections->pluck('device_id')->toArray();
+
         for ($i = 0; $i < count($Purchases); $i++) {
             $devices[$Purchases[$i]->id] = $Purchases[$i]->device;
         }
+        for ($i = 0; $i < count($Purchases); $i++) {
+            $users[$Purchases[$i]->id] = $Purchases[$i]->user;
+        }
+        
 
         if ($valid == "Unauthorized") {
             return response()->json($valid);
@@ -91,7 +96,7 @@ class DashboardController extends Controller
                     'requestJob' => $jobs,
                     'userExp'=>$userExp,
                     'wishListItems' => $reference,
-                    'devices' => $devices]);
+                    'devices' => $devices,'users' => $users]);
         }
     }
     public static function checkRole($route)

@@ -76,7 +76,7 @@ export default function Register() {
                             </div>
                         </div>
                     </>)}
-                    <div className='flex flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-900'>
+                    <div className='flex flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-800'>
                         <div>
                             <InputLabel htmlFor="name" value="Name" />
 

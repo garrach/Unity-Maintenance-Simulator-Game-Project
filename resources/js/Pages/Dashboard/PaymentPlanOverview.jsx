@@ -12,7 +12,7 @@ const PaymentPlanOverview = ({ paymentPlan }) => {
     statut:'Active',
   }]
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
+    <div className="p-4 dark:text-white text-gray-800 rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-2">Payment Plan Overview</h2>
 
       <ul>

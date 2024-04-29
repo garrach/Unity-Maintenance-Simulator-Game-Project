@@ -99,12 +99,12 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
 
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
-        <div className="py-0">
+        <div className="py-0 bgstyleglass">
           {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
 
           <div className={`flex ${auth.user.role==="client" ? "w-full":""}`}>
-            {(auth.user.role === "admin" || auth.user.role === "employee") ? <div className="sm:flex side-menu dark:bg-gray-900">
-              <div className="flex bg-gray-200">
+            {(auth.user.role === "admin" || auth.user.role === "employee") ? <div className="sm:flex side-menu">
+              <div className="flex">
                 <Sidebar auth={auth} expand={true} Children={
                   <ul>
                     
@@ -120,8 +120,8 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
 
             </div>:(
             
-              <div className="sm:flex side-menu dark:bg-gray-900">
-              <div className="flex bg-gray-200">
+              <div className="sm:flex side-menu">
+              <div className="flex">
                 <Sidebar auth={auth} expand={true} />
               </div>
             </div>)}
@@ -153,6 +153,9 @@ export default function Dashboard({ auth, usersList, reports,requestJob,wishList
         .rounded-md{
           border-radius: 1.3rem !important;
         }
+        .bgstyleglass{
+          background: rgb(0,23,69);
+          background: linear-gradient(215deg, rgb(31, 41, 55) 21%, rgb(0, 44, 104) 47%, rgb(0, 0, 39) 50%)        }
         .websocket{
           display:none;
           padding:20px;

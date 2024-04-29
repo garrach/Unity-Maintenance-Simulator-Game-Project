@@ -17,9 +17,9 @@ const Sidebar = ({ Children, auth, expand }) => {
             {ssi ? (
                 <>
 
-                    <aside className="bg-gray-800 text-gray-500 sm:w-56 dark:bg-gray-900 dark:text-gray-300">
+                    <aside className="dark:text-white glass-container text-gray-800 sm:w-56 ">
                         <nav>
-                            <ul className="p-0 mmLi sm:w-56">
+                            <ul className="p-0 mmLi sm:w-56 ">
                                 <li className='px-0 py-0' onClick={handlSideBar}>
                                     <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
                                 </li>
@@ -34,12 +34,12 @@ const Sidebar = ({ Children, auth, expand }) => {
 
                             </ul>
                         </nav>
-                        <div className='really-idk mx-auto flex bg-gray-800 dark:bg-gray-900'>
+                        <div className='really-idk mx-auto flex'>
                             <span>
                                 <img src="" alt="" />
                             </span>
                             <ul>
-                                <li className='bg-gray-800 dark:bg-gray-900 ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 px-12'>
+                                <li className='ml-2 py-4 rounded hover:rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 px-12'>
                                     <Link href={route('myaccount')}>{auth.user.name}</Link>
                                 </li>
                             </ul>
@@ -67,7 +67,6 @@ const Sidebar = ({ Children, auth, expand }) => {
     width:100%;
     height:auto;
     padding:20px;
-    background-color:transparent;
     transition: all 300ms ease;
     }
     .mmLi ul{
@@ -90,9 +89,9 @@ const Sidebar = ({ Children, auth, expand }) => {
 
                 </>) : (
                 <>
-                    {(<><aside className="bg-gray-800" >
+                    {(<><aside className="glass-container" >
                         <nav>
-                            <ul className="mmLi">
+                            <ul className="mmLi ">
                                 <li>
                                     <span className='text-white mx-auto mt-4' onClick={handlSideBar}>
                                         <FontAwesomeIcon icon={faBars} size="lg" />
@@ -110,7 +109,7 @@ const Sidebar = ({ Children, auth, expand }) => {
 
                             </ul>
                         </nav>
-                        <div className='really-idk mx-auto text-white flex bg-gray-800'>
+                        <div className='really-idk mx-auto text-white flex'>
                             <span>
                                 <img src="" alt="" />
                             </span>

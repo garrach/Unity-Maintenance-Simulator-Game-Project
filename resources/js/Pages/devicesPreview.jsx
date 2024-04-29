@@ -23,7 +23,7 @@ const Index = ({ devices, reviews, comments, auth }) => {
 
     return (
         <GuestLayout>
-            <div className='overflow-y-auto h-screen bg-gray-100 dark:bg-gray-800'>
+            <div className='overflow-y-auto h-screen bg-gray-100 pt-12 dark:bg-gray-800'>
                 {preview && selectedDevice && (
                     <div className='fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-50 flex items-center justify-center'>
                         <div className='relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-lg'>
@@ -81,9 +81,30 @@ const Index = ({ devices, reviews, comments, auth }) => {
                                 </div>
                             </li>
                         ))}
+                        {(auth.user && (auth.user.role=="admin"))&&<li className={`bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
+                            <div className='flex flex-col justify-between h-full'>
+                                <div className='newDevice'>
+                                    <span className='text-gray-700 dark:text-gray-500 hover:text-gray-300 text-2xl'>+</span>
+                                </div>
+                            </div>
+                        </li>}
+                        
                     </ul>
                 </div>
             </div>
+            <style>
+                {`
+                .newDevice{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                    height: 100%;
+                    border: 2px dotted gray;
+                    border-radius: 1rem;
+                }
+                `}
+            </style>
         </GuestLayout>
     );
 };

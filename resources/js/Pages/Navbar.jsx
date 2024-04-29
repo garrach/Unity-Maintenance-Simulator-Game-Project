@@ -11,7 +11,11 @@ const Navbar = ({ auth }) => {
     setMenuOpen(!isMenuOpen);
   };
   useEffect(() => {
-    //toggleMenu()
+    toggleMenu()
+    window.addEventListener('resize', () => {
+      setMenuOpen(false);
+    })
+
     return () => {
       setMenuOpen(true);
       window.removeEventListener('resize', () => { })
@@ -25,36 +29,31 @@ const Navbar = ({ auth }) => {
           <span className='w-10 h-10 bg-red-500 rounded-full flex items-center justify-center' onClick={() => toggleMenu(!isMenuOpen)}>
             <FontAwesomeIcon icon={isMenuOpen ? faAngleUp : faAngleDown} className="text-white" />
           </span>
-
-          <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Home</Link>
-          <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Contact</Link>
-          <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
-          <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
-          <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
-          <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
-          <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+          <span className='text-white mr-12'>MENU</span>
         </div>
-
       </> : <>
 
         <div className={`staticNavBar static-links w-56 z-20 block`}>
           <span className='w-10 h-10 bg-red-500 rounded-full flex items-center justify-center' onClick={() => toggleMenu(!isMenuOpen)}>
             <FontAwesomeIcon icon={isMenuOpen ? faAngleUp : faAngleDown} className="text-white" />
           </span>
+          <div>
+            <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">
+              <div className='flex justify-between '>
+                <span>Home</span>
+                <span>{`-->`}</span>
+              </div>
 
-          <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">
-            <div className='flex justify-between '>
-              <span>Home</span>
-              <span>{`-->`}</span>
-            </div>
+            </Link>
 
-          </Link>
-          <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Contact</Link>
-          <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
-          <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
-          <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
-          <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
-          <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+            <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Contact</Link>
+            <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
+            <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
+            <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
+            <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
+            <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+          </div>
+
         </div>
 
 
@@ -95,7 +94,7 @@ const Navbar = ({ auth }) => {
 
           @media screen and (min-width: 768px) {
             .static-links {
-              width: 50%;
+              width: 30vw;
               max-width: none;
             }
           }
@@ -103,17 +102,16 @@ const Navbar = ({ auth }) => {
           /* Hide the navigation bar on small devices */
           @media screen and (max-width: 767px) {
             .static-links {
-              display: none;
+              
             }
 
             /* Show the navigation bar when the menu button is clicked */
             .static-links.flex {
               display: flex;
+              width: 20vw;
               flex-direction: column;
-              position: absolute;
               top: 60px; /* Adjust the top position based on your design */
-              right: 0;
-              background-color: #333; /* Adjust the background color */
+              left: 70vw;
               padding: 10px;
               border-radius: 5px;
             }

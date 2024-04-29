@@ -45,7 +45,7 @@ const UnityStatus = ({ webSocket ,auth}) => {
     },[webSocket])
   return (
 <Link href={route('dashboard')}>
-    <div className="bg-white dark:bg-gray-700 p-4 rounded-md shadow-md h-full w-full block relative flex flex-col justify-center text-center">
+    <div className="p-4 rounded-md shadow-md h-full w-full block relative flex flex-col justify-center text-center">
         {unity ? <><h2 className='dark:text-gray-200 uppercase'>Unity ON {unity._id || unity}</h2>
         <img src="unityrunning.gif" alt="unityGlitch" className='rounded-md' />
         </>:<><h2 className='dark:text-gray-200 uppercase'>Unity NO Signal</h2>
