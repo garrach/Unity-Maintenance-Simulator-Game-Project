@@ -19,7 +19,7 @@ const RecentConnections = ({ connection, webSocket }) => {
     usersArr.current.push(element);
   });
   return (
-    <div className="p-4 dark:text-white text-gray-800">
+    <div className="p-4 dark:text-white text-gray-800 overflow-y-auto overflow-x-hidden h-80">
       <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
       <table className='w-full'>
         {Object.values(props.Purchases).map((purchase, index) => (
