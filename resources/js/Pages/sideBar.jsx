@@ -14,6 +14,7 @@ const Sidebar = ({ Children, auth, expand }) => {
     }
     return (
         <>
+
             {ssi ? (
                 <>
 
@@ -23,9 +24,9 @@ const Sidebar = ({ Children, auth, expand }) => {
                                 <li className='px-0 py-0' onClick={handlSideBar}>
                                     <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
                                 </li>
-
                                 {servicesRef.current && (servicesRef.current.map((feature, index) =>
                                     <li key={index}><Link href={route(`${feature.route}`)}>{feature.name}</Link></li>
+
                                 ))}
 
 

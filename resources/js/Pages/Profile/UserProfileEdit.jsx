@@ -9,7 +9,6 @@ import EditProfileForm from './EditProfileForm'; // Import the EditProfileForm c
 
 const UserProfileEdit = ({ user }) => {
     const { auth } = usePage().props;
-    console.log(auth)
   return (
     <>
          

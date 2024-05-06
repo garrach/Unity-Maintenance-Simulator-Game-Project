@@ -5,7 +5,7 @@ import QRCode from 'qrcode.react';
 import { useForm } from '@inertiajs/react';
 import StarsReview from '../StarsReview';
 
-const Show = ({ device, purchase, auth }) => {
+const Show = ({ device, purchase, deviceReview, auth }) => {
   const [formatData, setFormatData] = useState('');
   const canvasRef = useRef(null);
   const [requestSent, setRequestSet] = useState(false);
@@ -32,7 +32,12 @@ const Show = ({ device, purchase, auth }) => {
 
   useEffect(() => {
     Object.entries(device).map(([key, value], index) => {
-      setFormatData((formatData) => [...formatData, key +" : "+ value + "\n"]);
+      if(key === "review"){
+        setFormatData((formatData) => [...formatData, key +" : "+ deviceReview.rate + "\n"]);
+      }else{
+        setFormatData((formatData) => [...formatData, key +" : "+ value + "\n"]);
+
+      }
     })
   }, [device])
 
@@ -67,7 +72,6 @@ const Show = ({ device, purchase, auth }) => {
       setRequestSet(false);
       post(route('requestDevice.store', { device_id: data.device.id, user_id: auth.user.id }));
     }, 2000)
-    console.log(device)
   }
 
   const stars = useRef();
@@ -80,31 +84,14 @@ const Show = ({ device, purchase, auth }) => {
     // Extract the review and comment data
     const reviewData = { rate: stars.current, device_id: deviceId };
     const commentData = { text: comment.current, device_id: deviceId };
-
-    // Create an array of promises for both review and comment requests
-    const requests = [
-        post(route('reviews.store', reviewData)),
-        post(route('comments.store', commentData))
-    ];
-
-    // Execute both requests in parallel
-    Promise.all(requests)
-        .then(() => {
-            // Both requests completed successfully
-            setRequestSet(true);
-
-            console.log('Review and comment posted successfully.');
-            setTimeout(() => {
-              setRequestSet(false);
-              window.location.href='/dashboard'
-            }, 2000);
-        })
-        .catch((error) => {
-            // Handle errors if any request fails
-            console.error('Error:', error);
-            setRequestSet(false);
-            // Optionally display an error message to the user
-        });
+    
+    setTimeout(() => {
+      post(route('comments.store', commentData))
+      setTimeout(() => {
+        post(route('reviews.store', reviewData))
+      }, 2000);
+    }, 1000);
+   
 };
 
 
@@ -126,7 +113,7 @@ const Show = ({ device, purchase, auth }) => {
     }
   >
     {requestSent && (
-      <div className="relative text-center bg-green-500 text-white p-4 mx-auto rounded">
+      <div className="fixed z-10 w-screen text-center bg-green-500 text-white p-4 mx-auto rounded">
         Request Sent
       </div>
     )}
@@ -179,7 +166,7 @@ const Show = ({ device, purchase, auth }) => {
             <form onSubmit={handleSubmitFeedBack}>
               <div className="grid grid-cols-1 gap-4">
                 <label htmlFor="rate" className="text-gray-700 dark:text-gray-400">Review:</label>
-                <StarsReview totalStars={5} onStarClick={handleFeedBackStars} />
+                <StarsReview totalStars={5} onStarClick={handleFeedBackStars} init={deviceReview ? parseFloat(deviceReview.rate):0}/>
                 <input onChange={handleFeedBack} className="px-3 dark:text-gray-900 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:focus:ring-gray-500" type="text" name="comment" id="comment" />
                 <button className="px-4 py-2 text-white bg-blue-500 hover:bg-indigo-600 rounded-md shadow-md">
                   Comment

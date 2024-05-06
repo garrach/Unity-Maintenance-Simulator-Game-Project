@@ -1,66 +1,96 @@
 import { clientSocket } from '../client.cjs';
 
-const moveObject=(place,soket)=>{
+const MxlastPos = { data: { x: 0, y: 0 } };
+const MxNextPos = { data: { x: 0, y: 0 } };
+let lastPos = { x: 0, y: 0 };
 
-var isDragging = false;
-var offset = { x: 0, y: 0 };
-var lastPos = { x: 0, y: 0 };
-var spann = place;
+const moveObject = (place, socket,user) => {
+    let isDragging = false;
+    let offset = { x: 0, y: 0 };
+    const spann = place;
+    MxNextPos.data = MxlastPos.data;
 
-function startDragging(e) {
-    isDragging = true;
-    offset.x = e.clientX - spann.getBoundingClientRect().left;
-    offset.y = e.clientY - spann.getBoundingClientRect().top;
-    spann.addEventListener('mousemove', handleMouseMove);
-    spann.addEventListener('mouseup', (e)=>{stopDragging(e)});
-    spann.style.cursor = 'grabbing';
-}
 
-function handleMouseMove(e) {
-    if (isDragging) {
-        spann.style.left = e.clientX - offset.x + 'px';
-        spann.style.top = e.clientY - offset.y + 'px';
-        const cords={
-            position:{
-                x:e.clientX - offset.x,
-                y:e.clientY - offset.y
-            }
-        }
-        lastPos.x=cords.position.x;
-        lastPos.y=cords.position.y;
+    async function startDragging(e) {
+        isDragging = true;
+        offset.x = e.clientX - spann.getBoundingClientRect().x;
+        offset.y = e.clientY - spann.getBoundingClientRect().y;
+        spann.style.cursor = 'grabbing';
+
+        lastPos.x = spann.getBoundingClientRect().x;
+        lastPos.y = spann.getBoundingClientRect().y;
+
+        // Normalize and update MxlastPos with the initial position
+        await normalizeAndSendPosition();
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', stopDragging);
+        MxNextPos.data = MxlastPos.data;
     }
-}
 
-function stopDragging(e) {
-    isDragging = false;
-    const unityScale = 1500;
+    async function handleMouseMove(e) {
+        if (isDragging) {
+            spann.style.left = e.clientX - offset.x + 'px';
+            spann.style.top = (e.clientY - offset.y - 130) + 'px';
+            // Update lastPos
+            lastPos.x = e.clientX - offset.x;
+            lastPos.y = e.clientY - offset.y;
+            // Normalize and send position
+            await normalizeAndSendPosition();
 
-    // Convert the element's position from pixels to a percentage of the screen width and height
-    const normalizedX = ((lastPos.x) / unityScale) *10;
-    const normalizedY = ((lastPos.y) / unityScale) *10;
 
-    // Construct the message with normalized coordinates
-    const data = {
-        position: {
-            x: normalizedX,
-            y: normalizedY
+          
+            
+            console.log(MxNextPos.data.x - MxlastPos.data.x)
         }
-    };
+    }
 
-    // Send the message via WebSocket
-    soket.send(JSON.stringify({
-        type: 'movingPart',
-        message: e.target.getAttribute('title'),
-        data: data
-    }));
+    async function normalizeAndSendPosition() {
+        // Convert the element's position from pixels to a percentage of the screen width and height
+        const normalizedX = lastPos.x / 2 / 10;
+        const normalizedY = (lastPos.y / 2 / 10) - 7;
 
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', stopDragging);
-    spann.style.cursor = 'grab';
-}
-spann.addEventListener('mousedown', (eve) => {
-    startDragging(eve);
-})
-}
+        // Construct the message with normalized coordinates
+        const data = {
+            position: {
+                x: Math.floor(normalizedX),
+                y: Math.floor(normalizedY)
+            }
+        };
+        MxlastPos.data = { ...data.position }; // Update MxlastPos with new data
+    }
 
-export {moveObject};
+    function stopDragging(e) {
+        isDragging = false;
+        spann.style.cursor = 'grab';
+        
+        // Update lastPos
+        lastPos.x = spann.getBoundingClientRect().x;
+        lastPos.y = spann.getBoundingClientRect().y;
+        
+        // Normalize and send position
+        normalizeAndSendPosition();
+        
+        
+        
+        socket.send(JSON.stringify({
+            type: 'movingPart',
+            message: spann.getAttribute('title'),
+            data: {
+                user_id:user,
+                position: {
+                    x: Math.floor(MxNextPos.data.x - MxlastPos.data.x),
+                    y: Math.floor(MxNextPos.data.y - MxlastPos.data.y)
+                }
+            }
+        }));
+        
+        MxNextPos.data = MxlastPos.data;
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', stopDragging);
+    }
+
+    spann.addEventListener('mousedown', startDragging);
+};
+
+export { moveObject, MxlastPos };

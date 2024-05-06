@@ -28,7 +28,7 @@ const Account = () => {
             <h1 className="text-2xl font-bold mb-4">{qt}</h1>
           </div>
           <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
-            <p>Inbox</p><span>{`${props.inbox.length}`}</span>
+            <p className='cursor-pointer'>Inbox</p><span>{`${props.inbox.length}`}</span>
           </div>
           {showInbox && <div className='absolute top-36 right-56 w-auto h-80 overflow-y-auto overflow-x-hidden dark:bg-gray-700 rounded-md shadow-md p-2 border border-gray-500'>
             <table>

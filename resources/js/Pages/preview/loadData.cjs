@@ -2,9 +2,13 @@ import { moveObject } from './dragAndDrop.cjs';
 
 const fetchData = async (url) => {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'api-key':'YOUR_SECRET_API_KEY'
+            } 
+        });
         const data = await response.json();
-        return data;
+        return data.data;
     } catch (error) {
         console.error('Error fetching or parsing JSON:', error);
         throw error;
@@ -35,27 +39,26 @@ const instantiatePlaces = (arr) => {
 
         const color = "rgb(" + (225 - Intvector3.position.x) + "," + (225 - Intvector3.position.y) + "," + (225 - Intvector3.position.z) + ")";
 
-        place.setAttribute('style', "right: " + vector3.position.x +"rem; top: " + vector3.position.z+ "rem; background: " + color + ";");
+        place.setAttribute('style', "right: " + vector3.position.x + "rem; top: " + vector3.position.z + "rem; background: " + color + ";");
         placeSP.append(place);
     });
 };
-const instantiatePlaces2 = async (socket) => {
-    const arr=[];
-    const elements=[];
-    const jsonUrl = '../spawn.json';
-    console.log('retrive from json')
+const instantiatePlaces2 = async (socket,user) => {
+    const arr = [];
+    const elements = [];
+    const jsonUrl = 'http://127.0.0.1:3002/api/fetch-placement?id=663662aea3de738f421270aa';
     try {
         const data = await fetchData(jsonUrl);
         const placeSP = document.querySelector('.place');
-        placeSP.innerHTML = '';  
+        placeSP.innerHTML = '';
         data.data.devicesSp.forEach((element, index) => {
             const place = document.createElement('span');
             const vector3 = {
-                name:element.name,
+                name: element.name,
                 position: {
-                    x: (element.position.x),
-                    y: (element.position.y),
-                    z: (element.position.z),
+                    x: parseFloat(element.position.x).toFixed(3),
+                    y: parseFloat(element.position.y).toFixed(3),
+                    z: parseFloat(element.position.z).toFixed(3),
                 }
             };
             const Intvector3 = {
@@ -67,23 +70,28 @@ const instantiatePlaces2 = async (socket) => {
             };
             arr.push(vector3);
             elements.push(place);
-            moveObject(place,socket);
-            
+            moveObject(place, socket,user);
+
             place.setAttribute('value', JSON.stringify({ data: vector3 }));
             place.setAttribute('title', 'Device:' + element.name);
             const color = "rgb(" + (225 - vector3.position.x) + "," + (225 - vector3.position.y) + "," + (225 - vector3.position.z) + ")";
             place.classList.add('placement');
 
-            console.log(Intvector3.position.y)
+            const propX = (750 + (vector3.position.x * 20) * 10);
+            const propY = (750 + (vector3.position.z * 20) * 10);
+            const vect2Prop = {
+                x: propX,
+                y: propY
+            }
+            place.setAttribute('vect2', JSON.stringify(vect2Prop));
 
-
-            place.setAttribute('style', "right:" + (30 - vector3.position.x * 20) +
-                "rem; top:" + (10 - vector3.position.z * 10) + "rem; background:" + color + ";");
+            place.setAttribute('style', "z-index:40; left:" + propX +
+                "px; bottom:" + propY + "px; background:" + color + ";");
             placeSP.append(place);
         });
     } catch (error) {
         console.log(error);
     }
-    return {arr:arr,elements:elements};
+    return { arr: arr, elements: elements };
 };
-export {instantiatePlaces,instantiatePlaces2}
+export { instantiatePlaces, instantiatePlaces2 }

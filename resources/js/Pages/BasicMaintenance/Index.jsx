@@ -4,7 +4,6 @@ import Chart from 'react-apexcharts';
 import React, { useEffect, useRef, useState } from 'react';
 const BasicMaintenanceIndex = ({ auth, maintenanceTasksz }) => {
     const [maintenanceOne, setMaintenanceOne] = useState(maintenanceTasksz);
-    console.log(maintenanceTasksz)
     const [users, setUsers] = useState();
 
     const [labels, setLabels] = useState([]);

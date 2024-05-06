@@ -1,129 +1,156 @@
-// Navbar.jsx
-
 import React, { useEffect, useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-const Navbar = ({ auth }) => {
-  const [isMenuOpen, setMenuOpen] = useState(true);
+import { Link } from '@inertiajs/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+const Navbar = ({ auth , layer}) => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+
   useEffect(() => {
-    toggleMenu()
-    window.addEventListener('resize', () => {
-      setMenuOpen(false);
-    })
+    // Close menu on window resize
+    const closeMenuOnResize = () => {
+      if (window.innerWidth > 767 && isMenuOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', closeMenuOnResize);
 
     return () => {
-      setMenuOpen(true);
-      window.removeEventListener('resize', () => { })
-    }
-  }, [])
+      window.removeEventListener('resize', closeMenuOnResize);
+    };
+  }, [isMenuOpen]);
+
   return (
-    <div>
-      {isMenuOpen ? <>
-
-        <div className={`staticNavBar static-links z-20 flex`}>
-          <span className='w-10 h-10 bg-red-500 rounded-full flex items-center justify-center' onClick={() => toggleMenu(!isMenuOpen)}>
-            <FontAwesomeIcon icon={isMenuOpen ? faAngleUp : faAngleDown} className="text-white" />
-          </span>
-          <span className='text-white mr-12'>MENU</span>
-        </div>
-      </> : <>
-
-        <div className={`staticNavBar static-links w-56 z-20 block`}>
-          <span className='w-10 h-10 bg-red-500 rounded-full flex items-center justify-center' onClick={() => toggleMenu(!isMenuOpen)}>
-            <FontAwesomeIcon icon={isMenuOpen ? faAngleUp : faAngleDown} className="text-white" />
-          </span>
-          <div>
-            <Link href="/" className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">
-              <div className='flex justify-between '>
-                <span>Home</span>
-                <span>{`-->`}</span>
+    <nav className={`dark:text-white text-gray-700 bg-gray-300 dark:bg-gray-900 shadow-md fixed top-4 right-4 rounded-full ${layer}`}>
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <Link href="/">
+                <img
+                  className="h-8 w-auto"
+                  src="/logo00.png"
+                  alt="Logo"
+                />
+              </Link>
+            </div>
+            <div className="hidden lg:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <Link
+                  href="/"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Home
+                </Link>
+                <Link
+                  href={route('contact')}
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Contact
+                </Link>
+                <Link
+                  href={route('documentation')}
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Documentation
+                </Link>
+                <Link
+                  href={route('about')}
+                  className=" px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  About us
+                </Link>
+                <Link
+                  href={route('devices.preview')}
+                  className=" px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Products
+                </Link>
+                <Link
+                  href={route('devices.index')}
+                  className=" px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Purchase
+                </Link>
+                <Link
+                  href={route('login')}
+                  className="bg-orange-500  px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600"
+                >
+                  Get Started
+                </Link>
               </div>
-
-            </Link>
-
-            <Link href={route('contact')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Contact</Link>
-            <Link href={route('documentation')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Documentation</Link>
-            <Link href={route('about')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">About us</Link>
-            <Link href={route('devices.preview')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Products</Link>
-            <Link href={route('devices.index')} className="  text-white px-6 py-3 font-bold op hover:rounded-lg hover:bg-white">Purchase</Link>
-            <Link href={route('login')} className="bg-orange-500  text-white px-6 py-3 font-bold rounded-full hover:bg-orange-600">Get Started</Link>
+            </div>
           </div>
-
+          <div className="-mr-2 flex lg:hidden">
+            <button
+              onClick={toggleMenu}
+              className="text-gray-400 hover:text-white focus:outline-none focus:text-white"
+              aria-label="Open menu"
+            >
+              {isMenuOpen ? (
+                <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
+              ) : (
+                <FontAwesomeIcon icon={faBars} className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
+      </div>
 
-
-      </>}
-
-      <style>
-        {`
-          .static-links a {
-            position: relative;
-            display: block;
-          }
-          .staticNavBar{
-            padding:1rem;
-            border-radius:2rem;
-
-          }
-          .staticNavBar:hover{
-            background: #000000c9;
-          }
-          .op:hover {
-            color: #ff6c00;
-            background: #ffffff24;
-            border-bottom: 2px solid orange;
-          }
-
-          .static-links {
-            position: fixed;
-            top: 5%;
-            right: 2%;
-            width: 100%;
-            max-width: auto;
-            height: auto;
-            justify-content: space-between;
-            flex-wrap: wrap;
-          }
-
-          
-
-          @media screen and (min-width: 768px) {
-            .static-links {
-              width: 30vw;
-              max-width: none;
-            }
-          }
-
-          /* Hide the navigation bar on small devices */
-          @media screen and (max-width: 767px) {
-            .static-links {
-              
-            }
-
-            /* Show the navigation bar when the menu button is clicked */
-            .static-links.flex {
-              display: flex;
-              width: 20vw;
-              flex-direction: column;
-              top: 60px; /* Adjust the top position based on your design */
-              left: 70vw;
-              padding: 10px;
-              border-radius: 5px;
-            }
-
-            .hidden {
-              display: none;
-            }
-          }
-        `}
-      </style>
-    </div>
-
+      {isMenuOpen && (
+        <div className="lg:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <Link
+              href="/"
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Home
+            </Link>
+            <Link
+              href={route('contact')}
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Contact
+            </Link>
+            <Link
+              href={route('documentation')}
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Documentation
+            </Link>
+            <Link
+              href={route('about')}
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              About us
+            </Link>
+            <Link
+              href={route('devices.preview')}
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Products
+            </Link>
+            <Link
+              href={route('devices.index')}
+              className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Purchase
+            </Link>
+            <Link
+              href={route('login')}
+              className="block bg-orange-500 text-white px-4 py-2 mt-1 rounded-full text-base font-medium hover:bg-orange-600"
+            >
+              Get Started
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
 

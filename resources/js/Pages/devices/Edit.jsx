@@ -26,13 +26,11 @@ const Edit = ({ auth, device }) => {
       ...prevData,
       image: file,
     }));
-    console.log(file)
 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data)
     put(route('devices.update', device.id)); 
   };
 

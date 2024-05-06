@@ -28,7 +28,6 @@ const Analytics = ({webSocket,stat,auth}) => {
         webSocket.addEventListener('message',(message)=>{ 
             try {
                 const data= JSON.parse(message.data);
-                console.log(data);
                 try { 
                     if(data.type==="deviceStat"){
                         console.log('Recive : ',data);

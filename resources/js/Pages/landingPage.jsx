@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import ThreeCar from './car';
 import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
+import axios from 'axios';
 const LandingPage = ({ auth }) => {
     const { props } = usePage();
     const [loading, SetLoading] = useState(true);
@@ -16,15 +17,30 @@ const LandingPage = ({ auth }) => {
     }
 
 
+    const options = {
+      method: 'GET',
+      url: 'https://127.0.0.1:3002/api/testimonial',
+    };
+ async function initTest(){
+
+    try {
+        const response = await axios.request(options);
+    } catch (error) {
+        console.error(error);
+    }
+ }   
+    useEffect(()=>{
+        initTest();
+    },[])
     return (
         <>
+            <Navbar />
             {loading && <><div className="fixed  h-56 w-56 left-32 top-32 "><img className='w-auto h-auto' src="loader2.gif" alt="loading" /></div></>}
             <div className='canvas' id='top'>
                 {<ThreeCar SetLoading={SetLoading} />}
             </div>
             <div className="container mt-4 text-left ml-4 z-40">
                 <div className="mt-6 z-10">
-                    <Navbar />
                     <span className='relative flex mt-12 text-white'>Available For</span>
                     <div className='relative flex mt-5'>
                         <img src="https://minimals.cc/assets/icons/platforms/ic_js.svg" alt="" className='ml-4' />
@@ -91,32 +107,32 @@ const LandingPage = ({ auth }) => {
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <center className='mt-8 p-4'>
-                                <div class='initials-circle'>JD</div>
-                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>John Doe</p>
+                                <div className='initials-circle'>HM</div>
+                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>Hafedh Mellasi</p>
                                 <p className='text-md text-gray-600 dark:text-gray-400'>Position: Developer</p>
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
                             <center className='mt-8 p-4'>
-                                <div class='initials-circle'>JS</div>
-                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>Jane Smith</p>
+                                <div className='initials-circle'>BS</div>
+                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>Bachar Skrafi</p>
                                 <p className='text-md text-gray-600 dark:text-gray-400'>Position: Designer</p>
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full col-span-2'>
                             <center className='mt-8 p-4'>
-                                <div class='initials-circle'>AJ</div>
-                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>Alex Johnson</p>
+                                <div className='initials-circle'>GH</div>
+                                <p className='text-xl text-gray-800 dark:text-gray-300 font-semibold'>Garrach Hazem</p>
                                 <p className='text-md text-gray-600 dark:text-gray-400'>Position: Project Manager</p>
                             </center>
                         </div>
                     </div>
                 </div>
-                <ul className='grid grid-cols-3 py-4 px-32 bg-gray-300 dark:bg-gray-800'>
+                <ul className='grid md:grid-cols-4 grid-cols-1 py-4 px-32 bg-gray-300 dark:bg-gray-800'>
                     {
                         Object.entries(props.tending).map(([keys, att], index) => (
                             <li key={index} className='text-3xl p-4 flex justify-center'>
-                                {`+${att.length} \n ${keys}`}
+                                {`${(att.length > 100) ? '+99' : att.length} \n ${keys}`}
                             </li>
                         ))
                     }
@@ -290,13 +306,46 @@ const LandingPage = ({ auth }) => {
                         </div>
                     </div>
                 </div>
+                <div class="serviceDetails">
+                        <div class="flex items-center justify-center w-full h-full">
+                            {/*<!-- Testimonial 1 -->*/}
+                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto  flex items-center">
+                                <center>
+                                    <div>AS</div>
+                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
+                                    <p class="text-lg dark:text-gray-400 mt-2">- Anna Smith</p>
+                                </center>
+                            </div>
+                            {/*<!-- Testimonial 2 -->*/}
+                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto flex items-center">
+                                <center>
+                                    <div>MJ</div>
+                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
+                                    <p class="text-lg dark:text-gray-400 mt-2">- Michael Johnson</p>
+                                </center>
+                            </div>
+                            {/*<!-- Testimonial 3 -->*/}
+                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto flex items-center">
+                                <center>
+                                    <div>SB</div>
+                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
+                                    <p class="text-lg dark:text-gray-400 mt-2">- Sarah Brown</p>
+                                </center>
+                            </div>
+
+                            
+                        </div>
+
+                </div>
+
+
 
 
                 <footer className='serviceDetails'>
                     <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full '>
                         <div className='dark:bg-gray-900 relative h-full flex justify-center items-center p-4 col-span-2'>
-                                <p className='text-center text-gray-500'>© 2024 YourCompany. All rights reserved.</p>
-                                <p className='text-center text-gray-500'>Designed with ❤️ by You</p>
+                            <p className='text-center text-gray-500'>© 2024 ISIMS. All rights reserved.</p>
+                            <p className='text-center text-gray-500'>Designed with ❤️ by You</p>
                         </div>
                     </div>
                 </footer>

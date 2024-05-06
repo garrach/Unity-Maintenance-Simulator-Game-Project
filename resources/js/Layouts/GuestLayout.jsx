@@ -9,18 +9,27 @@ export default function Guest({ children }) {
 
     return (
         <>
-        <Navbar/>
+        <Navbar layer="z-10 border-2 border-indigo-500"/>
         <div className="flex sm:justify-center items-center p-0 bg-gray-100 dark:bg-gray-900">
-           
-            
            <div style={{ maxWidth: '100%' }} className="w-full bg-gray-100 dark:bg-gray-800 overflow-hidden sm:rounded-lg">
            <div className='w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg h-screen'>
+           <div className='w-full h-20 relative dark:bg-gray-800 bg-gray-200 border-b-2 border-indigo-500'>
+                <div className='w-80 h-full grid md:grid-cols-2 grid-cols-1 justify-center items-center'>
+                    <div>
+                    </div>
+                    <div>
+                        <span className='text-white w-fit h-10 p-4 bg-red-500 rounded-full flex justify-center items-center'>
+                            <Link href={route('login')}>Sign in</Link>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
                {children} 
-               <Link href="/" className='this-a'>
-                   <ApplicationLogo className="w-20 mt-2 ml-2 mx-auto fill-current text-gray-500" />
-               </Link>
+               
            </div>
            </div>
+           
            <style>
                {`
                .this-a{

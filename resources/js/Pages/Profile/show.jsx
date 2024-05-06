@@ -72,7 +72,6 @@ const Show = ({ userID, encryptedDataDetails }) => {
   }
   useEffect(() => {
     async function fetchJsonRAw() {
-      console.log(await orgnizeData());
       const userData = await orgnizeData();
       setUserHistory(userData)
     }
@@ -99,7 +98,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
           <h1 className="text-2xl font-bold mb-4">{props.qt}</h1>
         </div>
         <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
-          <span>Message</span>
+          <span className='cursor-pointer'>Message</span>
         </div>
         {showInbox && <SendMessage sender={props.auth.user.id} recipient={userInfo.id} action={toggleInbox}/>}
         <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-md mb-6">

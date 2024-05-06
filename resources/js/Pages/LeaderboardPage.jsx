@@ -3,7 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 const LeaderboardPage = ({ getLeaderboardData ,auth}) => {
   const [leaderboardData, setLeaderboardData] = useState();
-  console.log(getLeaderboardData)
   useEffect(() => {
     fetchLeaderboardData();
   }, []);

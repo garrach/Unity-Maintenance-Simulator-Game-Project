@@ -12,6 +12,9 @@ const port = 3002;
 app.use(cors());
 app.use(express.json());
 app.use(checkApiKey);
+
+
+
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 

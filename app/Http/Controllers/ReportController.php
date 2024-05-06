@@ -40,6 +40,7 @@ class ReportController extends Controller
         } else {
             $resumePath = $resumeFile->store('resumes');
         }
+        $user=Auth::user();
 
         if (isset($resumeHash)) {
             $res = [
@@ -49,6 +50,7 @@ class ReportController extends Controller
                 'approval'=>0,
                 'hash' => $resumeHash,
                 'hash' => $resumeHash,
+                'user_id'=>$user->id,
             ];
             job::create($res);
         }

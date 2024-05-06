@@ -33,15 +33,15 @@ const Index = ({ reports, auth, that }) => {
           </h2>
         }
       >
-        <div className="my-4 max-w-7xl mx-auto mt-6 p-6 bg-gray-900 dark:bg-gray-800 rounded-md shadow-md">
-          <h1 className="text-3xl font-semibold mb-4 text-white dark:text-gray-200">Report List</h1>
+        <div className="my-4 max-w-7xl mx-auto mt-6 p-6 bg-gray-200 text-gray-800 dark:text-gray-200 dark:bg-gray-800 rounded-md shadow-md">
+          <h1 className="text-3xl font-semibold mb-4">Report List</h1>
           <ul className="space-y-4">
             {reports &&
               reports.map((report) => (
-                <li key={report.id} className="border rounded-md shadow-md p-4 bg-gray-800 dark:bg-gray-700">
-                  <h2 className="text-xl font-semibold text-white dark:text-gray-200">{report.title}</h2>
-                  <p className="text-gray-400 dark:text-gray-400">{report.description}</p>
-                  <p className="text-gray-400 dark:text-gray-400">Report Date: {report.application_date}</p>
+                <li key={report.id} className="border rounded-md shadow-md p-4 ">
+                  <h2 className="text-xl font-semibold dark:text-gray-200">{report.title}</h2>
+                  <p className="text-gray-500 dark:text-gray-400">{report.description}</p>
+                  <p className="text-gray-500 dark:text-gray-400">Report Date: {report.application_date}</p>
                   <div className="flex mt-2 relative">
                     <Link
                       href={route('reports.show', { report: report.id })}

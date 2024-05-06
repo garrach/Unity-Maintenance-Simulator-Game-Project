@@ -9,8 +9,10 @@ const UnityRefresh = ({ DBsync }) => {
   const [devicesData, setDevicesData] = useState(null);
   const [connectionsData, setConnectionsData] = useState(null);
   const [vehiclesData, setVehiclesData] = useState(null);
-  const [validLogin,setValidLogin]=useState(true);
-  const[validPOst,setValidPost]=useState();
+  const [placementData, setPlacementData] = useState(null);
+  const [validLogin, setValidLogin] = useState(true);
+  const [validPOst, setValidPost] = useState();
+  const [validPostPlace, setValidPostPlace] = useState();
   const retriveSt = useRef(null);
   const [dataIshere, setDataIshere] = useState(false);
   const { data, setData, post } = useForm({
@@ -20,52 +22,52 @@ const UnityRefresh = ({ DBsync }) => {
     User: null,
     Schedule: null,
   });
+
   const dataSync = ['connections', 'Vehicle', 'Device', 'User', 'Schedule']
-const fetchData = async ( endpoint, setDataFunction) => {
-  try {
-    const response = await axios({
-      method: 'GET',
-      url: `http://localhost:3002${endpoint}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': apiKey,
-      },
-    });
-    const data = response.data;
-    setDataFunction(data.data); 
-    retriveSt.current = data.data;
-    console.log(response.data);
-  } catch (error) {
-    retriveSt.current = false;
-    console.error(`Error fetching data from ${endpoint}:`, error);
-  }
-};
-const fetchDataPOST = async (endpoint, data, setDataFunction) => {
-  try {
-    const response = await axios({
-      method: 'POST',
-      url: `http://localhost:3002${endpoint}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': apiKey,
-      },
-      data: data, // Include your data payload here
-    });
-    const responseData = response.data;
-    setDataFunction(responseData.data); 
-    retriveSt.current = true;
-    console.log(response.data);
-  } catch (error) {
-    retriveSt.current = false;
-    console.error(`Error fetching data from ${endpoint}:`, error);
-  }
-};
+  const fetchData = async (endpoint, setDataFunction) => {
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: `http://localhost:3002${endpoint}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': apiKey,
+        },
+      });
+      const data = response.data;
+      setDataFunction(data.data);
+      retriveSt.current = data.data;
+    } catch (error) {
+      retriveSt.current = false;
+      console.error(`Error fetching data from ${endpoint}:`, error);
+    }
+  };
+  const fetchDataPOST = async (endpoint, data, setDataFunction) => {
+    try {
+      const response = await axios({
+        method: 'POST',
+        url: `http://localhost:3002${endpoint}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': apiKey,
+        },
+        data: data, // Include your data payload here
+      });
+      const responseData = response.data;
+      setDataFunction(responseData.data);
+      retriveSt.current = true;
+    } catch (error) {
+      retriveSt.current = false;
+      console.error(`Error fetching data from ${endpoint}:`, error);
+    }
+  };
   const retriveDataFromMongoDB = () => {
     // Fetch data from different endpoints on component mount
     fetchData('/api/users', setUserData);
     fetchData('/api/devices', setDevicesData);
     fetchData('/api/connections', setConnectionsData);
     fetchData('/api/vehicles', setVehiclesData);
+
     console.log('retriveDataFromMongoDB')
     setDataIshere(true)
   }
@@ -82,7 +84,7 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
   useEffect(() => {
     retriveDataFromMongoDB()
     return () => {
-     
+
     };
   }, [dataIshere])
   useEffect(() => {
@@ -92,31 +94,84 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
       arrMariaConnectionsData.current = []
     };
   }, [])
-  const sysnncronize =() => {
+  const [clientPlacements,setClientPlacements]=useState({
+    id:"663662aea3de738f421270ae",
+  })
+  const [searchPlacemnt,setSearchPlacement]=useState("")
+  useEffect(() => {
+    async function retrivePlacementData(id) {
+
+      try {
+        const response = await axios({
+          method: 'GET',
+          url: `http://localhost:3002/api/fetch-placement?id=${id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': apiKey,
+          },
+        });
+        const data = response.data;
+        setPlacementData(data.data);
+        return data;
+
+      } catch (error) {
+        console.error(`Error fetching data from ${endpoint}:`, error);
+        return null;
+      }
+    }
+    if (userData && searchPlacemnt!=="") {
+      userData.map(async(user) => {
+        (user._id === clientPlacements.id) && await retrivePlacementData(user._id)
+      })
+    }
+
+    async function getAdminData(){
+      const dataToPlace=await retrivePlacementData('663662aea3de738f421270aa');
+      setPlacementData(dataToPlace);
+    }
+    getAdminData();
+
+    return ()=>{}
+  }, [userData,searchPlacemnt])
+
+  const handlSearch=(query)=>{
+    setSearchPlacement(query)
+    setClientPlacements({id:query})
+  }
+  const sysnncronize = async () => {
     try {
-      fetchDataPOST('/api/connections',{type:"addConnectin",message:'syncData',data:data.connections},setValidPost);
-      fetchDataPOST('/api/vehicles',{type:"addvehicles",message:'syncData',data:data.Vehicle},setValidPost);
-      fetchDataPOST('/api/devices',{type:"adddevices",message:'syncData',data:data.Device},setValidPost);
-      fetchDataPOST('/api/login',{type:"addUser",message:'syncData',data:data.User},setValidPost);
+      //fetchDataPOST('/api/connections', { type: "addConnectin", message: 'syncData', data: data.connections }, setValidPost);
+      //fetchDataPOST('/api/vehicles', { type: "addvehicles", message: 'syncData', data: data.Vehicle }, setValidPost);
+      //fetchDataPOST('/api/devices', { type: "adddevices", message: 'syncData', data: data.Device }, setValidPost);
+      //fetchDataPOST('/api/login', { type: "addUser", message: 'syncData', data: data.User }, setValidPost);
+      userData.map(async(user)=>{
+        placementData && 
+        fetchDataPOST('/api/add-placement', { user_id: user._id , data: placementData }, setValidPostPlace);
+      })
 
     } catch (error) {
-      console.log(data)
     }
   }
-  const dataFlush=()=>{
-    console.log(data);
-      arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, indexKey) => {
+  const dataFlush = () => {
+    arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, indexKey) => {
       setData((prevData) => ({ ...prevData, [dataSync[indexKey]]: data }));
     })
   }
   return <>
-   {validLogin && <div className="p-12 bg-gray-300">
+  <div>
+    <input 
+    type="text" name="search" id="search"
+    value={searchPlacemnt}
+    onChange={(e) => handlSearch(e.target.value)}
+     />
+  </div>
+    {validLogin && <div className="p-12 bg-gray-300">
       <div className="MongoData bg-gray-300 p-4 rounded m-2">
-      {retriveSt.current ? (
-              <h1 className="text-xl font-bold">MongoDB Sync: Authorized</h1>
-            ) : (
-              <h1 className="text-xl font-bold">MongoDB Sync: Unauthorized</h1>
-            )}       
+        {retriveSt.current ? (
+          <h1 className="text-xl font-bold">MongoDB Sync: Authorized</h1>
+        ) : (
+          <h1 className="text-xl font-bold">MongoDB Sync: Unauthorized</h1>
+        )}
         <div>
           <ul>
             {userData && <li>
@@ -155,20 +210,20 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
         </div>
       </div>
       <div className="MariaData fixed bg-gray-300 p-4 rounded m-2">
-      {retriveSt.current ? (
-              <h1 className="text-xl font-bold">HeidiData Sync MongoDB : Authorized</h1>
-            ) : (
-              <h1 className="text-xl font-bold">HeidiData Sync MongoDB: Unauthorized</h1>
-            )}  
+        {retriveSt.current ? (
+          <h1 className="text-xl font-bold">HeidiData Sync MongoDB : Authorized</h1>
+        ) : (
+          <h1 className="text-xl font-bold">HeidiData Sync MongoDB: Unauthorized</h1>
+        )}
         <ul>
           {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
-            <li key={index} style={{marginLeft:((index+1)*10)+'rem' , marginTop:((index+1)*4)+'rem', display:'none'}} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
+            <li key={index} style={{ marginLeft: ((index + 1) * 10) + 'rem', marginTop: ((index + 1) * 4) + 'rem', display: 'none' }} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
               <ul>
                 <li>---------------:{dataSync[index]}:-------------</li>
                 {data.map((d, index) => (
                   <li key={index}> <ul key={index}>
                     {Object.entries(d).map(([key, value], index) => (
-                    <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
+                      <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
                     )
                     )}
                   </ul>
@@ -181,9 +236,9 @@ const fetchDataPOST = async (endpoint, data, setDataFunction) => {
       </div>
       <div className="action">
         {data.connections ?
-        <AlertDialog title='Data Sysnncronize Successfull' message={`The data synchronization process has completed successfully. All systems are now up-to-date with the latest information, ensuring consistency and accuracy across the platform. If you have any questions or encounter any issues, please contact our support team for assistance. Thank you for your attention.`} onClose={sysnncronize()}/>
-        : <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
-      </div> 
+          <AlertDialog title='Data Sysnncronize Successfull' message={`The data synchronization process has completed successfully. All systems are now up-to-date with the latest information, ensuring consistency and accuracy across the platform. If you have any questions or encounter any issues, please contact our support team for assistance. Thank you for your attention.`} onClose={sysnncronize()} />
+          : <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
+      </div>
 
     </div>}
     <style>{`

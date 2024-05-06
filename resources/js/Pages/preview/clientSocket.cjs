@@ -1,14 +1,20 @@
+import { useRef } from 'react';
 import { clientSocket } from '../client.cjs';
 
 
 const socketHandler = () => {
+    const messageType={
+        current:{
+            type:'',
+            message:'',
+            data:'',
+        },
+    }
     const soket = clientSocket('unityPreview');
     soket.addEventListener('open', (evnt) => {
-        console.log('clientReady')
     })
     soket.addEventListener('message', (evnt) => {
-        messageRef.current = evnt.data;
-        const messageRaw = JSON.parse(messageRef.current);
+        const messageRaw = JSON.parse(evnt.data);
         messageType.current = messageRaw.message;
         try {
             if (messageType.current.message === "deviceTracking") {

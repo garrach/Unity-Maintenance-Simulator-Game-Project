@@ -21,10 +21,10 @@ const RecentActivities = ({ activities, display }) => {
   },[display.currentwebSocket])
   return (
     <div className=" dark:text-white text-gray-800 h-56 overflow-y-auto p-4 rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-2">Recent Activities</h2>
+      <h2 className="text-lg font-semibold mb-2" id='pop'>Recent Activities</h2>
       {/*display.message.message &&(<h2 className="text-lg font-semibold mb-2">{display.message.message}</h2>)*/}
       <ul>
-      {webSocketLive && <li>Client ON :{display.message.data.ID}</li>}
+      {webSocketLive && display.message.data && <li>Client ON :{display.message.data.ID}</li>}
       <li><strong>Users Feed:</strong> </li>
       {acts.map((conn,index)=>(
         <li key={index}>{conn}</li>

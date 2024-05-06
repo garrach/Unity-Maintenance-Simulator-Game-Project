@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
 
-const StarsReview = ({ totalStars, onStarClick }) => {
+const StarsReview = ({ totalStars, onStarClick , init }) => {
   const [selectedStars, setSelectedStars] = useState(0);
 
   const handleStarClick = (star) => {
     setSelectedStars(star);
     onStarClick(star);
   };
-
+  const initStars = (init) => {
+  };
+  useEffect(()=>{
+    for (let index = 1; index < init+1; index++) {
+      setSelectedStars(index);      
+    }
+    initStars(init);
+  },[])
   return (
     <div>
       {[...Array(totalStars)].map((_, index) => {

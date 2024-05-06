@@ -20,7 +20,6 @@ const ScheduleEdit = ({ schedule, user }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add logic to update the schedule using formData
-    console.log(formData);
   };
 
   return (

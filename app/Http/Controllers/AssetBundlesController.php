@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\AssetBundles;
 use App\Models\Device;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class AssetBundlesController extends Controller
 {
@@ -21,27 +22,15 @@ class AssetBundlesController extends Controller
 
     public function store(Request $request)
     {
-        // Validate and store the connection
-        $assetBundle = AssetBundles::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'version' => $request->version,
-            'platform' => $request->platform,
-            'file_size' => $request->file_size,
-            'file_path' => $request->file_path,
-        ]);
+        $user=Auth::user();
 
-        // Attach devices to the connection
-        $assetBundle->devices()->attach($request->device_ids);
-
-        // Retrieve the devices associated with the connection
-        $devices = $assetBundle->devices()->get();
-
-        // Serialize the devices into JSON
-        $serializedData = $devices->toJson();
-
-        // Return the serialized data as part of the response
-        return response()->json(['data' => $serializedData]);
+        if ($user) {
+            $assetBundle = AssetBundles::all()->first();
+            $user->downloads()->attach($assetBundle);
+        }else{
+            return redirect()->route('login');
+        }
+       
     }
 
     public function show(AssetBundles $assetBundle)

@@ -60,6 +60,7 @@ Route::middleware(('auth'))->group(function () {
 
     //client and Admin and Employees
 
+    Route::resource('assetBundles', AssetBundlesController::class);
 
     Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
     Route::get('/data-monitoring',[UnityDataMonitorController::class, 'index'])->name('data-monitoring');
@@ -91,7 +92,6 @@ Route::middleware(('auth'))->group(function () {
         Route::resource('services', ServicesController::class);
         Route::resource('connections', ConnectionController::class);
         Route::resource('schedules', ScheduleController::class);
-        Route::resource('assetBundles', AssetBundlesController::class);
         Route::resource('reports', ReportController::class);
         Route::resource('whishlist', WishListController::class);
     });

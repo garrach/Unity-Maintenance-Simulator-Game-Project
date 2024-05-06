@@ -16,7 +16,6 @@ const ConnectedServicesIndex = ({ vehicles, devices, auth }) => {
         const uniqueValuesLabels = new Set(devicesDataLabels.current);
         devicesDatausage.current = Array.from(uniqueValuesIDs);
         devicesDataLabels.current = Array.from(uniqueValuesLabels);
-        console.log(uniqueValuesLabels);
         const categories = ['Car Electronics', 'Interior Controls', 'Safety Features', 'Entertainment System', 'Charging Accessories', 'Driver Assistance and Control'];
 
 

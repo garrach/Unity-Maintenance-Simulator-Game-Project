@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Vehicle;
 use App\Models\Device;
+use App\Models\AssetBundles;
 use App\Models\Purchase;
 class ConnectionController extends Controller
 {
     public static function getTendingConnections(){
-        return ["Connections"=>Connection::all()->toArray(),"Users"=>User::all()->toArray(),"Vehicles"=>Vehicle::all()->toArray()];
+        return ["Connections"=>Connection::all()->toArray(),
+        "Users"=>User::all()->toArray(),
+        "Vehicles"=>Vehicle::all()->toArray(),
+        "Downloads"=>AssetBundles::all()->first()->users->toArray()];
     }
     public function getDevicesForVehicle($vehicleId)
     {

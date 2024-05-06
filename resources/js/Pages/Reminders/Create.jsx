@@ -19,7 +19,6 @@ const ReminderCreate = ({ user }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add logic to create a new reminder using formData
-    console.log(formData);
   };
 
   return (

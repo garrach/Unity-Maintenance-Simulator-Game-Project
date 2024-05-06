@@ -26,12 +26,12 @@ class DeviceController extends Controller
     public function preview()
     {
         $devices = Device::all();
-        $reviews=[];
+        $reviews =  [];
         $Comments=[];
 
         foreach($devices as $device){
-            $reviews[$device->id]=$device->reviews;
-            $Comments[$device->id]=$device->comments;
+            $reviews[$device->id]=$device->review;
+            $Comments[$device->id]=$device->Comments;
         }
         session('request',0);
         return Inertia::render('devicesPreview', [
@@ -73,6 +73,7 @@ class DeviceController extends Controller
         $purchase=$device->purchase;
         return Inertia::render('devices/Show', [
             'device' => $device,
+            'deviceReview'=>$device->review,
             'purchase' => $purchase,
         ]);
     }

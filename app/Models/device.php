@@ -32,8 +32,8 @@ class Device extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function reviews() 
+    public function review()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasOne(Review::class);
     }
 }

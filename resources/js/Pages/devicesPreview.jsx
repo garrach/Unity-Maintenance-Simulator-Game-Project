@@ -23,7 +23,8 @@ const Index = ({ devices, reviews, comments, auth }) => {
 
     return (
         <GuestLayout>
-            <div className='overflow-y-auto h-screen bg-gray-100 pt-12 dark:bg-gray-800'>
+            {console.log(comments)}
+            <div className='h-full bg-gray-100 dark:bg-gray-800'>
                 {preview && selectedDevice && (
                     <div className='fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-50 flex items-center justify-center'>
                         <div className='relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-lg'>
@@ -40,7 +41,8 @@ const Index = ({ devices, reviews, comments, auth }) => {
                                 <div className='border-t border-gray-200 dark:border-gray-600 pt-4'>
                                     <h2 className='text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200'>Reviews</h2>
                                     <ul>
-                                        {reviews[selectedDevice.id].map((review, index) => (
+                                        {Object.values(reviews).map((review, index) => (
+                                            review.device_id == selectedDevice.id &&
                                             <li key={index} className='text-gray-600 dark:text-gray-400'>{review.rate}</li>
                                         ))}
                                     </ul>
@@ -60,9 +62,9 @@ const Index = ({ devices, reviews, comments, auth }) => {
                         </div>
                     </div>
                 )}
-                <div className='container mx-auto mt-12'>
-                    <h1 className='text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200'>Device List</h1>
-                    <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+                <div className='container mx-auto mt-4'>
+                    <h1 className='text-xl font-semibold mb-4 text-gray-800 dark:text-gray-500'><a href="#">../Device/Tending</a> </h1>
+                    <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 overflow-x-hidden overflow-y-auto'>
                         {devices.map((device, index) => (
                             <li key={device.id} className={`bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                                 <div className='flex flex-col justify-between h-full'>

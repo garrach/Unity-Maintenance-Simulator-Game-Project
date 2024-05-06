@@ -49,14 +49,14 @@ export default function Register() {
                                 <center>
                                     <div className='grid grid-cols-1 justify-items-center justify-center items-center'>
                                         <h1 className='text-5xl text-gray-900 '>Welcome Back</h1>
-                                        <p className='text-xl text-gray-800 bg-gray-100 p-2 bg-opacity-50 rounded-lg'>Hi there! </p>
-                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Welcome aboard to the community! We're over the moon to have you with us.</p>
-                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Get ready for exclusive insights, tips, and a whole lot of fun.</p>
-                                        <p className='text-xl text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg mb-4'>Don't hesitate to reach out if you need anything. We're in this together!Cheers</p>
+                                        <p className='text-xl dark:text-gray-200 text-gray-800 bg-gray-100 p-2 bg-opacity-50 rounded-lg'>Hi there! </p>
+                                        <p className='text-xl dark:text-gray-200 text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Welcome aboard to the community! We're over the moon to have you with us.</p>
+                                        <p className='text-xl dark:text-gray-200 text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg'>Get ready for exclusive insights, tips, and a whole lot of fun.</p>
+                                        <p className='text-xl dark:text-gray-200 text-gray-800 bg-gray-100 bg-opacity-50 p-2 rounded-lg mb-4'>Don't hesitate to reach out if you need anything. We're in this together!Cheers</p>
 
                                         <Link
                                             href={route('login')}
-                                            className="bg-white uppercase w-32 px-4 w- 56 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                            className="dark:bg-gray-300 bg-gray-700 uppercase w-32 px-4 w- 56 py-2 text-sm text-gray-200 dark:text-gray-700 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                                         >
                                            <b>Sign in</b> 
                                         </Link>

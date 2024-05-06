@@ -55,13 +55,13 @@ const Index = ({ devices, auth }) => {
 
             ))}
           </ul>
-          {auth.user.role === "admin" && (
+          {(auth.user.role === "admin" || auth.user.role === "employee") && (
 
             <Link
               href={route('devices.create')}
               className="bg-blue-500 text-white px-4 py-2 mt-12 rounded-full hover:bg-blue-600 inline-block"
             >
-              Create Device
+              Add New Device
             </Link>
           )}
 

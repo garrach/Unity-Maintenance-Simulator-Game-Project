@@ -8,11 +8,12 @@ export default function Authenticated({ user, header, children, webSocket }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const { url } = usePage();
 
- 
+
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
@@ -30,6 +31,62 @@ export default function Authenticated({ user, header, children, webSocket }) {
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
+                                {user.role === "employee" &&
+                                    <>
+                                        <NavLink href={route('basic-maintenance')} active={route().current('basic-maintenance')}>
+                                            Devices Usage
+                                        </NavLink>
+                                        <NavLink href={route('unity.index')} active={route().current('unity.index')}>
+                                            Devices Placement
+                                        </NavLink>
+                                        <NavLink href={route('full-maintenance-suite')} active={route().current('full-maintenance-suite')}>
+                                            Settings
+                                        </NavLink>
+                                    </>
+                                }
+
+
+
+                                {user.role === "client" &&
+                                    <>
+                                        <NavLink href={route('basic-maintenance')} active={route().current('basic-maintenance')}>
+                                            Devices Usage
+                                        </NavLink>
+                                        <NavLink href={route('myaccount')} active={route().current('myaccount')}>
+                                            My Account
+                                        </NavLink>
+                                        <NavLink href={route('devices.index')} active={route().current('devices.index')}>
+                                            Products List
+                                        </NavLink>
+                                        <NavLink href={route('leaderboard')} active={route().current('leaderboard')}>
+                                            Leaderboard
+                                        </NavLink>
+
+                                        <NavLink href={route('full-maintenance-suite')} active={route().current('full-maintenance-suite')}>
+                                            Settings
+                                        </NavLink>
+                                    </>
+                                }
+
+
+
+                                {user.role === "admin" &&
+                                    <>
+                                        <NavLink href={route('devices.index')} active={route().current('devices.index')}>
+                                            Devices Register
+                                        </NavLink>
+                                        <NavLink href={route('vehicles.index')} active={route().current('vehicles.index')}>
+                                            Vehicles Register
+                                        </NavLink>
+                                        <NavLink href={route('users')} active={route().current('users')}>
+                                            Users
+                                        </NavLink>
+                                        <NavLink href={route('paymentPlans.index')} active={route().current('paymentPlans.index')}>
+                                            Services
+                                        </NavLink>
+                                    </>
+                                }
+
                             </div>
                         </div>
 
@@ -37,7 +94,7 @@ export default function Authenticated({ user, header, children, webSocket }) {
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
+                                        <span className="inline-flex rounded-md" id='pop'>
                                             <button
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
@@ -65,8 +122,8 @@ export default function Authenticated({ user, header, children, webSocket }) {
                                         <Dropdown.Link href={route('dashboard')}>My Progress</Dropdown.Link>
                                         <Dropdown.Link href={route('myaccount', ['user' == { user }])}>My Account</Dropdown.Link>
                                         <Dropdown.Link href={route('services.index')}>My Services</Dropdown.Link>
-                                        
-                                        {user.role==="admin" && <Dropdown.Link href={route('paymentPlans.index')}>Services Plans</Dropdown.Link>}
+
+                                        {user.role === "admin" && <Dropdown.Link href={route('paymentPlans.index')}>Services Plans</Dropdown.Link>}
                                         <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -117,7 +174,7 @@ export default function Authenticated({ user, header, children, webSocket }) {
                             <ResponsiveNavLink href={route('dashboard')}>My Progress</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('myaccount', ['user' == { user }])}>My Account</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('services.index')}>My Services</ResponsiveNavLink>
-                            {user.role==="admin" &&   <ResponsiveNavLink href={route('paymentPlans.index')}>PaymentPlan</ResponsiveNavLink>}
+                            {user.role === "admin" && <ResponsiveNavLink href={route('paymentPlans.index')}>PaymentPlan</ResponsiveNavLink>}
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
                         </div>
                     </div>

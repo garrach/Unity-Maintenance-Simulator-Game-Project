@@ -74,13 +74,13 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       // Scene
       scene = new THREE.Scene();
       // Camera
-      camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000);
+      camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
       camera.position.set(scenes[0].x, scenes[0].y, scenes[0].z);
       camera.rotation.set(Math.PI / 3, 0, 0);
       setCamm(camera);
       // Renderer
       renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth-30, window.innerHeight);
+      renderer.setSize(window.innerWidth - 30, window.innerHeight);
       renderer.shadowMap.enabled = true;
       mount.current.appendChild(renderer.domElement);
       // Create cylinder
@@ -111,26 +111,33 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       controls.current.minDistance = 6;
       controls.current.maxDistance = 9;
 
+
+
+
+
+      scene.background = new THREE.Color(0x000000);
+
+
+
+
+
       // Set the texture to repeat
-      /* texture.wrapS = THREE.RepeatWrapping;
-       texture.wrapT = THREE.RepeatWrapping;
-       const repeatFactor = 1024; // Adjust the repeat factor based on your preference
-       texture.repeat.set(repeatFactor, repeatFactor);*/
+      
       // Create particle system for smoke
       // Texture loader
-      /*const textureLoader = new TextureLoader();
+      const textureLoader = new TextureLoader();
       const texture = textureLoader.load('mapG0.jpg');
       // Set the texture to repeat
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      const repeatFactor = 1024; // Adjust the repeat factor based on your preference
+      const repeatFactor = 128; // Adjust the repeat factor based on your preference
       texture.repeat.set(repeatFactor, repeatFactor);
       // Ground
       const groundGeometry = new THREE.PlaneGeometry(1000, 1000, 32, 32);
       const groundMaterial = new THREE.MeshPhongMaterial({
         map: texture,
         side: THREE.DoubleSide,
-        shininess: 1,
+        shininess: 2,
         specular: new THREE.Color(0xaaaaaa),
         emissive: new THREE.Color(0x000000),
         emissiveIntensity: 0.1,
@@ -139,7 +146,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       ground.rotation.x = (Math.PI / 2);
       ground.rotation.z = (0);
       ground.receiveShadow = true;
-      scene.add(ground);*/
+      scene.add(ground);
       // GUI control
       const camP = {
         min: -(Math.PI * 2),
@@ -151,27 +158,61 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       }
       // setupGUI(camera,ground, groundMaterial,camP,camR);
       const loader = new GLTFLoader();
-      loader.load('storage/mersedes-benz_s65_w222.glb', (gltf) => {
-        const modelMesh = gltf.scene;
-        modelMesh.traverse((child) => {
-          childs.current.push(child);
-          TH3dPointTOscreen(child.position, camera, child)
-        })
-        modelMesh.position.set(0, 0, 0);
-        car = modelMesh;
-        modelMesh.scale.set(2, 2, 2);
-        scene.add(modelMesh);
-        SetLoading(false);
-      }, undefined, (error) => {
-        console.error('Error loading model', error);
-      });
+
+      // Start loading the model asynchronously
+      setTimeout(() => {
+          loader.load(
+              'storage/mersedes-benz_s65_w222.glb',
+              (gltf) => {
+                  const modelMesh = gltf.scene;
+      
+                  // Apply transformations to the loaded modelMesh
+                  modelMesh.position.set(0, 0, 0);
+                  modelMesh.scale.set(2, 2, 2);
+      
+                  // Traverse the model's children and perform necessary operations
+                  modelMesh.traverse((child) => {
+                      if (child instanceof THREE.Mesh) {
+                          // Check for duplicates before pushing into the array
+                          if (!childs.current.includes(child)) {
+                              childs.current.push(child);
+                          }
+      
+                          // Assuming TH3dPointTOscreen is an expensive operation,
+                          // consider if it's necessary to call it for every mesh.
+                          // If not, adjust as needed.
+                          TH3dPointTOscreen(child.position, camera, child);
+                      }
+                  });
+      
+                  // Add the modelMesh to the scene
+                  scene.add(modelMesh);
+      
+                  // Assign the loaded modelMesh to the 'car' variable if needed
+                  car = modelMesh;
+      
+                  // Signal that loading has completed
+                  SetLoading(false);
+              },
+              undefined,
+              (error) => {
+                  console.error('Error loading model', error);
+                  // Signal that loading has failed
+                  SetLoading(false);
+                  // Optionally, inform the user about the error
+                  alert('Failed to load the model. Please try again later.');
+              }
+          );
+      }, 0);
+      
+
       // Point Light
       const pointLight = new THREE.PointLight(0xffffff, 100, 100);
       pointLight.castShadow = true;
       lights.current = pointLight;
       scene.add(pointLight);
       // Hemisphere Light
-      const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 2);
+      const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 5);
       scene.add(hemisphereLight);
       animate();
     };
@@ -195,7 +236,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     };
 
 
-    const lerpFactor = 0.05; 
+    const lerpFactor = 0.05;
     let isAnimPlaying = false;
     const changeScene = (index) => {
       const targetPosition = scenes[index];
@@ -223,7 +264,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth-30, window.innerHeight);
+      renderer.setSize(window.innerWidth - 30, window.innerHeight);
     });
     const calcDistance = (initPos, target) => {
       //a2+b2=c2
@@ -241,7 +282,6 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       if (distanceCam < 7) {
         //controls.current.enablePan=false;
         //controls.current.enableZoom=false;
-        console.log(distanceCam);
       } else {
         //controls.current.enableZoom=true;
       }
@@ -263,47 +303,49 @@ const ThreeCar = ({ carModel, SetLoading }) => {
             elemnt.children.map(item => {
               if (item.material) {
                 item.material = newMaterial;
-                item.rotation.set(0,0,Math.PI/3);
+                item.rotation.set(0, 0, Math.PI / 3);
               }
             });
-          
+
+          }
+        })
+
+
+
       }
-    })
-
-
-
-  }
 
     })
-const Carcalls = document.createElement('span');
-const TH3dPointTOscreen = (position, Camera, yo) => {
-  Carcalls.classList.add(yo.name);
-  //Carcalls.innerHTML = yo.name;
-  Carcalls.classList.add('callout');
-  mount.current.appendChild(Carcalls);
-  const point3D = position;
-  const point2D = point3D.clone().project(camera);
-  const myscreenWidth = window.innerWidth;
-  const myscreenHeight = window.innerHeight;
-  myscreenX = (point2D.x + 1 + 0.001) * (myscreenWidth / 2);
-  myscreenY = (-point2D.y + 1 + 0.001) * (myscreenHeight / 2);
-  Carcalls.style.top = myscreenY + 'px';
-  Carcalls.style.left = myscreenX + 'px';
-}
-let index = 0;
-const actions = document.querySelectorAll('button');
-actions.forEach((elemnt) => {
-  elemnt.setAttribute('value', index++)
-  elemnt.addEventListener('click', (eve) => {
-    if (!isAnimPlaying)
-      changeScene(Number(elemnt.getAttribute('value')))
-  })
-})
-init();
-return () => {
-  window.removeEventListener('resize', () => { });
-};
+    const Carcalls = document.createElement('span');
+    const TH3dPointTOscreen = (position, Camera, yo) => {
+      Carcalls.classList.add(yo.name);
+      //Carcalls.innerHTML = yo.name;
+      Carcalls.classList.add('callout');
+      mount.current.appendChild(Carcalls);
+      const point3D = position;
+      const point2D = point3D.clone().project(camera);
+      const myscreenWidth = window.innerWidth;
+      const myscreenHeight = window.innerHeight;
+      myscreenX = (point2D.x + 1 + 0.001) * (myscreenWidth / 2);
+      myscreenY = (-point2D.y + 1 + 0.001) * (myscreenHeight / 2);
+      Carcalls.style.top = myscreenY + 'px';
+      Carcalls.style.left = myscreenX + 'px';
+    }
+    let index = 0;
+    const actions = document.querySelectorAll('button');
+    actions.forEach((elemnt) => {
+      elemnt.setAttribute('value', index++)
+      elemnt.addEventListener('click', (eve) => {
+        if (!isAnimPlaying)
+          changeScene(Number(elemnt.getAttribute('value')))
+      })
+    })
+    init();
+    return () => {
+      window.removeEventListener('resize', () => { });
+      //mount.current.removeChild(renderer.domElement);
+
+    };
   }, []);
-return <div ref={mount} />;
+  return <div ref={mount} />;
 };
 export default ThreeCar;

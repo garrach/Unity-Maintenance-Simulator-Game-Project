@@ -19,28 +19,31 @@ const RecentConnections = ({ connection, webSocket }) => {
     usersArr.current.push(element);
   });
   return (
-    <div className="p-4 dark:text-white text-gray-800 overflow-y-auto overflow-x-hidden h-80">
-      <h2 className="text-lg font-semibold mb-2">Recent Connections</h2>
-      <table className='w-full'>
-        {Object.values(props.Purchases).map((purchase, index) => (
-          <tr className='uppercase p-4 hover:bg-gray-900 rounded-md shadow-md transition-transform transform hover:scale-105'>
-            <td>
-              <span><b>{`purchase (ID:${purchase.id}) `}</b></span>
-            </td>
-            <td>
-              <span >{` user : ${usersArr.current[index].name} `}</span>
-            </td>
-            <td>
-              <span> Device : <b><span className='underline decoration-sky-500' >{devicesArr.current[index].type}</span></b></span>
-            </td>
-            <td>
-              <span>{` Date: ${purchase.date}`}</span>
-            </td>
-          </tr>
+    <div className="p-2 dark:text-white text-gray-800">
+      <h2 className="text-lg font-semibold mb-2" id='pop'>Recent Connections</h2>
+      <div className='w-full overflow-x-hidden h-80 overflow-y-auto'>
+        <table className='w-full'>
+          {Object.values(props.Purchases).map((purchase, index) => (
+            <tr className='uppercase p-4 hover:bg-gray-900 hover:text-gray-200 rounded shadow-md transition-transform transform hover:scale-105'>
+              <td>
+                <span><b>{`purchase (ID:${purchase.id}) `}</b></span>
+              </td>
+              <td>
+                <span >{` user : ${usersArr.current[index].name} `}</span>
+              </td>
+              <td>
+                <span> Device : <b><span className='underline decoration-sky-500' >{devicesArr.current[index].type}</span></b></span>
+              </td>
+              <td>
+                <span>{` Date: ${purchase.date}`}</span>
+              </td>
+            </tr>
 
-        )
-        )}
-      </table>
+          )
+          )}
+        </table>
+      </div>
+
     </div>
   );
 };

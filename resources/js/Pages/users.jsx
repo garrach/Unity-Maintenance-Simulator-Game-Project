@@ -1,57 +1,69 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
-import React, { useRef, useEffect } from 'react';
-import { useState } from 'react';
-const UsersList = ({ auth, users , userexp}) => {
-    const exp = useRef();
+import React, { useEffect, useRef, useState } from 'react';
 
-    const [usersActive,setUsersActive]=useState(users);
-   
+const UsersList = ({ auth, users, userexp }) => {
+    const exp = useRef([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [usersActive, setUsersActive] = useState(users);
+
+    useEffect(() => {
+        setUsersActive(users);
+    }, [users]);
+
     const handleUserClick = (user) => {
-        console.log('Clicked on user:', user);
     };
 
-    function generateExp() {
-        usersActive.forEach(() => {
-            exp.current=Object.entries(userexp);
+    useEffect(() => {
+        const filteredUsers = users.filter((user) =>
+            user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setUsersActive(filteredUsers);
+    }, [searchQuery, users]);
+
+    useEffect(() => {
+        users.forEach(() => {
+            exp.current = Object.entries(userexp);
         });
-    }
-    console.log(exp.current)
-    generateExp();
+    }, [users, userexp]);
+
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className='dark:text-white'>Users List</h2>}>
+        <AuthenticatedLayout user={auth.user} header={<h2 className='font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight'>Users List</h2>}>
             <div className='container mx-auto mt-8'>
-                <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
+                <div className='mb-4'>
+                    <input
+                        type='text'
+                        placeholder='Search users...'
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className='block w-full p-3 rounded-md dark:text-gray-200 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring focus:border-blue-300'
+                    />
+                </div>
+                <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                     {usersActive &&
                         usersActive.map((user, index) => (
                             <li
                                 key={index}
-                                className='relative bg-gray-800 p-4 rounded-md shadow-md transition-transform transform hover:scale-105 cursor-pointer'
+                                className='bg-white dark:bg-gray-800 rounded-md shadow-md overflow-hidden transition-transform transform hover:scale-105 cursor-pointer'
                                 onClick={() => handleUserClick(user)}
                             >
-                                <div className='text-white'>
-                                    <div className='w-full h-56 bg-gray-900 mt-6 text-white flex justify-center items-center text-3xl'>
-                                        {user.name}
+                                <div className='p-6'>
+                                    <div className='w-full h-40 bg-gray-300 dark:bg-gray-600 flex justify-center items-center text-3xl text-gray-600 dark:text-gray-400 rounded-t-md'>
+                                        {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <p className='text-lg font-semibold mt-2'>{user.name}</p>
-                                    <p className='text-gray-400'>{user.email}</p>
-                                    <p className='text-gray-400 mt-2 absolute top-0 right-2'>
-                                        <span className='font-semibold'>Exp:</span> {
-                                        exp.current.map(([key,value])=>
-                                            Object.values(value).map((val)=>(
-                                                user.id===val.user_id&&
-                                                val.experience
-                                                )
-                                            )
-
-                                        )}
-                                    </p>
-                                    <p className='text-gray-400 mt-2'>
-                                        <span className='font-semibold'>Role:</span> {user.role}
-                                    </p>
-                                    <p className='text-gray-400 mt-2 absolute bottom-4 right-4'>
-                                        <Link href={route('userAccount.show', { userID: user.id })} className='font-semibold'>view</Link>
-                                    </p>
+                                    <div className='mt-4'>
+                                        <p className='text-lg dark:text-indigo-500 font-semibold'>{user.name}</p>
+                                        <p className='text-gray-600 dark:text-gray-400'>{user.email}</p>
+                                        <p className='text-gray-600 dark:text-gray-400 mt-2'>
+                                            <span className='font-semibold'>Experience:</span> {exp.current.map(([key, value]) => Object.values(value).map((val) => (user.id === val.user_id && val.experience)))}
+                                        </p>
+                                        <p className='text-gray-600 dark:text-gray-400 mt-2'>
+                                            <span className='font-semibold'>Role:</span> {user.role}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className='bg-gray-100 dark:bg-gray-700 py-3 px-6 flex justify-end'>
+                                    <Link href={route('userAccount.show', { userID: user.id })} className='text-blue-500 dark:text-blue-400 font-semibold hover:underline'>View Profile</Link>
                                 </div>
                             </li>
                         ))}

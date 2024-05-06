@@ -23,7 +23,6 @@ const Index = ({ paymentPlans, auth }) => {
 
   const suub = (e) => {
     e.preventDefault();
-    console.log(data)
     post(route('subscription.store'))
     reset();
   };

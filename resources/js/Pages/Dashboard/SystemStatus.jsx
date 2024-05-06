@@ -16,13 +16,12 @@ const SystemStatus = ({ currentWebSocket, display }) => {
    
     return()=>{
         handlUnityRuntime()
-        console.log(dynamicValues.socket)
       setSys(true)
     }
   },[sys])
   return (
     <div className="dark:text-white text-gray-800 p-4 rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-2">System Status</h2>
+      <h2 className="text-lg font-semibold mb-2" id='pop'>System Status</h2>
 
       {(display.message) ? (<>
 

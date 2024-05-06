@@ -21,7 +21,7 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
     return (
         <>
             {span ? (
-                <div className={`glass-container ${margin}`}>
+                <div className={`glass-container ${margin}`} >
                     {children}
                 </div>
             ) : (
@@ -136,7 +136,6 @@ const EmployeeMainContent = ({ userExp, children, auth, usersList, currentwebSoc
     </main>
     );
 };
-
 const DashboardElements = ({ children, auth, usersList, currentwebSocket, display, requests, webSocket, userExp}) => {
     const { dynamicValues, updateValues } = useDynamicContext();
 

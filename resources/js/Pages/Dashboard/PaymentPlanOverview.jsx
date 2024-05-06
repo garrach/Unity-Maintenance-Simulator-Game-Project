@@ -13,7 +13,7 @@ const PaymentPlanOverview = ({ paymentPlan }) => {
   }]
   return (
     <div className="p-4 dark:text-white text-gray-800 rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-2">Payment Plan Overview</h2>
+      <h2 className="text-lg font-semibold mb-2" id='pop'>Payment Plan Overview</h2>
 
       <ul>
 

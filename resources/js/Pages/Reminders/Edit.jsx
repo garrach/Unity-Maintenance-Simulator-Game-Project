@@ -19,7 +19,6 @@ const ReminderEdit = ({ reminder, user }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add logic to update the reminder using formData
-    console.log(formData);
   };
 
   return (

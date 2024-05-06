@@ -4,7 +4,7 @@ import React from 'react';
 const About = () => {
   return (
     <GuestLayout>
-      <div className="dark:bg-gray-800 dark:text-white bg-gray-100 pt-56">
+      <div className="dark:bg-gray-800 dark:text-white bg-gray-100 pt-32">
         <header className="py-8 dark:bg-gray-800 dark:text-white text-center">
           <h1 className="text-4xl font-bold">About Us</h1>
         </header>

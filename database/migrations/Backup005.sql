@@ -31,12 +31,15 @@ CREATE TABLE IF NOT EXISTS `addon_requests` (
   KEY `addon_requests_user_id_foreign` (`user_id`),
   CONSTRAINT `addon_requests_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `addon_requests_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.addon_requests : ~0 rows (environ)
+-- Listage des données de la table carmaintain.addon_requests : ~2 rows (environ)
 INSERT INTO `addon_requests` (`id`, `created_at`, `updated_at`, `user_id`, `device_id`) VALUES
 	(62, '2024-04-29 17:47:59', '2024-04-29 17:47:59', 67, 36),
-	(63, '2024-04-29 17:48:06', '2024-04-29 17:48:06', 67, 34);
+	(63, '2024-04-29 17:48:06', '2024-04-29 17:48:06', 67, 34),
+	(64, '2024-04-30 10:09:24', '2024-04-30 10:09:24', 229, 37),
+	(65, '2024-04-30 21:22:52', '2024-04-30 21:22:52', 13, 31),
+	(66, '2024-05-01 10:18:55', '2024-05-01 10:18:55', 15, 31);
 
 -- Listage de la structure de table carmaintain. asset_bundles
 CREATE TABLE IF NOT EXISTS `asset_bundles` (
@@ -49,15 +52,18 @@ CREATE TABLE IF NOT EXISTS `asset_bundles` (
   `file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `asset_bundles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.asset_bundles : ~2 rows (environ)
+-- Listage des données de la table carmaintain.asset_bundles : ~6 rows (environ)
 INSERT INTO `asset_bundles` (`id`, `name`, `description`, `version`, `platform`, `file_size`, `file_path`, `created_at`, `updated_at`) VALUES
 	(1, 'Delectus est est placeat ab nisi.', 'Quam fugit voluptates est et tempore et.', '5', 'eius', 356, 'public/storage/files/file_1.txt', '2024-03-13 19:07:58', '2024-03-13 19:07:58'),
 	(2, 'Distinctio ex cumque fugiat sit eaque.', 'Dignissimos iusto fuga velit nihil autem.', '7', 'et', 614, 'public/storage/files/file_2.txt', '2024-03-13 19:07:58', '2024-03-13 19:07:58'),
-	(3, 'Ipsum accusamus qui quod expedita asperiores consequuntur at quia.', 'Rerum consectetur temporibus maxime dolor consequatur quam in.', '6', 'laudantium', 272, 'public/storage/files/file_3.txt', '2024-03-13 19:07:58', '2024-03-13 19:07:58');
+	(3, 'Ipsum accusamus qui quod expedita asperiores consequuntur at quia.', 'Rerum consectetur temporibus maxime dolor consequatur quam in.', '6', 'laudantium', 272, 'public/storage/files/file_3.txt', '2024-03-13 19:07:58', '2024-03-13 19:07:58'),
+	(4, 'Unity_Garage_Simulator_UnityGarage', NULL, 'v0.1', 'Windows', 101, NULL, '2024-04-30 08:32:08', '2024-04-30 08:32:08'),
+	(6, 'Unity_Garage_Simulator_UnityGarage', NULL, 'v0.1', 'Windows', 101, NULL, '2024-04-30 08:40:57', '2024-04-30 08:40:57'),
+	(7, 'Unity_Garage_Simulator_UnityGarage', NULL, 'v0.1', 'Windows', 101, NULL, '2024-04-30 08:41:36', '2024-04-30 08:41:36'),
+	(8, 'Unity_Garage_Simulator_UnityGarage', NULL, 'v0.1', 'Windows', 101, NULL, '2024-04-30 09:12:54', '2024-04-30 09:12:54');
 
 -- Listage de la structure de table carmaintain. asset_bundles_device
 CREATE TABLE IF NOT EXISTS `asset_bundles_device` (
@@ -75,6 +81,201 @@ CREATE TABLE IF NOT EXISTS `asset_bundles_device` (
 
 -- Listage des données de la table carmaintain.asset_bundles_device : ~0 rows (environ)
 
+-- Listage de la structure de table carmaintain. asset_bundles_user
+CREATE TABLE IF NOT EXISTS `asset_bundles_user` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `asset_bundles_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `asset_bundles_user_user_id_foreign` (`user_id`),
+  KEY `asset_bundle_id` (`asset_bundles_id`) USING BTREE,
+  CONSTRAINT `asset_bundles_user_asset_bundle_id_foreign` FOREIGN KEY (`asset_bundles_id`) REFERENCES `asset_bundles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `asset_bundles_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Listage des données de la table carmaintain.asset_bundles_user : ~172 rows (environ)
+INSERT INTO `asset_bundles_user` (`id`, `asset_bundles_id`, `user_id`, `created_at`, `updated_at`) VALUES
+	(1, 1, 229, NULL, NULL),
+	(2, 1, 229, NULL, NULL),
+	(3, 1, 229, NULL, NULL),
+	(4, 1, 229, NULL, NULL),
+	(5, 1, 229, NULL, NULL),
+	(6, 1, 229, NULL, NULL),
+	(7, 1, 229, NULL, NULL),
+	(8, 1, 229, NULL, NULL),
+	(9, 1, 229, NULL, NULL),
+	(10, 1, 229, NULL, NULL),
+	(11, 1, 229, NULL, NULL),
+	(12, 1, 229, NULL, NULL),
+	(13, 1, 229, NULL, NULL),
+	(14, 1, 229, NULL, NULL),
+	(15, 1, 229, NULL, NULL),
+	(16, 1, 229, NULL, NULL),
+	(17, 1, 229, NULL, NULL),
+	(18, 1, 229, NULL, NULL),
+	(19, 1, 229, NULL, NULL),
+	(20, 1, 229, NULL, NULL),
+	(21, 1, 229, NULL, NULL),
+	(22, 1, 229, NULL, NULL),
+	(23, 1, 229, NULL, NULL),
+	(24, 1, 229, NULL, NULL),
+	(25, 1, 229, NULL, NULL),
+	(26, 1, 229, NULL, NULL),
+	(27, 1, 229, NULL, NULL),
+	(28, 1, 229, NULL, NULL),
+	(29, 1, 229, NULL, NULL),
+	(30, 1, 229, NULL, NULL),
+	(31, 1, 229, NULL, NULL),
+	(32, 1, 229, NULL, NULL),
+	(33, 1, 229, NULL, NULL),
+	(34, 1, 229, NULL, NULL),
+	(35, 1, 229, NULL, NULL),
+	(36, 1, 229, NULL, NULL),
+	(37, 1, 229, NULL, NULL),
+	(38, 1, 229, NULL, NULL),
+	(39, 1, 229, NULL, NULL),
+	(40, 1, 229, NULL, NULL),
+	(41, 1, 229, NULL, NULL),
+	(42, 1, 229, NULL, NULL),
+	(43, 1, 229, NULL, NULL),
+	(44, 1, 229, NULL, NULL),
+	(45, 1, 229, NULL, NULL),
+	(46, 1, 229, NULL, NULL),
+	(47, 1, 229, NULL, NULL),
+	(48, 1, 229, NULL, NULL),
+	(49, 1, 229, NULL, NULL),
+	(50, 1, 229, NULL, NULL),
+	(51, 1, 229, NULL, NULL),
+	(52, 1, 229, NULL, NULL),
+	(53, 1, 229, NULL, NULL),
+	(54, 1, 229, NULL, NULL),
+	(55, 1, 229, NULL, NULL),
+	(56, 1, 229, NULL, NULL),
+	(57, 1, 229, NULL, NULL),
+	(58, 1, 229, NULL, NULL),
+	(59, 1, 229, NULL, NULL),
+	(60, 1, 229, NULL, NULL),
+	(61, 1, 229, NULL, NULL),
+	(62, 1, 229, NULL, NULL),
+	(63, 1, 229, NULL, NULL),
+	(64, 1, 229, NULL, NULL),
+	(65, 1, 229, NULL, NULL),
+	(66, 1, 229, NULL, NULL),
+	(67, 1, 229, NULL, NULL),
+	(68, 1, 229, NULL, NULL),
+	(69, 1, 229, NULL, NULL),
+	(70, 1, 229, NULL, NULL),
+	(71, 1, 229, NULL, NULL),
+	(72, 1, 229, NULL, NULL),
+	(73, 1, 229, NULL, NULL),
+	(74, 1, 229, NULL, NULL),
+	(75, 1, 229, NULL, NULL),
+	(76, 1, 229, NULL, NULL),
+	(77, 1, 229, NULL, NULL),
+	(78, 1, 229, NULL, NULL),
+	(79, 1, 229, NULL, NULL),
+	(80, 1, 229, NULL, NULL),
+	(81, 1, 229, NULL, NULL),
+	(82, 1, 229, NULL, NULL),
+	(83, 1, 229, NULL, NULL),
+	(84, 1, 229, NULL, NULL),
+	(85, 1, 229, NULL, NULL),
+	(86, 1, 229, NULL, NULL),
+	(87, 1, 229, NULL, NULL),
+	(88, 1, 229, NULL, NULL),
+	(89, 1, 229, NULL, NULL),
+	(90, 1, 229, NULL, NULL),
+	(91, 1, 229, NULL, NULL),
+	(92, 1, 229, NULL, NULL),
+	(93, 1, 229, NULL, NULL),
+	(94, 1, 229, NULL, NULL),
+	(95, 1, 229, NULL, NULL),
+	(96, 1, 229, NULL, NULL),
+	(97, 1, 229, NULL, NULL),
+	(98, 1, 229, NULL, NULL),
+	(99, 1, 229, NULL, NULL),
+	(100, 1, 229, NULL, NULL),
+	(101, 1, 229, NULL, NULL),
+	(102, 1, 229, NULL, NULL),
+	(103, 1, 229, NULL, NULL),
+	(104, 1, 229, NULL, NULL),
+	(105, 1, 229, NULL, NULL),
+	(106, 1, 229, NULL, NULL),
+	(107, 1, 229, NULL, NULL),
+	(108, 1, 229, NULL, NULL),
+	(109, 1, 229, NULL, NULL),
+	(110, 1, 229, NULL, NULL),
+	(111, 1, 229, NULL, NULL),
+	(112, 1, 229, NULL, NULL),
+	(113, 1, 229, NULL, NULL),
+	(114, 1, 229, NULL, NULL),
+	(115, 1, 229, NULL, NULL),
+	(116, 1, 229, NULL, NULL),
+	(117, 1, 229, NULL, NULL),
+	(118, 1, 229, NULL, NULL),
+	(119, 1, 229, NULL, NULL),
+	(120, 1, 229, NULL, NULL),
+	(121, 1, 229, NULL, NULL),
+	(122, 1, 229, NULL, NULL),
+	(123, 1, 229, NULL, NULL),
+	(124, 1, 229, NULL, NULL),
+	(125, 1, 229, NULL, NULL),
+	(126, 1, 229, NULL, NULL),
+	(127, 1, 229, NULL, NULL),
+	(128, 1, 229, NULL, NULL),
+	(129, 1, 229, NULL, NULL),
+	(130, 1, 229, NULL, NULL),
+	(131, 1, 229, NULL, NULL),
+	(132, 1, 229, NULL, NULL),
+	(133, 1, 229, NULL, NULL),
+	(134, 1, 229, NULL, NULL),
+	(135, 1, 229, NULL, NULL),
+	(136, 1, 229, NULL, NULL),
+	(137, 1, 229, NULL, NULL),
+	(138, 1, 229, NULL, NULL),
+	(139, 1, 229, NULL, NULL),
+	(140, 1, 229, NULL, NULL),
+	(141, 1, 229, NULL, NULL),
+	(142, 1, 229, NULL, NULL),
+	(143, 1, 229, NULL, NULL),
+	(144, 1, 229, NULL, NULL),
+	(145, 1, 229, NULL, NULL),
+	(146, 1, 229, NULL, NULL),
+	(147, 1, 229, NULL, NULL),
+	(148, 1, 229, NULL, NULL),
+	(149, 1, 229, NULL, NULL),
+	(150, 1, 229, NULL, NULL),
+	(151, 1, 229, NULL, NULL),
+	(152, 1, 229, NULL, NULL),
+	(153, 1, 229, NULL, NULL),
+	(154, 1, 229, NULL, NULL),
+	(155, 1, 229, NULL, NULL),
+	(156, 1, 229, NULL, NULL),
+	(157, 1, 229, NULL, NULL),
+	(158, 1, 229, NULL, NULL),
+	(159, 1, 229, NULL, NULL),
+	(160, 1, 229, NULL, NULL),
+	(161, 1, 229, NULL, NULL),
+	(162, 1, 229, NULL, NULL),
+	(163, 1, 229, NULL, NULL),
+	(164, 1, 229, NULL, NULL),
+	(165, 1, 229, NULL, NULL),
+	(166, 1, 229, NULL, NULL),
+	(167, 1, 229, NULL, NULL),
+	(168, 1, 229, NULL, NULL),
+	(169, 1, 229, NULL, NULL),
+	(170, 1, 229, NULL, NULL),
+	(171, 1, 229, NULL, NULL),
+	(172, 1, 229, NULL, NULL),
+	(173, 1, 229, NULL, NULL),
+	(174, 1, 229, NULL, NULL),
+	(175, 1, 229, NULL, NULL),
+	(176, 1, 229, NULL, NULL),
+	(177, 1, 229, NULL, NULL),
+	(178, 1, 229, NULL, NULL);
+
 -- Listage de la structure de table carmaintain. client_inboxs
 CREATE TABLE IF NOT EXISTS `client_inboxs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -90,9 +291,9 @@ CREATE TABLE IF NOT EXISTS `client_inboxs` (
   KEY `client_inboxs_recipient_id_foreign` (`recipient_id`),
   CONSTRAINT `client_inboxs_recipient_id_foreign` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `client_inboxs_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.client_inboxs : ~0 rows (environ)
+-- Listage des données de la table carmaintain.client_inboxs : ~8 rows (environ)
 INSERT INTO `client_inboxs` (`id`, `sender_id`, `recipient_id`, `subject`, `body`, `read_at`, `created_at`, `updated_at`) VALUES
 	(1, 13, 12, 'tyguhjmlkml', 'tfghjkml', NULL, '2024-04-29 10:11:11', '2024-04-29 10:11:11'),
 	(2, 13, 12, 'i want you, moonlight ~', 'cuz i got yyouuuu,  moonlight', NULL, '2024-04-29 10:13:42', '2024-04-29 10:13:42'),
@@ -103,7 +304,8 @@ INSERT INTO `client_inboxs` (`id`, `sender_id`, `recipient_id`, `subject`, `body
 	(7, 12, 14, 'eeeeeeeeeee', 'ssssssssssss', NULL, '2024-04-29 17:24:52', '2024-04-29 17:24:52'),
 	(8, 14, 12, 'textback', 'yep i got you', NULL, '2024-04-29 17:26:15', '2024-04-29 17:26:15'),
 	(9, 67, 12, 'thanks', 'such great help', NULL, '2024-04-29 17:42:43', '2024-04-29 17:42:43'),
-	(10, 12, 227, 'kk', 'kkkkkkkkkkkkkkkkk', NULL, '2024-04-29 18:55:50', '2024-04-29 18:55:50');
+	(10, 12, 227, 'kk', 'kkkkkkkkkkkkkkkkk', NULL, '2024-04-29 18:55:50', '2024-04-29 18:55:50'),
+	(11, 229, 229, 'self Gallery', 'just a self message', NULL, '2024-04-30 07:55:54', '2024-04-30 07:55:54');
 
 -- Listage de la structure de table carmaintain. comments
 CREATE TABLE IF NOT EXISTS `comments` (
@@ -115,11 +317,14 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`id`),
   KEY `comments_device_id_foreign` (`device_id`),
   CONSTRAINT `comments_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.comments : ~0 rows (environ)
+-- Listage des données de la table carmaintain.comments : ~3 rows (environ)
 INSERT INTO `comments` (`id`, `created_at`, `updated_at`, `device_id`, `text`) VALUES
-	(10, '2024-04-29 17:46:09', '2024-04-29 17:46:09', 31, 'elegent');
+	(18, '2024-04-30 09:49:23', '2024-04-30 09:49:23', 33, '22222'),
+	(19, '2024-05-01 10:35:40', '2024-05-01 10:35:40', 32, 'pretty good'),
+	(20, '2024-05-01 10:38:35', '2024-05-01 10:38:35', 33, 'let\'s netflix and chill'),
+	(21, '2024-05-01 10:39:22', '2024-05-01 10:39:22', 37, 'better watch your back');
 
 -- Listage de la structure de table carmaintain. connections
 CREATE TABLE IF NOT EXISTS `connections` (
@@ -157,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `connections` (
   CONSTRAINT `connections_vehicle_id_foreign` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.connections : ~0 rows (environ)
+-- Listage des données de la table carmaintain.connections : ~115 rows (environ)
 INSERT INTO `connections` (`id`, `device_id`, `created_at`, `updated_at`, `connection_id`, `rate`, `name`, `installationdate`, `vehicle_id`, `user_id`, `review_id`, `comment_id`, `schedules_id`, `purchase_id`, `report_id`) VALUES
 	(16, 30, '2024-04-29 18:11:14', '2024-04-29 18:11:14', NULL, NULL, NULL, NULL, 39, NULL, NULL, NULL, NULL, NULL, NULL),
 	(18, 34, '2024-04-29 18:12:09', '2024-04-29 18:12:09', NULL, NULL, NULL, NULL, 146, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -285,9 +490,11 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Listage des données de la table carmaintain.contacts : ~0 rows (environ)
+INSERT INTO `contacts` (`id`, `name`, `email`, `message`, `created_at`, `updated_at`) VALUES
+	(1, 'eéeé"é', 'email@gmail.com', 'yooooo', '2024-04-30 09:38:51', '2024-04-30 09:38:51');
 
 -- Listage de la structure de table carmaintain. dashboards
 CREATE TABLE IF NOT EXISTS `dashboards` (
@@ -347,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `device_usages` (
   CONSTRAINT `device_usages_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.device_usages : ~0 rows (environ)
+-- Listage des données de la table carmaintain.device_usages : ~35 rows (environ)
 INSERT INTO `device_usages` (`id`, `user_id`, `device_id`, `usage_count`, `created_at`, `updated_at`) VALUES
 	(11, 67, 36, 100, '2024-04-29 17:48:39', '2024-04-29 17:48:39'),
 	(12, 67, 34, 100, '2024-04-29 17:48:45', '2024-04-29 17:48:45'),
@@ -403,7 +610,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   CONSTRAINT `jobs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.jobs : ~0 rows (environ)
+-- Listage des données de la table carmaintain.jobs : ~150 rows (environ)
 INSERT INTO `jobs` (`id`, `title`, `description`, `resume`, `hash`, `approval`, `created_at`, `updated_at`, `user_id`) VALUES
 	(3, 'Nuclear Equipment Operation Technician', 'Quia expedita beatae natus perferendis et omnis ut. Ut error doloremque amet nostrum quia. Ex aut velit a ea veniam quos ab.', 'http://www.jast.com/velit-molestiae-placeat-sit', '050af75b413de662e7528064d9467f62', NULL, '2024-04-29 18:37:26', '2024-04-29 18:37:26', 175),
 	(4, 'Material Moving Worker', 'Aut molestiae repellat at tenetur a pariatur laborum. Tempore nulla enim sed quo sequi reprehenderit.', 'http://lemke.net/excepturi-ipsa-dignissimos-vero-quia-ullam-cupiditate-eum', '08469969672ab71ec45881df92b6b360', NULL, '2024-04-29 18:37:27', '2024-04-29 18:37:27', 183),
@@ -562,12 +769,13 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Listage des données de la table carmaintain.migrations : ~0 rows (environ)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2024_04_28_154730_create_password_resets_table', 1),
-	(2, '2024_04_29_113911_create_client_inbox_table', 2);
+	(2, '2024_04_29_113911_create_client_inbox_table', 2),
+	(3, '2024_04_30_110202_create_client_downloads_table', 3);
 
 -- Listage de la structure de table carmaintain. password_resets
 CREATE TABLE IF NOT EXISTS `password_resets` (
@@ -619,7 +827,7 @@ CREATE TABLE IF NOT EXISTS `payment_plan_service` (
   KEY `payment_plan_service_service_id_foreign` (`service_id`),
   CONSTRAINT `payment_plan_service_payment_plan_id_foreign` FOREIGN KEY (`payment_plan_id`) REFERENCES `payment_plans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `payment_plan_service_service_id_foreign` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Listage des données de la table carmaintain.payment_plan_service : ~17 rows (environ)
 INSERT INTO `payment_plan_service` (`id`, `payment_plan_id`, `service_id`, `created_at`, `updated_at`) VALUES
@@ -640,7 +848,8 @@ INSERT INTO `payment_plan_service` (`id`, `payment_plan_id`, `service_id`, `crea
 	(22, 4, 18, NULL, NULL),
 	(23, 6, 18, NULL, NULL),
 	(24, 5, 18, NULL, NULL),
-	(25, 5, 19, NULL, NULL);
+	(25, 5, 19, NULL, NULL),
+	(26, 5, 20, NULL, NULL);
 
 -- Listage de la structure de table carmaintain. payment_plan_user
 CREATE TABLE IF NOT EXISTS `payment_plan_user` (
@@ -654,9 +863,9 @@ CREATE TABLE IF NOT EXISTS `payment_plan_user` (
   KEY `payment_plan_user_payment_plan_id_foreign` (`payment_plan_id`),
   CONSTRAINT `payment_plan_user_payment_plan_id_foreign` FOREIGN KEY (`payment_plan_id`) REFERENCES `payment_plans` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `payment_plan_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.payment_plan_user : ~3 rows (environ)
+-- Listage des données de la table carmaintain.payment_plan_user : ~83 rows (environ)
 INSERT INTO `payment_plan_user` (`id`, `payment_plan_id`, `user_id`, `created_at`, `updated_at`) VALUES
 	(29, 4, 13, NULL, NULL),
 	(31, 5, 14, NULL, NULL),
@@ -740,7 +949,8 @@ INSERT INTO `payment_plan_user` (`id`, `payment_plan_id`, `user_id`, `created_at
 	(123, 4, 225, NULL, NULL),
 	(124, 4, 226, NULL, NULL),
 	(126, 4, 228, NULL, NULL),
-	(127, 6, 227, NULL, NULL);
+	(127, 6, 227, NULL, NULL),
+	(128, 4, 229, NULL, NULL);
 
 -- Listage de la structure de table carmaintain. personal_access_tokens
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
@@ -776,9 +986,9 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   KEY `purchases_user_id_foreign` (`user_id`),
   CONSTRAINT `purchases_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `purchases_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.purchases : ~0 rows (environ)
+-- Listage des données de la table carmaintain.purchases : ~150 rows (environ)
 INSERT INTO `purchases` (`id`, `user_id`, `device_id`, `date`, `stat`, `created_at`, `updated_at`, `position`) VALUES
 	(46, 67, 36, '2024-04-29', 1, '2024-04-29 17:47:59', '2024-04-29 17:48:39', '{"position":{"x":0,"y":0,"z":0}}'),
 	(47, 67, 34, '2024-04-29', 1, '2024-04-29 17:48:06', '2024-04-29 17:48:45', '{"position":{"x":0,"y":0,"z":0}}'),
@@ -929,7 +1139,10 @@ INSERT INTO `purchases` (`id`, `user_id`, `device_id`, `date`, `stat`, `created_
 	(227, 190, 36, '2023-07-04', 0, '2024-04-29 18:35:05', '2024-04-29 18:35:05', 'Porro consequuntur ex dolor suscipit culpa mollitia ullam velit.'),
 	(228, 112, 32, '2024-04-05', 1, '2024-04-29 18:35:05', '2024-04-29 18:35:05', 'Et voluptatem sit cum vel architecto.'),
 	(229, 70, 33, '2023-10-03', 0, '2024-04-29 18:35:05', '2024-04-29 18:35:05', 'Neque sapiente atque laborum doloremque.'),
-	(230, 183, 36, '2023-12-29', 1, '2024-04-29 18:35:05', '2024-04-29 18:35:05', 'Eos aut et sed iste aut.');
+	(230, 183, 36, '2023-12-29', 1, '2024-04-29 18:35:05', '2024-04-29 18:35:05', 'Eos aut et sed iste aut.'),
+	(232, 229, 37, '2024-04-30', 0, '2024-04-30 10:09:24', '2024-04-30 10:09:24', '{"position":{"x":0,"y":0,"z":0}}'),
+	(233, 13, 31, '2024-04-30', 0, '2024-04-30 21:22:52', '2024-04-30 21:22:52', '{"position":{"x":0,"y":0,"z":0}}'),
+	(234, 15, 31, '2024-05-01', 0, '2024-05-01 10:18:55', '2024-05-01 10:18:55', '{"position":{"x":0,"y":0,"z":0}}');
 
 -- Listage de la structure de table carmaintain. reports
 CREATE TABLE IF NOT EXISTS `reports` (
@@ -947,7 +1160,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   CONSTRAINT `reports_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.reports : ~0 rows (environ)
+-- Listage des données de la table carmaintain.reports : ~69 rows (environ)
 INSERT INTO `reports` (`id`, `user_id`, `application_status`, `application_date`, `created_at`, `updated_at`, `job`, `title`, `description`) VALUES
 	(219, 177, 1, '2024-02-22 10:20:14', '2024-04-29 18:48:00', '2024-04-29 18:48:00', NULL, 'Home', 'Corporis laborum possimus a esse perferendis at placeat. Fugit autem explicabo voluptas est. Facere quas voluptas voluptas quaerat vel explicabo non.'),
 	(220, 40, 1, '2024-02-11 12:22:07', '2024-04-29 18:48:00', '2024-04-29 18:48:00', NULL, 'Communications Teacher', 'Beatae et qui dolores repellendus. Sit sit quidem atque necessitatibus at. Optio eos sed doloremque quasi natus perferendis consequatur voluptas. Nulla fuga deserunt occaecati debitis aut fuga.'),
@@ -1029,11 +1242,21 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   PRIMARY KEY (`id`),
   KEY `reviews_device_id_foreign` (`device_id`),
   CONSTRAINT `reviews_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.reviews : ~0 rows (environ)
+-- Listage des données de la table carmaintain.reviews : ~11 rows (environ)
 INSERT INTO `reviews` (`id`, `device_id`, `rate`, `created_at`, `updated_at`) VALUES
-	(15, 31, 4.0, '2024-04-29 17:46:08', '2024-04-29 17:46:08');
+	(20, 33, 3.0, '2024-04-30 09:49:01', '2024-04-30 09:49:01'),
+	(21, 33, 3.0, '2024-04-30 09:49:21', '2024-04-30 09:49:21'),
+	(22, 31, 4.0, '2024-04-30 10:07:20', '2024-04-30 10:07:20'),
+	(23, 30, 5.0, '2024-04-30 10:07:33', '2024-04-30 10:07:33'),
+	(24, 34, 1.0, '2024-04-30 10:07:49', '2024-04-30 10:07:49'),
+	(25, 37, 4.0, '2024-04-30 10:08:01', '2024-04-30 10:08:01'),
+	(26, 36, 3.0, '2024-04-30 10:08:21', '2024-04-30 10:08:21'),
+	(27, 32, 3.0, '2024-04-30 10:08:32', '2024-04-30 10:08:32'),
+	(28, 32, NULL, '2024-05-01 10:35:42', '2024-05-01 10:35:42'),
+	(29, 33, NULL, '2024-05-01 10:38:37', '2024-05-01 10:38:37'),
+	(30, 37, NULL, '2024-05-01 10:39:24', '2024-05-01 10:39:24');
 
 -- Listage de la structure de table carmaintain. schedules
 CREATE TABLE IF NOT EXISTS `schedules` (
@@ -1051,12 +1274,15 @@ CREATE TABLE IF NOT EXISTS `schedules` (
   KEY `schedules_user_id_foreign` (`user_id`),
   CONSTRAINT `schedules_purchase_id_foreign` FOREIGN KEY (`purchase_id`) REFERENCES `purchases` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `schedules_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.schedules : ~0 rows (environ)
+-- Listage des données de la table carmaintain.schedules : ~2 rows (environ)
 INSERT INTO `schedules` (`id`, `title`, `description`, `start_date`, `end_date`, `user_id`, `purchase_id`, `created_at`, `updated_at`) VALUES
 	(48, 'Schedule Device:36', 'Device:Window Switch Door Lock Front Driver Side with Mirror Switch', '2024-04-29', '2024-05-02', 67, 46, '2024-04-29 17:47:59', '2024-04-29 17:47:59'),
-	(49, 'Schedule Device:34', 'Device:Touch Screen Entertainment System AC ControlzC', '2024-04-29', '2024-05-02', 67, 47, '2024-04-29 17:48:06', '2024-04-29 17:48:06');
+	(49, 'Schedule Device:34', 'Device:Touch Screen Entertainment System AC ControlzC', '2024-04-29', '2024-05-02', 67, 47, '2024-04-29 17:48:06', '2024-04-29 17:48:06'),
+	(50, 'Schedule Device:37', 'Device:Rearview Camera', '2024-04-30', '2024-05-03', 229, 232, '2024-04-30 10:09:24', '2024-04-30 10:09:24'),
+	(51, 'Schedule Device:31', 'Device:Speedmeters Display Dash Monitor', '2024-04-30', '2024-05-03', 13, 233, '2024-04-30 21:22:52', '2024-04-30 21:22:52'),
+	(52, 'Schedule Device:31', 'Device:Speedmeters Display Dash Monitor', '2024-05-01', '2024-05-04', 15, 234, '2024-05-01 10:18:55', '2024-05-01 10:18:55');
 
 -- Listage de la structure de table carmaintain. services
 CREATE TABLE IF NOT EXISTS `services` (
@@ -1067,9 +1293,9 @@ CREATE TABLE IF NOT EXISTS `services` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.services : ~9 rows (environ)
+-- Listage des données de la table carmaintain.services : ~10 rows (environ)
 INSERT INTO `services` (`id`, `name`, `description`, `route`, `created_at`, `updated_at`) VALUES
 	(1, 'Basic Maintenance Tracking', 'Effortlessly track and manage your car maintenance schedule. Receive timely reminders for oil changes, inspections, and more.', 'basic-maintenance', '2024-02-15 18:31:37', '2024-02-15 18:31:37'),
 	(4, 'Car Analytics', 'Gain insights into your car\'s performance with detailed analytics. Track fuel efficiency, mileage, and overall health of your vehicle.', 'car-analytics', '2024-02-15 18:48:47', '2024-02-15 18:48:47'),
@@ -1081,7 +1307,8 @@ INSERT INTO `services` (`id`, `name`, `description`, `route`, `created_at`, `upd
 	(15, 'JobApplications', 'list of client, and employees application for role, action, features', 'application-list', '2024-03-09 15:22:41', '2024-03-09 15:22:42'),
 	(16, 'Dashboard', 'user interface Dashboard and elements', 'dashboard', '2024-03-13 22:28:57', '2024-03-13 22:28:58'),
 	(18, 'LeaderBoard', 'display users earning points', 'leaderboard', '2024-03-25 20:28:32', '2024-03-25 20:33:09'),
-	(19, 'Unity Data Monitoring', 'track unity client services, vehicle, devices', 'data-monitoring', '2024-04-13 19:19:39', '2024-04-13 19:19:39');
+	(19, 'Unity Data Monitoring', 'track unity client services, vehicle, devices', 'data-monitoring', '2024-04-13 19:19:39', '2024-04-13 19:19:39'),
+	(20, 'Unity Client Car Controller', 'Enhance your webapp\'s gaming experience with our Unity Client Car Controller service. With smooth, responsive controls and realistic physics, users can navigate thrilling virtual environments with ease. Whether it\'s for racing games or immersive simulations, our Unity Client Car Controller brings dynamic gameplay to your fingertips.', 'unity.index', '2024-05-03 13:16:09', '2024-05-03 13:16:09');
 
 -- Listage de la structure de table carmaintain. userexpcoin
 CREATE TABLE IF NOT EXISTS `userexpcoin` (
@@ -1094,14 +1321,14 @@ CREATE TABLE IF NOT EXISTS `userexpcoin` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `FK_userexpcoin_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.userexpcoin : ~3 rows (environ)
+-- Listage des données de la table carmaintain.userexpcoin : ~197 rows (environ)
 INSERT INTO `userexpcoin` (`id`, `created_at`, `updated_at`, `user_id`, `experience`, `coins`) VALUES
 	(13, '2024-04-29 14:41:29', '2024-04-29 18:53:16', 12, 30, 30),
-	(14, '2024-04-29 14:41:29', '2024-04-29 14:41:29', 13, 0, 0),
+	(14, '2024-04-29 14:41:29', '2024-04-30 21:22:52', 13, 10, 10),
 	(15, '2024-04-29 14:41:29', '2024-04-29 14:41:29', 14, 0, 0),
-	(16, '2024-04-29 14:53:54', '2024-04-29 14:53:54', 15, 0, 0),
+	(16, '2024-04-29 14:53:54', '2024-05-01 10:18:55', 15, 10, 10),
 	(17, '2024-04-29 17:37:43', '2024-04-29 17:37:43', 36, 0, 0),
 	(18, '2024-04-29 17:37:43', '2024-04-29 17:37:43', 37, 0, 0),
 	(19, '2024-04-29 17:37:43', '2024-04-29 17:37:43', 38, 0, 0),
@@ -1294,7 +1521,8 @@ INSERT INTO `userexpcoin` (`id`, `created_at`, `updated_at`, `user_id`, `experie
 	(206, '2024-04-29 18:55:10', '2024-04-29 18:55:10', 225, 0, 0),
 	(207, '2024-04-29 18:55:10', '2024-04-29 18:55:10', 226, 0, 0),
 	(208, '2024-04-29 18:55:10', '2024-04-29 18:55:10', 227, 0, 0),
-	(209, '2024-04-29 18:55:10', '2024-04-29 18:55:10', 228, 0, 0);
+	(209, '2024-04-29 18:55:10', '2024-04-29 18:55:10', 228, 0, 0),
+	(210, '2024-04-30 07:54:47', '2024-04-30 10:09:24', 229, 10, 10);
 
 -- Listage de la structure de table carmaintain. users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -1309,12 +1537,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.users : ~2 rows (environ)
+-- Listage des données de la table carmaintain.users : ~197 rows (environ)
 INSERT INTO `users` (`id`, `name`, `email`, `role`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(12, 'AdminAccount', 'garrach76@gmail.com', 'admin', NULL, '$2y$12$lFcDkrM/JVt39p6Gvanutu2wnttrXdvq24FYVzKvrDJgunwjBOH2q', NULL, '2024-03-19 17:58:29', '2024-03-19 17:58:29'),
-	(13, 'ClientAccount', 'clientaccount@gmail.com', 'client', NULL, '$2y$12$ke/GLijSB7RIcgN1HydQL.UcGmrnKmbYj8m6bR4F.ZuUbDEgMUgLe', '8lKhANgEKcWGYQlygJND6stBlTNtxQPb8PYSjUKJ6JtOCx95nALTcD2Z4YBY', '2024-03-19 18:04:19', '2024-04-28 14:22:48'),
+	(13, 'ClientAccount', 'clientaccount@gmail.com', 'client', NULL, '$2y$12$ke/GLijSB7RIcgN1HydQL.UcGmrnKmbYj8m6bR4F.ZuUbDEgMUgLe', 'vy4Jx2IQYGDaIrrH7FtZvQXCAMgZ6n0WzmP2YKkLj0mor4uUSGwzQf3fl0II', '2024-03-19 18:04:19', '2024-04-28 14:22:48'),
 	(14, 'EmployeeAccount', 'employeeaccount@gmail.com', 'employee', NULL, '$2y$12$PnSJWxZeqIRavH9v0mPbXe.3Kd2/hAvMkc.dkOUh2Js6kYaKllqCa', NULL, '2024-03-21 18:32:29', '2024-03-21 19:11:02'),
 	(15, 'leaderBoard', 'any@gomail.com', 'client', NULL, '$2y$12$clrVBQcnqPlf4lzjKNiq3.YhChCs.7IjCI165x9arDRRN54cCKIiW', NULL, '2024-04-29 14:53:52', '2024-04-29 14:53:52'),
 	(36, 'User1', 'user1@example.com', 'client', NULL, '$2y$12$lm7.TpAOO229zPoyurUIj.K7an4C7T/qFntxhahfxLrd6kOgU4khG', NULL, '2024-04-29 17:36:30', '2024-04-29 17:36:30'),
@@ -1509,7 +1737,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `role`, `email_verified_at`, `passwo
 	(225, 'User197', 'user197@example.com', 'client', NULL, '$2y$12$AShleZ873CSk/XHpLSQlEekqCkTlWiYgMEZKKfhyzP5lpFmhescR.', NULL, '2024-04-29 17:55:26', '2024-04-29 17:55:26'),
 	(226, 'User198', 'user198@example.com', 'client', NULL, '$2y$12$LWZZEqz.jt4r8Ba.5nQMw.w8x.OQGZXVQfnP6AgAzQxfiAP8ytgsC', NULL, '2024-04-29 17:55:26', '2024-04-29 17:55:26'),
 	(227, 'User199', 'user199@example.com', 'admin', NULL, '$2y$12$VqeXBokYLblqAzjGH9db/.vn8mA0mbRx8qv/lrKTsRG7WkabsSOiC', NULL, '2024-04-29 17:55:26', '2024-04-29 18:55:59'),
-	(228, 'User200', 'user200@example.com', 'client', NULL, '$2y$12$9oC97RSw1fnkpQkhyhlG.OarvWl3sbOzkHYAr0sYGfyMbSuaV2Ioi', NULL, '2024-04-29 17:55:27', '2024-04-29 17:55:27');
+	(228, 'User200', 'user200@example.com', 'client', NULL, '$2y$12$9oC97RSw1fnkpQkhyhlG.OarvWl3sbOzkHYAr0sYGfyMbSuaV2Ioi', NULL, '2024-04-29 17:55:27', '2024-04-29 17:55:27'),
+	(229, 'new Account', 'new@example.com', 'client', NULL, '$2y$12$R9BVcZF3zim8dA/pptlLAuld6Ml5MRKzTOmpay6v9Dxjp29mfNkM6', NULL, '2024-04-30 07:54:46', '2024-04-30 07:54:46');
 
 -- Listage de la structure de table carmaintain. vehicles
 CREATE TABLE IF NOT EXISTS `vehicles` (
@@ -1523,7 +1752,7 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.vehicles : ~3 rows (environ)
+-- Listage des données de la table carmaintain.vehicles : ~203 rows (environ)
 INSERT INTO `vehicles` (`id`, `make`, `model`, `year`, `license_plate`, `created_at`, `updated_at`) VALUES
 	(11, 'Toyota', 'Corolla', 2022, 'ABC123', '2024-03-17 19:52:30', '2024-03-17 19:52:32'),
 	(12, 'Honda', 'Accord', 2023, 'DEF456', '2024-03-17 19:52:31', '2024-03-17 19:52:33'),
@@ -1743,9 +1972,9 @@ CREATE TABLE IF NOT EXISTS `wish_lists` (
   KEY `device_id` (`device_id`),
   CONSTRAINT `FK_wish_lists_devices` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_wish_lists_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table carmaintain.wish_lists : ~0 rows (environ)
+-- Listage des données de la table carmaintain.wish_lists : ~118 rows (environ)
 INSERT INTO `wish_lists` (`id`, `title`, `description`, `created_at`, `updated_at`, `user_id`, `device_id`) VALUES
 	(13, 'client', 'WishList Item Added', '2024-04-29 17:45:41', '2024-04-29 17:45:41', 67, 31),
 	(18, 'Sed doloremque qui nam qui laboriosam quaerat molestiae dolorum.', 'Laudantium voluptatum rem est nostrum. Hic cum sequi quidem illo dolores qui. Dolorem eaque voluptates reiciendis et dolore qui. Explicabo cumque deserunt nesciunt ab totam. Eos suscipit hic rerum voluptatem.', '2024-04-29 18:27:24', '2024-04-29 18:27:24', 66, 33),
@@ -1864,7 +2093,8 @@ INSERT INTO `wish_lists` (`id`, `title`, `description`, `created_at`, `updated_a
 	(165, 'Laudantium explicabo atque atque amet magni voluptatem.', 'Voluptatem quos modi quos mollitia. Autem dolorem ipsa nulla ipsum. Delectus qui pariatur sapiente est officia rerum.', '2024-04-29 18:29:13', '2024-04-29 18:29:13', 55, 33),
 	(166, 'Est tenetur id sapiente dicta saepe iusto voluptas.', 'Eius qui autem pariatur molestiae nisi omnis. Quis pariatur explicabo dolorum architecto sunt quo sed. Error sit hic tempora eveniet voluptatibus earum ut. Voluptates sed consequatur ut suscipit rerum quas.', '2024-04-29 18:29:13', '2024-04-29 18:29:13', 165, 37),
 	(167, 'Dolorem est reiciendis dicta laudantium consequuntur.', 'Dolorem iusto officiis corporis incidunt voluptas quod et. Aut sequi laborum ducimus dolores totam consectetur. Aliquam sunt voluptate dignissimos neque.', '2024-04-29 18:29:13', '2024-04-29 18:29:13', 65, 37),
-	(168, 'Et perspiciatis non amet.', 'Mollitia eos vel totam voluptas vel omnis. Quia et laboriosam deserunt ea rerum quo. Sed est tempora blanditiis reprehenderit qui.', '2024-04-29 18:29:13', '2024-04-29 18:29:13', 98, 37);
+	(168, 'Et perspiciatis non amet.', 'Mollitia eos vel totam voluptas vel omnis. Quia et laboriosam deserunt ea rerum quo. Sed est tempora blanditiis reprehenderit qui.', '2024-04-29 18:29:13', '2024-04-29 18:29:13', 98, 37),
+	(170, 'client', 'WishList Item Added', '2024-05-01 10:18:12', '2024-05-01 10:18:12', 15, 31);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
