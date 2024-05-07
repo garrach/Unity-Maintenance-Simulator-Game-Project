@@ -26,7 +26,7 @@ const Navbar = ({ auth , layer}) => {
   }, [isMenuOpen]);
 
   return (
-    <nav className={`dark:text-white text-gray-700 bg-gray-300 dark:bg-gray-900 shadow-md fixed top-4 right-4 rounded-full ${layer}`}>
+    <nav className={`dark:text-white text-gray-700 bg-gray-300 dark:bg-gray-900 shadow-md fixed top-4 right-4 z-50 lg:rounded-full ${layer}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">

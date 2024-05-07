@@ -12,7 +12,7 @@ import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
 import { useRef } from 'react';
 export default function Dashboard({ auth, usersList, reports, requestJob, wishListItems, userExp }) {
-  const [storedMenuState,setstoredMenuState] =useState(Cookies.get('Guide'));
+  const [storedMenuState, setstoredMenuState] = useState(Cookies.get('Guide'));
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
   const [webSocketHost, setwebSocketHost] = useState('');
@@ -92,35 +92,35 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
     }
   }, [])
 
-  
-  const skipping = (e,pops) => {
+
+  const skipping = (e, pops) => {
     e.preventDefault();
-   try {
-    if((pops.length-1 > nextGuid.current) && storedMenuState){
-      nextGuid.current++;
-      setNextguideElemnt(nextGuid.current)
-    }else{
-      setstoredMenuState(0);
-      Cookies.set('Guide', 0);
+    try {
+      if ((pops.length - 1 > nextGuid.current) && storedMenuState) {
+        nextGuid.current++;
+        setNextguideElemnt(nextGuid.current)
+      } else {
+        setstoredMenuState(0);
+        Cookies.set('Guide', 0);
+      }
+    } catch (error) {
+      nextGuid.current = 0;
     }
-   } catch (error) {
-    nextGuid.current=0;
-   }
   }
 
-useEffect(()=>{
-  setstoredMenuState(Cookies.get('Guide'));
-  return ()=>{
+  useEffect(() => {
+    setstoredMenuState(Cookies.get('Guide'));
+    return () => {
+      setstoredMenuState(0);
+    }
+  }, [])
+
+  const closeGuide = (e) => {
+    e.preventDefault();
     setstoredMenuState(0);
+    Cookies.set('Guide', 0);
+
   }
-},[])
-
-const closeGuide=(e)=>{
-  e.preventDefault();
-  setstoredMenuState(0);
-  Cookies.set('Guide', 0);
-
-}
   useEffect(() => {
     setGuideElemnt(document.querySelectorAll('#pop'))
   }, [nextguideElemnt])
@@ -130,9 +130,10 @@ const closeGuide=(e)=>{
         webSocket={currentwebSocket}
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" id='pop'>Dashboard - {auth.user.role}
-          <span className='flex w-56 m-2 justify-around p-2 hover:bg-orange-500 rounded-md'><>
+          {auth.user.role === "admin" && (<span className='flex w-56 m-2 justify-around p-2 hover:bg-orange-500 rounded-md'>
             <Link href={route('unityRefresh')} id='pop'>Unity Refresh</Link>
-          </></span></h2>}
+          </span>)}
+        </h2>}
       >
         <Head title="Dashboard" />
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
@@ -195,11 +196,11 @@ const closeGuide=(e)=>{
           className="w-80 h-auto absolute bg-gray-700 dark:bg-white border border-gray-300 rounded-lg shadow-lg p-4"
         >
           <div className="mb-4" id='showGuid'>
-          <button onClick={(e)=>{closeGuide(e)}} className="absolute top-0 left-0 text-white dark:text-gray-500 px-4 py-2 rounded-md">skip</button>
+            <button onClick={(e) => { closeGuide(e) }} className="absolute top-0 left-0 text-white dark:text-gray-500 px-4 py-2 rounded-md">skip</button>
             <h1 className="text-xl font-bold mt-4">Guide !!</h1>
             <p className="text-sm">{guideElemnt[nextGuid.current].textContent}</p>
           </div>
-          <button onClick={(e)=>{skipping(e,guideElemnt)}} className="absolute top-2 right-2 bg-red-500 text-white px-4 py-2 rounded-md">Next</button>
+          <button onClick={(e) => { skipping(e, guideElemnt) }} className="absolute top-2 right-2 bg-red-500 text-white px-4 py-2 rounded-md">Next</button>
         </div>
       )}
 

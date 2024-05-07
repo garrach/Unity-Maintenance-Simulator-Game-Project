@@ -10,23 +10,39 @@ const { ObjectId } = require('mongodb');
 
 
 
-async function fetch_placement(id,db){
+async function fetch_placement(id, db) {
 
   const placementID = new ObjectId(id);
-  const placement = await db.collection('dataplacements').findOne({user_id:placementID});
+  const placement = await db.collection('dataplacements').findOne({ user_id: placementID });
   return placement;
 }
 
 
-async function Add_placement(data,db){
-  try {  
-    const placementID = new ObjectId(data.user_id);
-    ProvidePlacement(data,placementID,db);
+async function Add_placement(prevData, db) {
+  try {
+    const { user_id, data, IDs } = prevData;
+    const validator=({ username: user_id, itsData: data, orArray: IDs });
+    if (IDs && IDs.length > 0) {
+      IDs.map(async (user) => {
+        const placementID = new ObjectId(user._id);
+        const existingUser = await db.collection('dataplacements').findOne({ user_id: placementID });
+        if (existingUser === null){
+          ProvidePlacement({ user_id: placementID, data: validator.itsData });
+        }else{
+          console.log({error:'Data Placements Already exist.'});
+        }
+      })
+
+    } else {
+      const placementID = new ObjectId(user_id);
+      
+      ProvidePlacement({ user_id: placementID, data: validator.itsData }, db);
+    }
     return true;
 
   } catch (error) {
     return false;
-  } 
+  }
 }
 
 
@@ -54,7 +70,7 @@ async function textToSpeech(text, res) {
     if (!response.ok) {
       throw new Error('Failed to fetch MP3 file');
     }
-    
+
     const mp3Data = await response.arrayBuffer(); // Get MP3 data as ArrayBuffer
     res.setHeader('Content-Type', 'audio/mpeg');
     res.send(Buffer.from(mp3Data)); // Send MP3 data as binary

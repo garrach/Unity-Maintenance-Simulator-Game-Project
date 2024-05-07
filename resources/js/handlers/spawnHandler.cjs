@@ -22,7 +22,6 @@ const DataSchema = new mongoose.Schema({
 const dataPlacementSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Types.ObjectId,
-        unique: true // Make user_id unique
     }
     ,
     data: Object, DataSchema,
@@ -32,20 +31,9 @@ const dataPlacementSchema = new mongoose.Schema({
 const DataPlacement = mongoose.model('DataPlacement', dataPlacementSchema);
 
 // Define function to provide placement 
-async function ProvidePlacement(data,id, db) {
-    const existingUser = await db.collection('dataplacements').findOne({ user_id: id });
-    if (existingUser) {
-        console.log({error:"DataPlacement with the same user_id already exists"})
-    } else {
-        try {
-            const result = await DataPlacement.create(data);
-            console.log('Placement provided:', result);
-            return result;
-        } catch (error) {
-            console.error('Error providing placement:', error);
-            throw error;
-        }
-    }
+async function ProvidePlacement(data) {
+    const result = await DataPlacement.create(data);
+
 
 }
 

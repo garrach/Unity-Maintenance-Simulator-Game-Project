@@ -162,6 +162,99 @@ export default function Authenticated({ user, header, children, webSocket }) {
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
+                    {user.role === "employee" &&
+                        <>
+                            <div className="pt-2 pb-3 space-y-1">
+                                <ResponsiveNavLink href={route('basic-maintenance')} active={route().current('basic-maintenance')}>
+                                    Devices Usage
+                                </ResponsiveNavLink>
+                            </div>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('unity.index')} active={route().current('unity.index')}>
+                                    Devices Placement
+                                </ResponsiveNavLink>
+                            </div>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('full-maintenance-suite')} active={route().current('full-maintenance-suite')}>
+                                    Settings
+                                </ResponsiveNavLink>
+                            </div>
+                        </>
+                    }
+
+
+
+                    {user.role === "client" &&
+                        <>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('basic-maintenance')} active={route().current('basic-maintenance')}>
+                                    Devices Usage
+                                </ResponsiveNavLink>
+                            </div>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('myaccount')} active={route().current('myaccount')}>
+                                    My Account
+                                </ResponsiveNavLink>
+                            </div>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('devices.index')} active={route().current('devices.index')}>
+                                    Products List
+                                </ResponsiveNavLink>
+                            </div>
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('leaderboard')} active={route().current('leaderboard')}>
+                                    Leaderboard
+                                </ResponsiveNavLink>
+                            </div>
+
+                            <div className="pt-2 pb-3 space-y-1">
+                                <ResponsiveNavLink href={route('full-maintenance-suite')} active={route().current('full-maintenance-suite')}>
+                                    Settings
+                                </ResponsiveNavLink>
+                            </div>
+                        </>
+                    }
+
+
+
+                    {user.role === "admin" &&
+                        <>
+                            <div className="pt-2 pb-3 space-y-1">
+                                <ResponsiveNavLink href={route('devices.index')} active={route().current('devices.index')}>
+                                    Devices Register
+                                </ResponsiveNavLink>
+                            </div>
+
+                            <div className="pt-2 pb-3 space-y-1">
+                                <ResponsiveNavLink href={route('vehicles.index')} active={route().current('vehicles.index')}>
+                                    Vehicles Register
+                                </ResponsiveNavLink>
+                            </div>
+
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('users')} active={route().current('users')}>
+                                    Users
+                                </ResponsiveNavLink>
+                            </div>
+
+
+                            <div className="pt-2 pb-3 space-y-1">
+
+                                <ResponsiveNavLink href={route('paymentPlans.index')} active={route().current('paymentPlans.index')}>
+                                    Services
+                                </ResponsiveNavLink>
+                            </div>
+
+
+                        </>
+                    }
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div className="px-4">

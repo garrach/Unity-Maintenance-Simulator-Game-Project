@@ -13,7 +13,7 @@ class LeaderboardController extends Controller
     public function index()
 {
     // Fetch all users
-    $user = Auth::user();
+    $userIN = Auth::user();
     $users = User::all();
 
     // Fetch user's experience and coins
@@ -48,6 +48,6 @@ class LeaderboardController extends Controller
     }
 
     // Pass the ranked users data to the view
-    return Inertia::render('LeaderboardPage', ['getLeaderboardData' => $rankedUsers,'auth'=>$user]);
+    return Inertia::render('LeaderboardPage', ['getLeaderboardData' => $rankedUsers,'auth'=>$userIN]);
 }
 }

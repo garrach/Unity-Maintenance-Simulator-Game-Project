@@ -1,16 +1,23 @@
 // resources/js/components/AlertDialog.jsx
 
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
-const AlertDialog = ({ title, message, onClose , children }) => {
+const AlertDialog = ({ title, message, onClose, children }) => {
 
-  const [popup,setpopup]=useState(true);
-  async function handleInputChange(){
-    await onClose;
+  const [popup, setpopup] = useState(true);
+
+  useEffect(() => {
+    async function setDataPost() {
+      await onClose();
+    }
+    setDataPost();
+  }, [])
+  async function handleInputChange() {
     setpopup(false);
   }
   return (
-    popup &&<div className="fixed hover:bg-[#181818b2] inset-0 z-50 flex items-center justify-center "
+    popup && <div className="fixed hover:bg-[#181818b2] inset-0 z-50 flex items-center justify-center "
     >
       {console.log(message)}
       <div className="relative w-auto max-w-md mx-auto my-6">
@@ -32,7 +39,7 @@ const AlertDialog = ({ title, message, onClose , children }) => {
           </div>
           {/* Footer */}
           <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-          {children}
+            {children}
             <button
               className="text-blue-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"

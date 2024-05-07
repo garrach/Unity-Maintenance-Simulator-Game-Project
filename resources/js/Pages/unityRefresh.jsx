@@ -1,7 +1,9 @@
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { useEffect, useRef, useState } from "react"
 import axios from 'axios';
 import AlertDialog from "@/Components/AlertDialog";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
 const UnityRefresh = ({ DBsync }) => {
   const apiKey = 'YOUR_SECRET_API_KEY'; // Replace with your actual API key
   const arrMariaConnectionsData = useRef()
@@ -22,6 +24,9 @@ const UnityRefresh = ({ DBsync }) => {
     User: null,
     Schedule: null,
   });
+
+  const { props } = usePage();
+
 
   const dataSync = ['connections', 'Vehicle', 'Device', 'User', 'Schedule']
   const fetchData = async (endpoint, setDataFunction) => {
@@ -94,10 +99,10 @@ const UnityRefresh = ({ DBsync }) => {
       arrMariaConnectionsData.current = []
     };
   }, [])
-  const [clientPlacements,setClientPlacements]=useState({
-    id:"663662aea3de738f421270ae",
+  const [clientPlacements, setClientPlacements] = useState({
+    id: "663662aea3de738f421270ae",
   })
-  const [searchPlacemnt,setSearchPlacement]=useState("")
+  const [searchPlacemnt, setSearchPlacement] = useState("")
   useEffect(() => {
     async function retrivePlacementData(id) {
 
@@ -111,32 +116,32 @@ const UnityRefresh = ({ DBsync }) => {
           },
         });
         const data = response.data;
-        setPlacementData(data.data);
-        return data;
+        setPlacementData(data.data.data);
+        return data.data;
 
       } catch (error) {
         console.error(`Error fetching data from ${endpoint}:`, error);
         return null;
       }
     }
-    if (userData && searchPlacemnt!=="") {
-      userData.map(async(user) => {
+    if (userData && searchPlacemnt !== "") {
+      userData.map(async (user) => {
         (user._id === clientPlacements.id) && await retrivePlacementData(user._id)
       })
     }
 
-    async function getAdminData(){
-      const dataToPlace=await retrivePlacementData('663662aea3de738f421270aa');
+    async function getAdminData() {
+      const dataToPlace = await retrivePlacementData('663662aea3de738f421270aa');
       setPlacementData(dataToPlace);
     }
     getAdminData();
 
-    return ()=>{}
-  }, [userData,searchPlacemnt])
+    return () => { }
+  }, [userData, searchPlacemnt])
 
-  const handlSearch=(query)=>{
+  const handlSearch = (query) => {
     setSearchPlacement(query)
-    setClientPlacements({id:query})
+    setClientPlacements({ id: query })
   }
   const sysnncronize = async () => {
     try {
@@ -144,10 +149,10 @@ const UnityRefresh = ({ DBsync }) => {
       //fetchDataPOST('/api/vehicles', { type: "addvehicles", message: 'syncData', data: data.Vehicle }, setValidPost);
       //fetchDataPOST('/api/devices', { type: "adddevices", message: 'syncData', data: data.Device }, setValidPost);
       //fetchDataPOST('/api/login', { type: "addUser", message: 'syncData', data: data.User }, setValidPost);
-      userData.map(async(user)=>{
-        placementData && 
-        fetchDataPOST('/api/add-placement', { user_id: user._id , data: placementData }, setValidPostPlace);
-      })
+
+      placementData &&
+        fetchDataPOST('/api/add-placement', { data: placementData, IDs: userData }, setValidPostPlace);
+
 
     } catch (error) {
     }
@@ -157,96 +162,166 @@ const UnityRefresh = ({ DBsync }) => {
       setData((prevData) => ({ ...prevData, [dataSync[indexKey]]: data }));
     })
   }
-  return <>
-  <div>
-    <input 
-    type="text" name="search" id="search"
-    value={searchPlacemnt}
-    onChange={(e) => handlSearch(e.target.value)}
-     />
-  </div>
-    {validLogin && <div className="p-12 bg-gray-300">
-      <div className="MongoData bg-gray-300 p-4 rounded m-2">
-        {retriveSt.current ? (
-          <h1 className="text-xl font-bold">MongoDB Sync: Authorized</h1>
-        ) : (
-          <h1 className="text-xl font-bold">MongoDB Sync: Unauthorized</h1>
-        )}
-        <div>
-          <ul>
-            {userData && <li>
-              <h3>User Data:</h3>
-              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
-                {userData && userData.map((user, index) => (
-                  <li key={index}>{user._id}</li>
-                ))}
-              </ul>
-            </li>}
-            {devicesData && <li>
-              <h3>Devices Data:</h3>
-              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
-                {devicesData && devicesData.map((device, index) => (
-                  <li key={index}>{device._id}</li>
-                ))}
-              </ul>
-            </li>}
-            {connectionsData && <li>
-              <h3>Connections Data:</h3>
-              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
-                {connectionsData && connectionsData.map((connection, index) => (
-                  <li key={connection._id}>{connection._id}</li>
-                ))}
-              </ul>
-            </li>}
-            {vehiclesData && <li>
-              <h3>Vehicles Data:</h3>
-              <ul className="p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105">
-                {vehiclesData.map((vehicle, index) => (
-                  <li key={index}>{vehicle._id}</li>
-                ))}
-              </ul>
-            </li>}
-          </ul>
+  const AdminDataFound = () => {
+    return (
+      <>
+        {(placementData && (searchPlacemnt === "663662aea3de738f421270aa")) &&
+          <div className="absolute top-0 left-0 z-10 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-75">
+            <div className="bg-white rounded-lg p-8 relative">
+              <span className="w-10 h-10 absolute top-4 right-0">
+                <Link href="#">X</Link>
+              </span>
+              <h1 className="text-3xl font-bold mb-4">{props.auth.user.name}</h1>
+              <h2 className="text-2xl font-bold mb-4">Placement Data</h2>
+              <table className="w-full">
+                <tbody>
+                  {Object.entries(placementData).map(([key, hisData], index) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 px-4 py-2">{`${key}`}</td>
+                      <td className="border border-gray-300 px-4 py-2">{`${hisData}`}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      </>
+    );
+  };
+
+  return (
+    <>
+    <AuthenticatedLayout
+      user={props.auth.user}
+      header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">WEB-APP/Server Resources</h2>}
+    >
+      <Head title="Leaderboard" />
+      <AdminDataFound />
+      <div className="container mx-auto p-8 dark:text-gray-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <input
+              type="text"
+              name="search"
+              id="search"
+              value={searchPlacemnt}
+              onChange={(e) => handlSearch(e.target.value)}
+              className="border dark:bg-gray-800 border-gray-300 rounded-full px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+              placeholder="Search..."
+            />
+          </div>
+          {validLogin && (
+            <div className="space-y-8 relative">
+              <div className="mongo-data">
+                <h1 className="text-2xl font-bold dark:text-gray-200 mb-4">
+                  {retriveSt.current
+                    ? "MongoDB Sync: Authorized"
+                    : "MongoDB Sync: Unauthorized"}
+                </h1>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {userData && (
+                    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md p-4">
+                      <h3 className="text-lg font-semibold mb-2">Users Data:</h3>
+                      <ul className="overflow-y-auto overflow-x-hidden max-h-56">
+                        {userData.map((user, index) => (
+                          <li key={index} className="mb-2">{user._id}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {devicesData && (
+                    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md p-4">
+                      <h3 className="text-lg font-semibold mb-2">Devices Data:</h3>
+                      <ul className="overflow-y-auto overflow-x-hidden max-h-56">
+                        {devicesData.map((device, index) => (
+                          <li key={index} className="mb-2">{device._id}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {connectionsData && (
+                    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md p-4">
+                      <h3 className="text-lg font-semibold mb-2">Connections Data:</h3>
+                      <ul className="overflow-y-auto overflow-x-hidden max-h-56">
+                        {connectionsData.map((connection, index) => (
+                          <li key={index} className="mb-2">{connection._id}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {vehiclesData && (
+                    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md p-4">
+                      <h3 className="text-lg font-semibold mb-2">Vehicles Data:</h3>
+                      <ul className="overflow-y-auto overflow-x-hidden max-h-56">
+                        {vehiclesData.map((vehicle, index) => (
+                          <li key={index} className="mb-2">{vehicle._id}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="maria-data">
+                <h1 className="text-2xl font-bold dark:text-gray-200 mb-4">
+                  {retriveSt.current
+                    ? "HeidiData Sync MongoDB : Authorized"
+                    : "HeidiData Sync MongoDB: Unauthorized"}
+                </h1>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {arrMariaConnectionsData.current &&
+                    arrMariaConnectionsData.current.map((data, index) => (
+                      <div key={index} className="bg-white dark:bg-gray-800 shadow-md rounded-md p-4">
+                        <table className="table-auto w-full">
+                          <tbody>
+                            {Object.entries(data).map(([key, value], index0) => (
+                              <tr key={index0} className="border-b border-gray-200">
+                                <td className="font-semibold py-2 px-4">{key}</td>
+                                <td className="py-2 px-4">
+                                  <table>
+                                    <tbody>
+                                      {Object.entries(value).map(([subKey, subValue], index1) => (
+                                        <tr key={index1}>
+                                          <td className="py-1 px-2 font-semibold">{subKey}</td>
+                                          <td className="py-1 px-2">{subValue}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                </div>
+
+              </div>
+              <div className="action">
+                {data.connections ? (
+                  <AlertDialog
+                    title="Data Synchronization Successful"
+                    message={`The data synchronization process has completed successfully. All systems are now up-to-date with the latest information, ensuring consistency and accuracy across the platform. If you have any questions or encounter any issues, please contact our support team for assistance. Thank you for your attention.`}
+                    onClose={sysnncronize}
+                  />
+                ) : (
+                  <button
+                    className="bg-blue-500 absolute top-0 right-0 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={dataFlush}
+                  >
+                    Synchronize Data
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div className="MariaData fixed bg-gray-300 p-4 rounded m-2">
-        {retriveSt.current ? (
-          <h1 className="text-xl font-bold">HeidiData Sync MongoDB : Authorized</h1>
-        ) : (
-          <h1 className="text-xl font-bold">HeidiData Sync MongoDB: Unauthorized</h1>
-        )}
-        <ul>
-          {arrMariaConnectionsData.current && arrMariaConnectionsData.current.map((data, index) => (
-            <li key={index} style={{ marginLeft: ((index + 1) * 10) + 'rem', marginTop: ((index + 1) * 4) + 'rem', display: 'none' }} className={`absolute h-80 overflow-y-auto overflow-x-hidden p-4 dark:bg-gray-300 mb-2 hover:bg-gray-200 rounded-md shadow-md transition-transform transform hover:scale-105`}>
-              <ul>
-                <li>---------------:{dataSync[index]}:-------------</li>
-                {data.map((d, index) => (
-                  <li key={index}> <ul key={index}>
-                    {Object.entries(d).map(([key, value], index) => (
-                      <li onClick={(e) => { handleInputChange(e, { key, value }) }} key={index}>{`KEY:${key} | Value:${value}`}</li>
-                    )
-                    )}
-                  </ul>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="action">
-        {data.connections ?
-          <AlertDialog title='Data Sysnncronize Successfull' message={`The data synchronization process has completed successfully. All systems are now up-to-date with the latest information, ensuring consistency and accuracy across the platform. If you have any questions or encounter any issues, please contact our support team for assistance. Thank you for your attention.`} onClose={sysnncronize()} />
-          : <button className="bg-orange-500 p-4 hover:bg-orange-300 rounded" onClick={dataFlush}>CleanDATA</button>}
-      </div>
+      </AuthenticatedLayout>
 
-    </div>}
-    <style>{`
-    .MariaData{
-      top:1rem;
-      right:50rem;
-    }
-    `}</style>
-  </>
+    </>
+  );
+
 }
 export default UnityRefresh;

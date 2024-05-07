@@ -44,7 +44,7 @@ const UsersList = ({ auth, users, userexp }) => {
                         usersActive.map((user, index) => (
                             <li
                                 key={index}
-                                className='bg-white dark:bg-gray-800 rounded-md shadow-md overflow-hidden transition-transform transform hover:scale-105 cursor-pointer'
+                                className='bg-white hover:border-2 dark:hover:border-indigo-500 dark:bg-gray-800 rounded-md shadow-md overflow-hidden transition-transform transform hover:scale-105 cursor-pointer'
                                 onClick={() => handleUserClick(user)}
                             >
                                 <div className='p-6'>
