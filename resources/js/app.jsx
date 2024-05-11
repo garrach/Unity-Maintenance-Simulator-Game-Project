@@ -8,7 +8,7 @@ import Navbar from './Pages/Navbar';
 import { DynamicProvider } from './Pages/DynamicContext';
 import { clientSocket } from './Pages/client.cjs';
 
-const appName = import.meta.env.APP_NAME || 'Laravel';
+const appName = import.meta.env.APP_NAME || 'Carmaintain';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

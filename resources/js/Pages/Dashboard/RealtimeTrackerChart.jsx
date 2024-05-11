@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const RealtimeTrackerChart = () => {
+const RealtimeTrackerChart = ({stream}) => {
   const [data, setData] = useState([]);
   const [options, setOptions] = useState({
     chart: {
@@ -52,6 +52,7 @@ const RealtimeTrackerChart = () => {
 
   return (
     <div>
+      {console.log(stream)}
       <Chart options={options} series={[{ data }]} type="line" height={350} />
     </div>
   );

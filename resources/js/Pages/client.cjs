@@ -1,3 +1,6 @@
+const serverResponse={
+  message:null
+}
 const clientSocket = (client) => {
   const customObject = { key: client };
   const headers = {
@@ -14,6 +17,7 @@ const clientSocket = (client) => {
   socket.addEventListener('message', (event) => {
     const message = JSON.parse(event.data);
     console.log('Received message:', message);
+    serverResponse.message=message.data;
   });
 
   socket.addEventListener('close', () => {
@@ -37,4 +41,4 @@ const TMD=({type,message,data})=>{
   return dataType;
 }
 
-export { clientSocket,TMD };
+export { clientSocket,TMD,serverResponse };

@@ -97,7 +97,7 @@ const Preview = ({ auth }) => {
 
 
     const UserGuide = ({ layer }) => {
-        const [showGuide, setShowGuide] = useState(false);
+        const [showGuide, setShowGuide] = useState(true);
 
         const toggleGuide = () => {
             setShowGuide(!showGuide);

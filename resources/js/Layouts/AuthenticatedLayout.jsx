@@ -39,9 +39,13 @@ export default function Authenticated({ user, header, children, webSocket }) {
                                         <NavLink href={route('unity.index')} active={route().current('unity.index')}>
                                             Devices Placement
                                         </NavLink>
+                                        <NavLink href={route('data-monitoring')} active={route().current('data-monitoring')}>
+                                            Client Data Monitoring
+                                        </NavLink>
                                         <NavLink href={route('full-maintenance-suite')} active={route().current('full-maintenance-suite')}>
                                             Settings
                                         </NavLink>
+
                                     </>
                                 }
 

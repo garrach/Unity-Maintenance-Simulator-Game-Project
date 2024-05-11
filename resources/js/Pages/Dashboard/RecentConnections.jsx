@@ -18,6 +18,7 @@ const RecentConnections = ({ connection, webSocket }) => {
   users.current.map(([key, element]) => {
     usersArr.current.push(element);
   });
+  sort
   return (
     <div className="p-2 dark:text-white text-gray-800">
       <h2 className="text-lg font-semibold mb-2" id='pop'>Recent Connections</h2>

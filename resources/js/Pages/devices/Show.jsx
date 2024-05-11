@@ -32,7 +32,7 @@ const Show = ({ device, purchase, deviceReview, auth }) => {
 
   useEffect(() => {
     Object.entries(device).map(([key, value], index) => {
-      if(key === "review"){
+      if(key === "review" && deviceReview){
         setFormatData((formatData) => [...formatData, key +" : "+ deviceReview.rate + "\n"]);
       }else{
         setFormatData((formatData) => [...formatData, key +" : "+ value + "\n"]);

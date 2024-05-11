@@ -22,7 +22,7 @@ const generateRandomHexString = (length) => {
   return hexString;
 };
 const clientKey = {ID:0,key:''};
-function configureWebSocket(wss, db) {
+function configureWebSocket(wss, db,SQLDB) {
   try {
     wss.on('connection', (ws, req) => {
       clients.add(ws);
@@ -30,7 +30,7 @@ function configureWebSocket(wss, db) {
       const userAgent = req.headers['user-agent'] || '';
       const clientIP = req.connection.remoteAddress || '';
       const isBrowser = userAgent.toLowerCase().includes('mozilla') && userAgent.toLowerCase().includes('applewebkit');
-  
+      
       const clientInfo = {
         ws,
         clientId: generateClientId(),
@@ -41,6 +41,7 @@ function configureWebSocket(wss, db) {
         origin: req.headers.origin || '',
         protocol: req.headers['sec-websocket-protocol'] || '',
       };
+      webSocketSender.sendToClient(clientInfo.clientId,{type:"checkUser",message:"Welcome",data:clientInfo.clientId})
   
       clientKey.ID=clientInfo.clientId;
       clientKey.key=generateRandomHexString(16);
@@ -74,7 +75,7 @@ function configureWebSocket(wss, db) {
   
         // Dispatch message handling based on type
         if (typeof messageHandlers[type] === 'function') {
-          await messageHandlers[type](TMD, clientKey, ws, db, clients,clientInfo);
+          await messageHandlers[type](TMD, clientKey, ws, db, clients,clientInfo,SQLDB);
         } else {
           console.log(`No handler registered for message type: ${type}`);
         }

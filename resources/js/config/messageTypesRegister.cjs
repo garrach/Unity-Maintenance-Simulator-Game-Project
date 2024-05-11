@@ -38,6 +38,7 @@ async function handleDeviceMovement(movementData, clientKey, ws, db, clients, cl
         const user_id = movementData.data.user_id.name;
         const user = await getUserByName(user_id, db);
 
+
         const position = movementData.data.position;
         const dataToUpdate = {
             user_id: user,
@@ -52,26 +53,49 @@ async function handleDeviceMovement(movementData, clientKey, ws, db, clients, cl
             toPlace: { x: 0, y: 0 },
         };
 
-        userCurrentInfo.moving.data.devicesSp.forEach((device) => {
-            if (device.name === userCurrentInfo.ofPart) {
-                const movementFactor = 0.1;
-                userCurrentInfo.toPlace = {
-                    x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
-                    y: isNaN(device.position.y) ? 0 : device.position.y,
-                    z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
-                };
+        if(movementData.data.user_id.role==="admin"){
 
-                // Update nested object in the database
-                db.collection('dataplacements').updateOne(
-                    { user_id: user._id },
-                    { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
-                    { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
-                );
-            }
-        });
+            userCurrentInfo.moving.data.devicesSp.map((device) => {
+                if (device.name === userCurrentInfo.ofPart) {
+                    const movementFactor = 0.1;
+                    userCurrentInfo.toPlace = {
+                        x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
+                        y: isNaN(device.position.y) ? 0 : device.position.y,
+                        z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
+                    };
+    
+                    // Update nested object in the database
+                    db.collection('dataplacements').updateOne(
+                        { user_id: user._id },
+                        { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
+                        { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
+                    );
+                }
+            });
+        }else{
 
-        console.log(userCurrentInfo);
-        console.log(movementData);
+            console.log("userCurrentInfo.moving...");
+            console.log(userCurrentInfo.moving.data.data.devicesSp);
+            console.log("userCurrentInfo.moving End...");
+
+            userCurrentInfo.moving.data.data.devicesSp.map((device) => {
+                if (device.name === userCurrentInfo.ofPart) {
+                    const movementFactor = 0.1;
+                    userCurrentInfo.toPlace = {
+                        x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
+                        y: isNaN(device.position.y) ? 0 : device.position.y,
+                        z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
+                    };
+    
+                    // Update nested object in the database
+                    db.collection('dataplacements').updateOne(
+                        { user_id: user._id },
+                        { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
+                        { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
+                    );
+                }
+            });
+        }
     } catch (error) {
         console.error("Error handling device movement:", error);
     }
@@ -94,25 +118,35 @@ async function handleUserInstance(TMD, clientKey, ws, db, clients, clientInfo) {
 
 
 
-async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients, clientInfo) {
-
+async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients, clientInfo, SQLDB) {
     console.log(TMD);
-    //const currentUser=await getUserByName(TMD.data.user.name,db);
-    if (unityInstance.get('unity')) {
-        ws.send(JSON.stringify())
-        broadcast({ type: "vehicleStat", message: "unity instanceRunning (Vehicle)", data: TMD.data }, clientKey, ws, db, clients)
-    }
-
-}
-
-async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients, clientInfo) {
-
-    //const currentUser=await getUserByName(TMD.data.user.name,db);
-    if (unityInstance.get('unity')) {
-        broadcast({ type: "deviceStat", message: "unity instanceRunning (Device)", data: TMD.data }, clientKey, ws, db, clients)
-
+    // Example: Check if SQLDB is not null before using it
+    if (SQLDB) {
+        console.log('SQLDB is operatinal For Vehicle stat..')
+        if (unityInstance.get('unity')) {
+            ws.send(JSON.stringify({ message: "Unity instance is running (Vehicle)" }));
+        }
+        // Example: Broadcast a message to all clients
+        broadcast({ type: "vehicleStat", message: "Unity instance is running (Vehicle)", data: TMD.data }, clientKey, ws, db, clients);
+    } else {
+        console.error("SQLDB is null.");
+        // Handle the case where SQLDB is null
     }
 }
+
+async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients, clientInfo, SQLDB) {
+    // Example: Check if SQLDB is not null before using it
+    if (SQLDB) {
+        console.log('SQLDB is operatinal For Device stat..')
+        if (unityInstance.get('unity')) {
+            broadcast({ type: "deviceStat", message: "Unity instance is running (Device)", data: TMD.data }, clientKey, ws, db, clients);
+        }
+    } else {
+        console.error("SQLDB is null.");
+        // Handle the case where SQLDB is null
+    }
+}
+
 
 // ClientKeyRequest handler
 function handleClientKeyRequest(TMD, clientKey, ws) {

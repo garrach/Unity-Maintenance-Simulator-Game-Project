@@ -145,6 +145,7 @@ function configureRoutes(app, db) {
 
      try {
       const resp=await Add_placement(req.body,db);
+      console.log(req.body)
       console.log(resp)
       res.send({ type: 'UserApiRegistedPlacement', message: 'New Placement registered ', data: {} })
     } catch (error) {

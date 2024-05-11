@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 const { checkApiKey } = require('./resources/js/middleware/ApikeyChecker.cjs');
 const { configureRoutes } = require('./resources/js/config/routesConfig.cjs');
 const { configureWebSocket } = require('./resources/js/config/webSocketConfig.cjs');
-const { connectToDatabase } = require('./resources/js/utils/database.cjs');
+const { connectToDatabase ,connectToSqlDatabase} = require('./resources/js/utils/database.cjs');
 const app = express();
 const port = 3002;
 
@@ -20,8 +20,9 @@ const wss = new WebSocket.Server({ server });
 
 async function yieldingConnetion(){
 const db= await connectToDatabase(true); 
+const SQLDB=connectToSqlDatabase()
 //WEBSOKET-SERVER (REALTIME COMMUNICATION)
-configureWebSocket(wss,db);
+configureWebSocket(wss,db,SQLDB);
 //API ENDPOINTS
 configureRoutes(app,db);
 }
