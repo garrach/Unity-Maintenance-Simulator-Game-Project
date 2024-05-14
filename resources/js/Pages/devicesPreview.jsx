@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 const Index = ({ devices, reviews, comments, auth }) => {
     console.log({ devices: devices, reviews: reviews, comments: comments });
@@ -20,6 +20,8 @@ const Index = ({ devices, reviews, comments, auth }) => {
     };
     return (
         <GuestLayout>
+                  <Head title="Devices" />
+
             <div className='h-full bg-gray-100 dark:bg-gray-800'>
                 {preview && selectedDevice && (
                     <div className='fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-50 flex items-center justify-center'>
@@ -64,14 +66,14 @@ const Index = ({ devices, reviews, comments, auth }) => {
                     <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4'>
                         {devices.map((device, index) => (
                                 <li key={index} className='py-8 transition duration-300 ease-in-out transform hover:scale-105 w-auto'>
-                                    <div class="relative w-68 h-80 bg-white dark:bg-gray-900 rounded-xl p-2 shadow-lg">
+                                    <div className="relative w-68 h-80 bg-white dark:bg-gray-900 rounded-xl p-2 shadow-lg">
                                         <button onClick={() => handleWishlist(device)} className='absolute top-2 right-2 bg-gray-200 dark:bg-gray-700 hover:bg-orange-500 dark:hover:bg-orange-600 text-gray-800 dark:text-gray-200 hover:text-white rounded-full w-8 h-8 flex items-center justify-center'>
                                             +
                                         </button>
-                                        <div class="absolute z-20 top-0 left-0 transform translate-x-6 -translate-y-6 w-20 h-24 bg-white rounded-lg flex justify-center items-center">
-                                            <img src={'../' + device.image} alt="Image" class="w-16 h-16 rounded-2xl object-cover" />
+                                        <div className="absolute z-20 top-0 left-0 transform translate-x-6 -translate-y-6 w-20 h-24 bg-white rounded-lg flex justify-center items-center">
+                                            <img src={'../' + device.image} alt="Image" className="w-16 h-16 rounded-2xl object-cover" />
                                         </div>
-                                        <div class="absolute bottom-10 z-10 w-fit h-fit rounded-xl">
+                                        <div className="absolute bottom-10 z-10 w-fit h-fit rounded-xl">
                                             <p className='text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200'>{`Serial Number: ${device.serial_number}`}</p>
                                             <p className='text-sm text-gray-600 dark:text-gray-400 mb-1'>{`Type: ${device.type}`}</p>
                                             <p className='text-sm text-gray-600 dark:text-gray-400'>{`Device Price: ${device.price}`}</p>
@@ -86,7 +88,9 @@ const Index = ({ devices, reviews, comments, auth }) => {
                         {(auth.user && (auth.user.role == "admin")) && <li className={`bg-white dark:bg-gray-900 h-48 mt-20 w-32 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105`}>
                             <div className='flex flex-col justify-between h-full'>
                                 <div className='newDevice'>
+                                    <Link href={route('devices.create')}>
                                     <span className='text-gray-700 dark:text-gray-500 hover:text-gray-300 text-2xl'>+</span>
+                                    </Link>
                                 </div>
                             </div>
                         </li>}

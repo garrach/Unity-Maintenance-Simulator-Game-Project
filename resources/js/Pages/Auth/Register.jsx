@@ -76,7 +76,8 @@ export default function Register() {
                             </div>
                         </div>
                     </>)}
-                    <div className='flex flex-col w-full sm:justify-center items-center pt-6 sm:pt-0 dark:bg-gray-800'>
+                    <div className='w-96 mx-auto border-t-8 rounded-lg shadow-md border-green-500 p-4 dark:bg-gray-800'>
+                    <div className='flex flex-col w-full sm:justify-center items-center pt-6 sm:pt-0'>
                         <div>
                             <InputLabel htmlFor="name" value="Name" />
 
@@ -154,6 +155,8 @@ export default function Register() {
                         </div>
                     </div>
 
+                    </div>
+                  
                 </div>
             </form>
         </GuestLayout>

@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 const ScheduleIndex = ({ schedules, user }) => {
   const {
@@ -22,6 +22,8 @@ const ScheduleIndex = ({ schedules, user }) => {
   return (
     <div className="bg-gray-100 dark:bg-gray-800 dark:text-white min-h-screen">
       <AuthenticatedLayout user={user} header="Schedules">
+      <Head title="Schedule Details" />
+
         <div className="max-w-5xl mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4 dark:text-white">Schedules</h1>
           {(schedules) ? <>

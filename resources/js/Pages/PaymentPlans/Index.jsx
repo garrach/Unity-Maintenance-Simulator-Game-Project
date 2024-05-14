@@ -1,7 +1,7 @@
 // resources/js/Pages/paymentPlans/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useRef, useState } from 'react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 const Index = ({ paymentPlans, auth }) => {
   const { props } = usePage();
@@ -47,7 +47,8 @@ const Index = ({ paymentPlans, auth }) => {
           </h2>
         }
       >
-       
+               <Head title="Plan Details" />
+
             <form onSubmit={suub}> <div className="my-4 mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Payment Plans</h1>
           <ul className="grid grid-cols-3 gap-8 mb-12">

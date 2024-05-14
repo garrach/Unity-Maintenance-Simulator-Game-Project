@@ -1,10 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 import React from 'react';
 
 const ScheduleShow = ({ schedule, user }) => {
   return (
     <div className="bg-gray-800 text-white min-h-screen">
       <AuthenticatedLayout user={user} header="Schedules">
+      <Head title="Schedule Details" />
+
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-semibold mb-4">Schedule Details</h1>
           <div className="bg-gray-700 rounded-md p-4 mb-4">

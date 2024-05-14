@@ -82,9 +82,36 @@ const Documentation = (key) => {
             setDownloadGame(true);
         }, 2000);
     }
+    const [clientCurrentKey, setClientCurrentKey] = useState();
+    const HandleApiRequest = async () => {
+        if (props.auth.user) {
+            try {
+                // Adding 'http://' before the URL
+                const response = await fetch(`http://127.0.0.1:3002/api/get-key?ID=${props.auth.user.id}`);
+                const data = await response.json();
+
+                if (data && data.userApiKey) {
+                    // If a key is received, set it as the current key
+                    setClientCurrentKey(data.userApiKey);
+                    alert('API key retrieved: ' + data.userApiKey);
+                } else {
+                    alert('API key not found for the user');
+                }
+            } catch (error) {
+                console.error('Error retrieving API key:', error);
+                alert('Error retrieving API key. Please try again later.');
+            }
+        } else {
+            alert('Please log in to get a key');
+        }
+    };
+
+
     return (
         <>
             <GuestLayout>
+                <Head title="Documentation" />
+
                 <FeedbackMessage show={downloadgame} />
                 <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white h-screen flex ">
                     <div>
@@ -103,12 +130,12 @@ const Documentation = (key) => {
 
                         <div className='overflow-x-hidden overflow-y-auto h-96'>
                             {/* Download Unity Garage simulator */}
-                            <section id='Download' class="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-md">
-                                <h2 class="text-3xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Unity Garage Simulator</h2>
-                                <p class="text-lg text-gray-700 dark:text-gray-300">
+                            <section id='Download' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-md">
+                                <h2 className="text-3xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Unity Garage Simulator</h2>
+                                <p className="text-lg text-gray-700 dark:text-gray-300">
                                     Welcome to the Unity Garage Simulator! Step into the world of automotive innovation and exploration. Experience the thrill of customizing and interacting with intricately detailed car interiors. From tinkering with dashboard displays to adjusting seat configurations, this simulator offers a unique glimpse into the inner workings of vehicle technology.
                                 </p>
-                                <button onClick={DownloadGame} class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Download Now</button>
+                                <button onClick={DownloadGame} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Download Now</button>
                             </section>
                             {/* Public Routes Section */}
                             <section id='public-routes' className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
@@ -179,21 +206,38 @@ const Documentation = (key) => {
                             </section>
 
 
-                            {/* API  Section */}
-
-                            <div id="api-test" className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
-                                <span title='user authentication' className={`${userData ? 'bg-green-500' : 'bg-red-500'} w-6 h-6 rounded-full relative block float-right`}></span>
-
-                                <h2 className="text-2xl font-semibold mb-4">API  Section</h2>
-                                <p className="text-gray-300">
-                                    user fetch data:
-                                </p>
+                            {/* API Section */}
+                            <div id="api-test" className="bg-gray-100 relative dark:bg-gray-800 rounded-lg p-6 mb-8">
+                                <span title={`${userData ? 'API server running' : 'API server Closed'}`} className={`${userData ? 'bg-green-500' : 'bg-red-500'} w-6 h-6 rounded-full relative block float-right`}></span>
+                                <h2 className="text-2xl font-semibold mb-4">API Section</h2>
+                                <h3>Restful API provides real-time data transfer, with endpoints and websockets.</h3>
+                                <div className='absolute top-10 right-20'>
+                                {props.auth.user ? (
+                                    <button onClick={HandleApiRequest}>GET API Key</button>
+                                ) : (
+                                    <button onClick={HandleApiRequest}>Generate API Key</button>
+                                )}
+                                </div>
+                                
+                                <p className="text-gray-300">User fetch data:</p>
 
                                 <ul className="list-disc ml-6 mt-4">
+
+                                    <li className='mb-2 p-4' style={{ listStyle: 'none' }}><h3>[END-Point]</h3></li>
                                     <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/login)</span>: Displays login services information.</li>
                                     <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Devices)</span>: Displays full Devices information.</li>
                                     <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Connections)</span>: Displays Connections in maintenance schedules information.</li>
                                     <li><span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(Route: /api/Vehicles)</span>: Displays the Listed Vehicles.</li>
+                                    <li className='mb-2 p-4' style={{ listStyle: 'none' }}><h3>[Websocket, TMD(Object:Type Message Data)]</h3></li>
+                                    <li>Verify User Login:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(webClientIdentity)</span></li>
+                                    <li>Handle Client Key Request:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(clientKeyRequest)</span></li>
+                                    <li>Handle Init Uniy Devices Location:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(initUniyDevicesLocation)</span></li>
+                                    <li>User Authentification:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(login)</span></li>
+                                    <li>Handle User Room:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(roomState)</span></li>
+                                    <li>Handle Running User Instance:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(unityStat)</span></li>
+                                    <li>Handle User Instance Vehicle:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(unityStatDV)</span></li>
+                                    <li>Handle User Instance Device:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(unityStatVH)</span></li>
+                                    <li>Handle Device Displacement:<span className='px-2 bg-gray-200 dark:bg-gray-700 rounded-full'>(movingPart)</span></li>
                                 </ul>
                             </div>
 

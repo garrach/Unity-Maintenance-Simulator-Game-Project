@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 
 const Create = ({ auth }) => {
   const {props}=usePage();
@@ -42,6 +42,8 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
+                <Head title="Report Details" />
+
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-semibold mb-4 dark:text-gray-200">Create Report</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

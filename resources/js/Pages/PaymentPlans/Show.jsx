@@ -1,5 +1,6 @@
 // resources/js/Pages/paymentPlans/Show.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 import React from 'react';
 
 const Show = ({ paymentPlan, auth }) => {
@@ -12,7 +13,8 @@ const Show = ({ paymentPlan, auth }) => {
             Dashboard - {auth.user.role}
           </h2>
         }
-      >
+      >        <Head title="Plan Details" />
+
         <div className="my-4">
           <h1 className="text-2xl font-semibold mb-4">Payment Plan Details</h1>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">

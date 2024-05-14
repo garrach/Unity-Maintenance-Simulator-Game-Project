@@ -2,7 +2,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 const SendMessage = ({sender,recipient,action}) => {
     const { data, setData, post, processing } = useForm({
-        sender_id: sender, // Assuming sender_id will be set in the backend
+        sender_id: sender, 
         recipient_id: recipient,
         subject: '',
         body: '',

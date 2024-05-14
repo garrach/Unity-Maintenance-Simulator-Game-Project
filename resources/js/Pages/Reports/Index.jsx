@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 const Index = ({ reports, auth, that }) => {
@@ -33,6 +33,8 @@ const Index = ({ reports, auth, that }) => {
           </h2>
         }
       >
+                        <Head title="Report Details" />
+
         <div className="my-4 max-w-7xl mx-auto mt-6 p-6 bg-gray-200 text-gray-800 dark:text-gray-200 dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-3xl font-semibold mb-4">Report List</h1>
           <ul className="space-y-4">

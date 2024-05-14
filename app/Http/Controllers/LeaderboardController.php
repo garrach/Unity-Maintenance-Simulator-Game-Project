@@ -25,8 +25,8 @@ class LeaderboardController extends Controller
         $score = 0;
         foreach ($userExpCoins as $expCoin) {
             if ($expCoin->user_id == $user->id) {
-                $score += $expCoin->experience; // Assuming experience contributes to the score
-                $score += $expCoin->coins; // Assuming coins also contribute to the score
+                $score += $expCoin->experience; 
+                $score += $expCoin->coins; 
             }
         }
         $userScores[$user->id] = $score;

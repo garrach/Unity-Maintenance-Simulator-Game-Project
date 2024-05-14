@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
 
@@ -20,6 +20,8 @@ const JobsList = ({ auth, jobs, users }) => {
       user={auth.user}
       header={<h2 className='dark:text-white'>Jobs List</h2>}
     >
+            <Head title="Jobs List" />
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <input

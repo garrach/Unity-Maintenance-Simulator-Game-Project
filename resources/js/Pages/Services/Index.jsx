@@ -1,7 +1,7 @@
 // resources/js/Pages/Profile/Services/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const Index = ({ services, auth }) => {
   return (
@@ -14,6 +14,8 @@ const Index = ({ services, auth }) => {
           </h2>
         }
       >
+                        <Head title="Service Details" />
+
         <div className="my-4 max-w-5xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">Services</h1>
 

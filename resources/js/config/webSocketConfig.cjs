@@ -91,7 +91,7 @@ function configureWebSocket(wss, db,SQLDB) {
           if (value === ws) {
               unityInstance.delete(key);
               webSocketSender.broadcast({type:'unityInstanceOff',message:'unity Instance Off',data:null})
-              break; // Assuming you only want to delete the first occurrence
+              break; 
           }
       }
 

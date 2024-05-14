@@ -1,7 +1,7 @@
 // resources/js/Pages/vehicles/Create.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 const Create = ({ auth }) => {
   const { data, setData, post, processing } = useForm({
@@ -34,6 +34,8 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
+                        <Head title="Vehicle Details" />
+
         <div className="my-4 ml-12 w-56">
           <h1 className="text-2xl font-semibold mb-4">Create Vehicle</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

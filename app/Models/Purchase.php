@@ -31,7 +31,6 @@ class Purchase extends Model
     {
         return $this->belongsTo(PaymentPlan::class);
     }
-    // Define a relationship to the Service model (assuming you have a services table)
     public function service()
     {
         return $this->belongsTo(Service::class);

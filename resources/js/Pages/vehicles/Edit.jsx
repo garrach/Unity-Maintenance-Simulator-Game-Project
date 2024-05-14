@@ -1,7 +1,7 @@
 // resources/js/Pages/vehicles/Edit.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 const Edit = ({ vehicle, auth }) => {
   const { data, setData, put, processing } = useForm({
@@ -34,6 +34,8 @@ const Edit = ({ vehicle, auth }) => {
           </h2>
         }
       >
+                                <Head title="Vehicle Details" />
+
         <div className="my-4">
           <h1 className="text-2xl font-semibold mb-4">Edit Vehicle</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

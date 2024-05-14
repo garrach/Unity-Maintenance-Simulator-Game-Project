@@ -46,7 +46,7 @@ const instantiatePlaces = (arr) => {
 const instantiatePlaces2 = async (socket,user) => {
     const arr = [];
     const elements = [];
-    const jsonUrl = 'http://127.0.0.1:3002/api/fetch-placement?id=663662aea3de738f421270aa';
+    const jsonUrl = `http://127.0.0.1:3002/api/fetch-placement?id=${user.name}`;
     try {
         const data = await fetchData(jsonUrl);
         const placeSP = document.querySelector('.place');

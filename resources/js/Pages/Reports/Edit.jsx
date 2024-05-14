@@ -1,7 +1,7 @@
 // resources/js/Pages/Reports/Edit.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 const Edit = ({ report, auth }) => {
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -36,6 +36,8 @@ const Edit = ({ report, auth }) => {
           </h2>
         }
       >
+                        <Head title="Report Details" />
+
         <div className="max-w-2xl mx-auto">
           <h1 className="text-2xl font-semibold mb-4 dark:text-gray-200">Edit Report</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

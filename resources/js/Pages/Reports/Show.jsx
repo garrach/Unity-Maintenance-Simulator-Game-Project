@@ -2,7 +2,7 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { PDFViewer } from '@react-pdf/renderer';
 import ReportPDF from '../ReportPDF';
 import { useState } from 'react';
@@ -29,6 +29,8 @@ const Show = ({ report, RepUser, auth }) => {
           </h2>
         }
       >
+                        <Head title="Report Details" />
+
         {console.log(RepUser)}
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Report Details</h1>

@@ -30,6 +30,7 @@ use App\Http\Controllers\UnityDataMonitorController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use Inertia\Inertia;
 //static Pages Routes
@@ -47,13 +48,14 @@ Route::get('/documentation',function(){
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            'tending'=>ConnectionController::getTendingConnections(),
+            'tending'=>base64_encode(json_encode(ConnectionController::getTendingConnections())),
         ]);
     })->name('home');
     Route::get('/aboutUs', function () {return Inertia::render('About');})->name('about');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
     Route::get('/preview/devices', [DeviceController::class, 'preview'])->name('devices.preview');
+    Route::get('/gaming', [UnityDataMonitorController::class, 'previewService'])->name('previewService');
 //Authenticated Routes
 Route::middleware(('auth'))->group(function () {
 

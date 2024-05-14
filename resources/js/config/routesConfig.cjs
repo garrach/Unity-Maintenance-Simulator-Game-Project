@@ -13,7 +13,7 @@ const { getConnectionById,
   getAllConnectionsByUser,
   getAllVehicles,
   getAllDevices,
-  getAllUsers, textToSpeech ,fetch_placement,Add_placement} = require('../handlers/RetriveHandler.cjs')
+  getAllUsers, textToSpeech, fetch_placement, Add_placement, getUserByName, generateUserAPiKey ,getAPiKey} = require('../handlers/RetriveHandler.cjs')
 
 
 
@@ -122,37 +122,68 @@ function configureRoutes(app, db) {
     });
 
     app.get('/api/speech', async (req, res) => {
-     
-       await textToSpeech(req.query.key,res);
+
+      await textToSpeech(req.query.key, res);
 
     })
 
     app.get('/api/fetch-placement', async (req, res) => {
-     
+
       try {
-        const response = await fetch_placement(req.query.id,db);
+        const user = await getUserByName(req.query.id, db);
+        const response = await fetch_placement(user._id, db);
         res.send({ type: 'UserApiRegistedPlacement', message: 'Device Placement registered ', data: response })
       } catch (error) {
         res.send(req.query)
         console.log(req.query)
       }
+
+
+
+    })
+
+    app.post('/api/add-placement', async (req, res) => {
+
+      try {
+        const resp = await Add_placement(req.body, db);
+        console.log(req.body)
+        res.send({ type: 'UserApiRegistedPlacement', message: 'New Placement registered ', data: {} })
+      } catch (error) { 
+        res.send({ type: 'fatal', message: 'Error adding New Placement', data: {} })
+      }
+
+    })
+    app.get('/api/get-key', async (req, res) => {
+      try {
+    
+        // Fetch the API key for the provided user ID
+        const key = await getAPiKey(req.query.ID, db);
+    
+        // If a key is found, send it back as a response
+        if (key && key.userKey) {
+          res.send({ userApiKey: btoa(key.userKey) }); 
+        } else {
+          // If no key is found, send an appropriate message
+          res.status(404).send({ error: 'API key not found for the provided user ID' });
+        }
+      } catch (error) {
+        // Handle any errors that occur during the process
+        console.error('Error retrieving API key:', error);
+        res.status(500).send({ error: 'Internal Server Error' });
+      }
+    });
+    
+    app.post('/api/get-key',async (req,res)=>{
+      try {
+        const key=await generateUserAPiKey(req.query.ID,db);
+        res.send({userApiKey:key});
+        
+      } catch (error) {
+        res.send({userApiKey:error});
+        return;
+      }
       
-
-
-   })
-
-   app.post('/api/add-placement', async (req, res) => {
-
-     try {
-      const resp=await Add_placement(req.body,db);
-      console.log(req.body)
-      console.log(resp)
-      res.send({ type: 'UserApiRegistedPlacement', message: 'New Placement registered ', data: {} })
-    } catch (error) {
-      res.send({ type: 'fatal', message: 'Error adding New Placement', data: {} })
-    } 
-
- })
+    })
   } catch (error) {
     console.log(error)
   }

@@ -115,7 +115,7 @@ const Show = ({ userID, encryptedDataDetails }) => {
             {props.auth.user.role === "admin" && (<>
               <span onClick={selectARole} className='cursor-pointer text-white bg-gray-900 hover:dark:bg-orange-500 hover:bg-orange-500 px-4 py-1 rounded-full mb-2'>add Role</span>
             </>)}
-            {showDialog && (<><AlertDialog title={userInfo.name} message='Add Role' onClose={onClose}>
+            {showDialog && (<><AlertDialog title={userInfo.name} message='Add Role'>
               <form onSubmit={submitApproval}>
                 <label htmlFor="" className='text-gray-800 w-fit'>{userInfo.name}: Role {userInfo.role}</label>
                 <select name='role' onChange={(e) => { onChange(e) }} value={data.role} className='text-gray-800' required>

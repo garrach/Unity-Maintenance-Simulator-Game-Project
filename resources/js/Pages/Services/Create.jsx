@@ -1,7 +1,7 @@
 // resources/js/Pages/Profile/Services/Create.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 const Create = ({ auth }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -34,6 +34,8 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
+                <Head title="Service Details" />
+
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Create Service</h1>
           <form onSubmit={handleSubmit}>

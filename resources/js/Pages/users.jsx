@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 const UsersList = ({ auth, users, userexp }) => {
@@ -29,6 +29,8 @@ const UsersList = ({ auth, users, userexp }) => {
 
     return (
         <AuthenticatedLayout user={auth.user} header={<h2 className='font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight'>Users List</h2>}>
+                  <Head title="Users List" />
+
             <div className='container mx-auto mt-8'>
                 <div className='mb-4'>
                     <input

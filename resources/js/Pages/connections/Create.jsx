@@ -1,7 +1,7 @@
 // resources/js/Pages/connections/Create.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 const Create = ({ auth, vehicles, devices, connections }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -37,6 +37,8 @@ const Create = ({ auth, vehicles, devices, connections }) => {
           </h2>
         }
       >
+                    <Head title="Create Connection" />
+
         <div className="max-w-2xl mx-auto dark:text-white">
           <h1 className="text-2xl font-semibold mb-4">Create Connection</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

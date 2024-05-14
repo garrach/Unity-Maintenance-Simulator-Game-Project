@@ -1,7 +1,7 @@
 // resources/js/Pages/paymentPlans/Create.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 const Create = ({ auth }) => {
   const { data, setData, post, processing } = useForm({
@@ -32,6 +32,8 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
+        <Head title="Plan Details" />
+
         <div className="my-4">
           <h1 className="text-2xl font-semibold mb-4">Create Payment Plan</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

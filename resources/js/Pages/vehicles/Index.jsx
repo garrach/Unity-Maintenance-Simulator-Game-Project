@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const Index = ({ vehicles, auth }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -17,6 +17,8 @@ const Index = ({ vehicles, auth }) => {
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard - {auth.user.role}</h2>}
       >
+                                <Head title="Vehicle Details" />
+
         <div className="max-w-8xl mx-auto p-4">
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <h1 className="text-3xl font-semibold mb-2 md:mb-0">Vehicle List</h1>

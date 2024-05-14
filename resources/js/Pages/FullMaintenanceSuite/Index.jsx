@@ -11,7 +11,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
 
   const setMaintenanceOne = useRef();
   const [users, setUsers] = useState();
-  const [DataMain, setDataMain] = useState([{}]);
+  const [DataMain, setDataMain] = useState([]);
 
   const { post } = useForm();
 
@@ -33,8 +33,18 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
       setDataMain(null);
     }
   }, [])
+  let fps = 0;
+  function smoothScroll(frame) {
+    window.scrollTo(0, window.scrollY - (frame * 0.01));
+
+    fps = requestAnimationFrame(smoothScroll)
+
+    if (window.scrollY === 0)
+      cancelAnimationFrame(fps)
+  }
   const PrintReport = (id) => {
     setPrintReport(!printReport);
+    requestAnimationFrame(smoothScroll)
   };
   useEffect(() => {
     setData({ rep: { title: 'Full Maintenance Suite', dataMain: DataMain }, user: auth.user })
@@ -42,7 +52,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
 
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTasks,setFilteredTasks]=useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   useEffect(() => {
     if (DataMain.length > 0) {
@@ -53,11 +63,11 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
       setFilteredTasks(filteredTasks);
     }
   }, [DataMain, searchTerm]);
-  
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-  
+
 
 
 
@@ -70,12 +80,13 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
         <Head title="Full Maintenance Suite" />
 
         {printReport && <PDFViewer width={window.innerWidth - 20} height={window.innerHeight}>
+          {console.log(data)}
           <FullMaintenancePDF data={data} />
         </PDFViewer>}
         <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">
           <section className="mb-8">
             <h2 className="text-xl font-semibold mb-2">Scheduled Maintenance</h2>
-            <div className="mb-4">
+           { (auth.user.role === "admin" || auth.user.role === "employee") && <div className="mb-4">
               <input
                 type="text"
                 placeholder="Search Client..."
@@ -83,7 +94,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
                 onChange={handleSearch}
                 className="border p-2 w-full"
               />
-            </div>
+            </div>}
 
             {setMaintenanceOne.current && filteredTasks.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-300">No scheduled maintenance tasks found.</p>
@@ -93,7 +104,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
                 })*/}
                 {setMaintenanceOne.current && filteredTasks.map((task, index) => (
 
-                  task.device && task.device.map((dv,indexer) => (<div key={index}>
+                  task.device && task.device.map((dv, indexer) => (<div key={index}>
                     <h3 className='uppercase text-2xl dark:text-white text-gray-800'>{`${task.user.name} : ${task.user.role}`}</h3>
                     <li key={indexer} className={`bg-${task.status === 1 ? 'green-100' : 'yellow-100'} dark:bg-${task.status === 1 ? 'green-700' : 'yellow-700'} p-4 rounded-md shadow-md flex items-center justify-between`}>
                       <div>

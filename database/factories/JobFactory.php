@@ -16,7 +16,7 @@ class JobFactory extends Factory
             'description' => $this->faker->paragraph,
             'resume' => $this->faker->url,
             'hash' => $this->faker->md5,
-            'user_id' => $this->faker->numberBetween(12, 200), // Assuming you have 20 users
+            'user_id' => $this->faker->numberBetween(12, 200), 
         ];
     }
 }

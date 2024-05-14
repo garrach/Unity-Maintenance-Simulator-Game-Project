@@ -6,7 +6,7 @@ import { Link, useForm } from '@inertiajs/react';
 const Edit = ({ connection, auth }) => {
   const { data, setData, put, processing, errors, reset } = useForm({
     name: 'connection.name',
-    
+
   });
 
   const handleChange = (e) => {
@@ -32,6 +32,8 @@ const Edit = ({ connection, auth }) => {
           </h2>
         }
       >
+        <Head title="Edit Connection" />
+
         <div className='dark:text-white'>
           <h1>Edit Connection</h1>
           <form onSubmit={handleSubmit}>

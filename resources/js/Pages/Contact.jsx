@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 
@@ -27,6 +27,8 @@ const Contact = ({ successMessage }) => {
 
   return (
     <GuestLayout>
+      <Head title="Contact Us" />
+
       <div className="bg-gray-100 dark:bg-gray-800 min-h-screen  flex flex-col">
         {validSub && (
           <div className="bg-green-500 text-white py-2 text-center">

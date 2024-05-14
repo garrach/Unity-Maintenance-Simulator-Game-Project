@@ -89,6 +89,8 @@ class DashboardController extends Controller
         if ($valid == "Unauthorized") {
             return response()->json($valid);
         } else {
+            $x=Purchase::all()->toArray();
+            arsort($x);
             return Inertia::render('Dashboard',
                 ['usersList' => $usersList,
                     'someSocket' => 'ws://localhost:3004',

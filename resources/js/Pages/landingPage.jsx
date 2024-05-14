@@ -7,6 +7,8 @@ const LandingPage = ({ auth }) => {
     const { props } = usePage();
     const [loading, SetLoading] = useState(true);
     const topBack = useRef(null);
+    const decData = useRef(null);
+    const [displayData,setDisplayData] = useState(null);
 
     function toggleAnimation(circle) {
         if (circle.classList.contains('paused')) {
@@ -15,7 +17,15 @@ const LandingPage = ({ auth }) => {
             circle.classList.add('paused');
         }
     }
-
+    const decryptUserData = (encryptedDataDetails) => {
+        try {
+          decData.current = atob(encryptedDataDetails);
+          return JSON.parse(decData.current);
+        } catch (error) {
+          console.error('Decryption failed:', error);
+          return null;
+        }
+      };
 
     const options = {
       method: 'GET',
@@ -31,6 +41,7 @@ const LandingPage = ({ auth }) => {
  }   
     useEffect(()=>{
         initTest();
+        setDisplayData(decryptUserData(props.tending))
     },[])
     return (
         <>
@@ -79,15 +90,14 @@ const LandingPage = ({ auth }) => {
                         <div className='dark:bg-gray-900 relative h-full col-span-2'>
                             <div className='mt-32 p-10'>
                                 <center>
-                                    <p className='text-3xl text-gray-900 dark:text-gray-300 mt-10 font-bold'>Why Us!</p>
+                                    <p className='text-4xl text-gray-900 dark:text-gray-300 mt-10 font-bold'>Why Us!</p>
 
-                                    <p className='text-xl dark:text-gray-300 indent-8 mt-2'>we offer a dynamic project that seamlessly integrates game development and web development expertise.
-                                        Our solution synchronizes resources, processes user-provided information, and securely stores data in both a local database and MongoDB Atlas Cloud.
-                                        Leveraging our team's academic knowledge and experience, we've developed an innovative web application powered by Express.js.
-                                        This application analyzes user data in real-time, providing dynamic responses tailored to the user's interactions.
-                                        Additionally, our 3D game environment provides immersive visualization of resources, complete with required authentication for security.
-                                        Users can interact with the virtual world using standard input devices like a mouse and keyboard.
-                                        With our comprehensive solution, clients benefit from efficient resource management, secure data handling, and seamless integration between web and gaming environments.
+                                    <p className='text-2xl dark:text-gray-300 indent-8 mt-2'>we offer an <b className='underline decoration-sky-500'>Open Source Dynamic</b> project that seamlessly integrates <b className='underline decoration-sky-500'>Game Development</b> and <b className='underline decoration-sky-500'>Web Development</b> expertise.
+                                        Our solution synchronizes resources,<br/> processes user-provided information, and securely stores data in both a local and Cloud <b className='underline decoration-sky-500'>database</b>.
+                                        Leveraging our team's <b className='underline decoration-sky-500'>Academic Knowledge</b> and experience,<br/> we've developed an innovative web application powered by <b className='underline decoration-sky-500'>Nodejs</b>.<br/>
+                                        This application analyzes user data in <b className='underline decoration-red-500'>Real-time</b>, providing dynamic responses tailored to the user's interactions.<br/>
+                                        Additionally, we developed <b className='underline decoration-sky-500'>3D game</b>, environment provides immersive visualization of resources, requires authentication.<br/>
+                                        With our comprehensive solution, clients benefit from efficient resource management,<br/> secure data handling, and seamless integration between web and gaming environments.
                                     </p>
                                 </center>
 
@@ -129,10 +139,10 @@ const LandingPage = ({ auth }) => {
                     </div>
                 </div>
                 <ul className='grid md:grid-cols-4 grid-cols-1 py-4 px-32 bg-gray-300 dark:bg-gray-800'>
-                    {
-                        Object.entries(props.tending).map(([keys, att], index) => (
+                    { displayData &&
+                        Object.entries(displayData).map(([keys, att], index) => (
                             <li key={index} className='text-3xl p-4 flex justify-center'>
-                                {`${(att.length > 100) ? '+99' : att.length} \n ${keys}`}
+                                {`${(att.length > 100) ? att.length : att.length} \n ${keys}`}
                             </li>
                         ))
                     }
@@ -151,7 +161,7 @@ const LandingPage = ({ auth }) => {
 
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="why-us.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="why-us.png" alt="" className='relative mx-auto w-auto h-56 md:h-80 mx-auto' />
                             <div className='absolute dark:bg-gray-900 dotsCon w-56 h-20 bottom-10 -left-20'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
                                     <defs>
@@ -171,7 +181,7 @@ const LandingPage = ({ auth }) => {
                 <div className='serviceDetails'>
                     <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="equipe-de-developpeur-web.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="equipe-de-developpeur-web.png.webp" alt="" className='relative w-auto h-56 md:h-80 mx-auto' />
                         </div>
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -195,14 +205,14 @@ const LandingPage = ({ auth }) => {
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="game.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="game.png" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
                     </div>
                 </div>
                 <div className='serviceDetails'>
                     <div className='grid md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="e-commerce.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="e-commerce.png.webp" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
 
                         <div className='dark:bg-gray-900 relative h-full '>
@@ -240,7 +250,7 @@ const LandingPage = ({ auth }) => {
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="skills02.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="skills02.png" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
                     </div>
                 </div>
@@ -248,7 +258,7 @@ const LandingPage = ({ auth }) => {
                 <div className='serviceDetails'>
                     <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="application-sur-mesure.png.webp" alt="" className='relative top-20 left-56 w-auto h-80 ' />
+                            <img src="application-sur-mesure.png.webp" alt="" className='relative mx-auto w-auto h-56 md:h-80 ' />
                         </div>
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -271,7 +281,7 @@ const LandingPage = ({ auth }) => {
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="node.png" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="node.png" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
                     </div>
                 </div>
@@ -286,7 +296,7 @@ const LandingPage = ({ auth }) => {
                             </center>
                         </div>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="laravel-banner.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="laravel-banner.webp" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
                     </div>
                 </div>
@@ -294,7 +304,7 @@ const LandingPage = ({ auth }) => {
                 <div className='serviceDetails'>
                     <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full'>
                         <div className='dark:bg-gray-900 relative h-full'>
-                            <img src="application-sur-mesure.png.webp" alt="" className='relative top-20 left-56 w-auto h-80' />
+                            <img src="application-sur-mesure.png.webp" alt="" className='relative mx-auto w-auto h-56 md:h-80' />
                         </div>
                         <div className='dark:bg-gray-900 relative h-full '>
                             <center className='mt-32 p-4'>
@@ -306,46 +316,16 @@ const LandingPage = ({ auth }) => {
                         </div>
                     </div>
                 </div>
-                <div class="serviceDetails">
-                        <div class="flex items-center justify-center w-full h-full">
-                            {/*<!-- Testimonial 1 -->*/}
-                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto  flex items-center">
-                                <center>
-                                    <div>AS</div>
-                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
-                                    <p class="text-lg dark:text-gray-400 mt-2">- Anna Smith</p>
-                                </center>
-                            </div>
-                            {/*<!-- Testimonial 2 -->*/}
-                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto flex items-center">
-                                <center>
-                                    <div>MJ</div>
-                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
-                                    <p class="text-lg dark:text-gray-400 mt-2">- Michael Johnson</p>
-                                </center>
-                            </div>
-                            {/*<!-- Testimonial 3 -->*/}
-                            <div class="dark:bg-gray-900 bg-gray-200 p-4 h-full w-auto h-auto flex items-center">
-                                <center>
-                                    <div>SB</div>
-                                    <p class="text-xl dark:text-gray-300 mt-10">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor justo ut orci interdum, ut aliquam elit faucibus."</p>
-                                    <p class="text-lg dark:text-gray-400 mt-2">- Sarah Brown</p>
-                                </center>
-                            </div>
-
-                            
-                        </div>
-
-                </div>
+                
 
 
 
 
-                <footer className='serviceDetails'>
-                    <div className='grid md:md:grid-cols-2  grid-cols-1 gap-0 w-full h-full '>
-                        <div className='dark:bg-gray-900 relative h-full flex justify-center items-center p-4 col-span-2'>
+                <footer className=''>
+                    <div className='grid md:md:grid-cols-2 grid-cols-1 gap-0 w-full h-auto '>
+                        <div className='dark:bg-gray-800 relative h-full flex justify-center items-end p-4 col-span-2'>
                             <p className='text-center text-gray-500'>© 2024 ISIMS. All rights reserved.</p>
-                            <p className='text-center text-gray-500'>Designed with ❤️ by You</p>
+                            <p className='text-center text-gray-500'>Designed with ❤️ by Us</p>
                         </div>
                     </div>
                 </footer>

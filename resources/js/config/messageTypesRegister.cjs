@@ -13,6 +13,7 @@ const { getConnectionById,
 const WebSocket = require('ws');
 const { WebSocketSender } = require('../handlers/WebSocketOperations.cjs');
 const { retriveUserDevices } = require('./routesConfig.cjs');
+const { ObjectId } = require('mongodb');
 
 const webSocketSender = new WebSocketSender();
 const unityInstance = new Map();
@@ -53,49 +54,24 @@ async function handleDeviceMovement(movementData, clientKey, ws, db, clients, cl
             toPlace: { x: 0, y: 0 },
         };
 
-        if(movementData.data.user_id.role==="admin"){
+        userCurrentInfo.moving.data.devicesSp.map((device) => {
+            if (device.name === userCurrentInfo.ofPart) {
+                const movementFactor = 0.1;
+                userCurrentInfo.toPlace = {
+                    x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
+                    y: isNaN(device.position.y) ? 0 : device.position.y,
+                    z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
+                };
 
-            userCurrentInfo.moving.data.devicesSp.map((device) => {
-                if (device.name === userCurrentInfo.ofPart) {
-                    const movementFactor = 0.1;
-                    userCurrentInfo.toPlace = {
-                        x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
-                        y: isNaN(device.position.y) ? 0 : device.position.y,
-                        z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
-                    };
-    
-                    // Update nested object in the database
-                    db.collection('dataplacements').updateOne(
-                        { user_id: user._id },
-                        { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
-                        { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
-                    );
-                }
-            });
-        }else{
+                // Update nested object in the database
+                db.collection('dataplacements').updateOne(
+                    { user_id: user._id },
+                    { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
+                    { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
+                );
+            }
+        });
 
-            console.log("userCurrentInfo.moving...");
-            console.log(userCurrentInfo.moving.data.data.devicesSp);
-            console.log("userCurrentInfo.moving End...");
-
-            userCurrentInfo.moving.data.data.devicesSp.map((device) => {
-                if (device.name === userCurrentInfo.ofPart) {
-                    const movementFactor = 0.1;
-                    userCurrentInfo.toPlace = {
-                        x: isNaN(device.position.x) ? 0 : (device.position.x - position.x * movementFactor),
-                        y: isNaN(device.position.y) ? 0 : device.position.y,
-                        z: isNaN(device.position.z) ? 0 : (device.position.z + position.y * movementFactor)
-                    };
-    
-                    // Update nested object in the database
-                    db.collection('dataplacements').updateOne(
-                        { user_id: user._id },
-                        { $set: { "data.devicesSp.$[elem].position": userCurrentInfo.toPlace } },
-                        { arrayFilters: [{ "elem.name": userCurrentInfo.ofPart }] }
-                    );
-                }
-            });
-        }
     } catch (error) {
         console.error("Error handling device movement:", error);
     }
@@ -116,7 +92,24 @@ async function handleUserInstance(TMD, clientKey, ws, db, clients, clientInfo) {
 }
 
 
+let experiencePt = 0;
+let currentUserID=0;
+async function tryParsJSON(data,db) {
+    try {
+        const updatingInfo = data.data.replace("'", "");
+        console.log(updatingInfo)
 
+        const parsedData = JSON.parse(updatingInfo)
+        experiencePt = parsedData.exp; 
+        const user = await getUserById(parsedData.clientID,db)
+
+        currentUserID=user.BD_id
+        console.log(user);
+    } catch (error) {
+
+        console.log(error);
+    }
+}
 
 async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients, clientInfo, SQLDB) {
     console.log(TMD);
@@ -124,6 +117,15 @@ async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients, client
     if (SQLDB) {
         console.log('SQLDB is operatinal For Vehicle stat..')
         if (unityInstance.get('unity')) {
+            tryParsJSON(TMD,db)
+            const query = "UPDATE `carmaintain`.`userexpcoin` SET `experience`='" + (parseFloat(experiencePt)) + "' WHERE  `user_id`="+(currentUserID);
+
+            try {
+                SQLDB.query(query)
+            } catch (error) {
+                console.log("exp not updated")
+                return;
+            }
             ws.send(JSON.stringify({ message: "Unity instance is running (Vehicle)" }));
         }
         // Example: Broadcast a message to all clients
@@ -139,6 +141,15 @@ async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients, clientI
     if (SQLDB) {
         console.log('SQLDB is operatinal For Device stat..')
         if (unityInstance.get('unity')) {
+            tryParsJSON(TMD,db)
+            const query = "UPDATE `carmaintain`.`userexpcoin` SET `experience`='" + (parseFloat(experiencePt)) + "' WHERE  `user_id`="+(currentUserID);
+            try {
+                SQLDB.query(query)
+            } catch (error) {
+                console.log({ errorMsg: "exp not updated", error: error })
+                return;
+            }
+
             broadcast({ type: "deviceStat", message: "Unity instance is running (Device)", data: TMD.data }, clientKey, ws, db, clients);
         }
     } else {

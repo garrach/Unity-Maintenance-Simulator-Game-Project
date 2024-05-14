@@ -2,7 +2,20 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { clientSocket } from '../client.cjs';
+import { useEffect } from 'react';
 
+
+const JobCard = ({ line }) => {
+    return (<div className='bg-green-500 w-56 h-56'>
+        <h4>employee</h4>
+        <p>
+            {line}
+        </p>
+        <button onClick={handleAutoDataChange({ name: 'coverLetter', value: line })}>Apply</button>
+
+    </div>)
+
+};
 
 const PriorityCustomerSupportIndex = ({ auth }) => {
 
@@ -17,7 +30,34 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
 
     }
 
+    const suggestCoverLetter = [
+        'focuced and motivated person, want to join Car maintenance community and offer a good services',
+        'i can analyze data as quick as it should be',
+        'i feel good about this position, to keep community safe and Ban whoever goes against community rules',
+        'i can keep the support panel active 24/7',
+    ]
 
+    const DevCoverLetter = [
+        'focuced and motivated person, want to join Car maintenance community and offer a good services',
+        'i can analyze data as quick as it should be',
+        'i feel good about this position, to keep community safe and Ban whoever goes against community rules',
+        'i can keep the support panel active 24/7',
+    ]
+
+
+    const [autoData, setAutoData] = useState({
+        fullName: '',
+        email: '',
+        coverLetter: '',
+    })
+    const handleAutoDataChange = (target) => {
+        console.log(target);
+        const { name, value } = target;
+        setAutoData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
     const { data, setData, post, processing, errors, reset } = useForm({
         fullName: '',
         email: '',
@@ -48,11 +88,53 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
         post(route('applyforjob.store'), formData);
         sendRoleRequest(e);
     };
+    useEffect(() => {
+        setAutoData((prevData) => ({
+            ...prevData,
+            ['fullName']: auth.user.name,
+        }));
+        setAutoData((prevData) => ({
+            ...prevData,
+            ['email']: auth.user.email,
+        }));
+    }, [])
+    const JobCard = ({ line }) => {
+       
+        return (
+        <div className='relative dark:bg-gray-800 bg-gray-200 hover:text-gray-800 text-gray-800 dark:text-white rounded-md hover:bg-orange-500 w-56 h-56 p-4'>
+            <h4 className='font-bold uppercase'>employee</h4>
+            <p className='text-center'>
+                {line}
+            </p>
+            <button className='absolute bottom-5 left-24' onClick={(e) => { e.preventDefault(); handleAutoDataChange({ name: 'coverLetter', value: line }) }}>Apply</button>
 
+        </div>)
+
+    };
     return (
         <div>
             <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Customer Support</h2>}>
                 <Head title="Priority Customer Support" />
+                <div className='relative h-80 dark:bg-gray-900 p-4'>
+                    
+                    <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>Work opportunity</h3>
+                    <div className='w-full h-full flex p-4 justify-around items-center'>
+                        {suggestCoverLetter.map((cover) => (
+                            <JobCard line={cover} />
+                        ))}
+                    </div>
+
+                </div>
+                <div className='relative h-80 dark:bg-gray-900 p-4'>
+                    
+                    <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>For Developer</h3>
+                    <div className='w-full h-full flex p-4 justify-around items-center'>
+                        {DevCoverLetter.map((cover) => (
+                            <JobCard line={cover} />
+                        ))}
+                    </div>
+
+                </div>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-0 items-center justify-center p-12 rounded-md shadow-md dark:bg-gray-800'>
 
                     <div className='relative h-full'>
@@ -60,6 +142,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                     </div>
 
                     <div className='relative left-0'>
+
                         <form onSubmit={handleSubmit} className="dark:text-gray-200 p-6 rounded-md shadow-md w-80">
                             <h1 className="text-2xl font-semibold mb-4">Job Application Form</h1>
                             {/* Full Name */}
@@ -71,7 +154,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                     type="text"
                                     id="fullName"
                                     name="fullName"
-                                    value={data.fullName}
+                                    value={data.fullName || autoData.fullName}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full dark:text-gray-800  border rounded-md"
                                     required
@@ -87,7 +170,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                     type="email"
                                     id="email"
                                     name="email"
-                                    value={data.email}
+                                    value={data.email || autoData.email}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                     required
@@ -136,7 +219,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                 <textarea
                                     id="coverLetter"
                                     name="coverLetter"
-                                    value={data.coverLetter}
+                                    value={data.coverLetter || autoData.coverLetter}
                                     onChange={handleChange}
                                     rows="4"
                                     className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
@@ -153,8 +236,8 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                             </button>
                         </form>
                     </div>
-                    <div  className='relative h-full'>
-                    <img src="skills02.png" alt="" className='w-auto absolute bottom-20 right-0' />
+                    <div className='relative h-full'>
+                        <img src="skills02.png" alt="" className='w-auto absolute bottom-20 right-0' />
                     </div>
                 </div>
 

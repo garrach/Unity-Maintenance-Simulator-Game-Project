@@ -1,7 +1,7 @@
 // resources/js/Pages/Profile/Services/Edit.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 const Edit = ({ service, auth }) => {
   const { data, setData, put, processing, errors, reset } = useForm({
@@ -32,6 +32,8 @@ const Edit = ({ service, auth }) => {
           </h2>
         }
       >
+       <Head title="Service Details" />
+
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Edit Service</h1>
           <form onSubmit={handleSubmit}>

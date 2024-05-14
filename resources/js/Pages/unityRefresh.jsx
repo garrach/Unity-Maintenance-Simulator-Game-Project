@@ -105,7 +105,6 @@ const UnityRefresh = ({ DBsync }) => {
   const [searchPlacemnt, setSearchPlacement] = useState("")
   useEffect(() => {
     async function retrivePlacementData(id) {
-
       try {
         const response = await axios({
           method: 'GET',
@@ -134,7 +133,7 @@ const UnityRefresh = ({ DBsync }) => {
       const dataToPlace = await retrivePlacementData('663662aea3de738f421270aa');
       setPlacementData(dataToPlace);
     }
-    getAdminData();
+    //getAdminData();
 
     return () => { }
   }, [userData, searchPlacemnt])
@@ -148,10 +147,77 @@ const UnityRefresh = ({ DBsync }) => {
       //fetchDataPOST('/api/connections', { type: "addConnectin", message: 'syncData', data: data.connections }, setValidPost);
       //fetchDataPOST('/api/vehicles', { type: "addvehicles", message: 'syncData', data: data.Vehicle }, setValidPost);
       //fetchDataPOST('/api/devices', { type: "adddevices", message: 'syncData', data: data.Device }, setValidPost);
-      //fetchDataPOST('/api/login', { type: "addUser", message: 'syncData', data: data.User }, setValidPost);
+      fetchDataPOST('/api/login', { type: "addUser", message: 'syncData', data: data.User }, setValidPost);
 
-      placementData &&
-        fetchDataPOST('/api/add-placement', { data: placementData, IDs: userData }, setValidPostPlace);
+      const placementData00={
+        "vehicleSp": {
+            "name": "benz01",
+            "position": {
+                "x": 4.152522,
+                "y": 0.2631281,
+                "z": 0.009116761
+            }
+        },
+        "devicesSp": [
+            {
+                "name": "placement, Boss stereo speakers",
+                "position": {
+                    "x": 0.0533,
+                    "y": 0.815,
+                    "z": 0.437
+                }
+            },
+            {
+                "name": "placement, Speedmeters Display Dash Monitor",
+                "position": {
+                    "x": -0.5,
+                    "y": 1.1225,
+                    "z": 0.5855
+                }
+            },
+            {
+                "name": "placement, Samsung Super Fast Dual Car Charger",
+                "position": {
+                    "x": 0.432,
+                    "y": 1.2852,
+                    "z": -0.7239
+                }
+            },
+            {
+                "name": "placement, Touch Screen Entertainment System AC ControlzC",
+                "position": {
+                    "x": 0.0098,
+                    "y": 0.707,
+                    "z": -0.4223
+                }
+            },
+            {
+                "name": "placement, Window Switch Door Lock Front Driver Side with Mirror Switch",
+                "position": {
+                    "x": 0.0639,
+                    "y": 0.8054,
+                    "z": 0.2059
+                }
+            },
+            {
+                "name": "placement, Rearview Camera",
+                "position": {
+                    "x": 1.255,
+                    "y": 0.9035,
+                    "z": 0.415
+                }
+            },
+            {
+                "name": "placement, Car TV Screen Rear Seat Entertainment System",
+                "position": {
+                    "x": 0,
+                    "y": 0.641,
+                    "z": -3.45
+                }
+            }
+        ]
+    }
+        fetchDataPOST('/api/add-placement', { data: placementData00, IDs: userData }, setValidPostPlace);
 
 
     } catch (error) {
@@ -196,7 +262,7 @@ const UnityRefresh = ({ DBsync }) => {
       user={props.auth.user}
       header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">WEB-APP/Server Resources</h2>}
     >
-      <Head title="Leaderboard" />
+      <Head title="WEB-APP/Server Resources" />
       <AdminDataFound />
       <div className="container mx-auto p-8 dark:text-gray-200">
         <div className="max-w-4xl mx-auto">

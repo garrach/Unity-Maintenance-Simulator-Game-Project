@@ -178,7 +178,6 @@ const ThreeCar = ({ carModel, SetLoading }) => {
                               childs.current.push(child);
                           }
       
-                          // Assuming TH3dPointTOscreen is an expensive operation,
                           // consider if it's necessary to call it for every mesh.
                           // If not, adjust as needed.
                           TH3dPointTOscreen(child.position, camera, child);
@@ -317,7 +316,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     })
     const Carcalls = document.createElement('span');
     const TH3dPointTOscreen = (position, Camera, yo) => {
-      Carcalls.classList.add(yo.name);
+      //Carcalls.classList.add(yo.name);
       //Carcalls.innerHTML = yo.name;
       Carcalls.classList.add('callout');
       mount.current.appendChild(Carcalls);

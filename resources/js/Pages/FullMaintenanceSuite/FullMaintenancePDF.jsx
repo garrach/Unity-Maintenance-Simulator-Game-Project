@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
         fontFamily: 'Times-Roman',
     },
+    textB: {
+        fontSize: 11,
+        fontWeight: 'bold',
+        textAlign: 'justify',
+        fontFamily: 'Times-Roman',
+    },
     footer: {
         position: 'absolute',
         bottom: 10,
@@ -60,13 +66,18 @@ const FullMaintenancePDF = ({ data }) => (
 
                 {data.rep.dataMain.map((task) => (
                     <Text style={styles.text}>
-                        {(typeof (task.device) === "object") && task.device[0].type} 
-                        {((typeof (task.status) === "number") && task.status) ? (task.status===1 ? ' ok':'pending'):''}
-                        {`\n`}
+                        {(typeof (task.device) === "object") && task.device[0].type}
+                        {((typeof (task.status) === "number") && task.status) ? (task.status === 1 ? ' ok' : '[pending]') : '..pending'}
+
+                        {`\n for:`}
+                        <Text style={styles.textB}>
+                            {(typeof (task.user) === "object") && task.user.name}
+                        </Text>
                     </Text>
-                ))} 
+                ))}
+
                 <Text style={styles.text}>
-                {`\n`}
+                    {`\n`}
                     Sincerely, {data.user.name}
                 </Text>
             </View>
@@ -80,14 +91,6 @@ const FullMaintenancePDF = ({ data }) => (
                     the reliability, suitability, or correctness of the contents. The views and opinions expressed in this report{"\n"}
                     are those of the author(s) and do not necessarily reflect{"\n"}
                     the official policy or position of Car Maintain.{"\n"}
-                    Readers are advised to conduct their own independent analysis and seek appropriate professional advice{"\n"}
-                    before making any decisions based on the information provided in this report. Car Maintain{"\n"}
-                    shall not be liable for any direct, indirect, incidental, special, or consequential damages arising out{"\n"}
-                    of the use of or reliance on this report or any information contained herein.{"\n\n"}
-
-                    By accessing or using this report, you agree to indemnify and hold harmless Car Maintain{"\n"}
-                    and its affiliates, officers, directors, employees, and agents from any claims, damages, or liabilities{"\n"}
-                    arising from your use of or reliance on the information contained herein.{"\n"}
                 </Text>
             </View>
 

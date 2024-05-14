@@ -12,7 +12,7 @@ class ReportFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->numberBetween(12, 200), // Assuming you have 20 users
+            'user_id' => $this->faker->numberBetween(12, 200), 
             'application_status' => $this->faker->randomElement([0, 1]),
             'application_date' => $this->faker->dateTimeThisYear,
             'title' => $this->faker->jobTitle,

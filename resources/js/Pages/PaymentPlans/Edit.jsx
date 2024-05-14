@@ -1,5 +1,6 @@
 // resources/js/Pages/paymentPlans/Edit.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 import React, { useState } from 'react';
 
 const Edit = ({ paymentPlan, auth }) => {
@@ -31,6 +32,8 @@ const Edit = ({ paymentPlan, auth }) => {
           </h2>
         }
       >
+                <Head title="Plan Details" />
+
         <div className="my-4">
           <h1 className="text-2xl font-semibold mb-4">Edit Payment Plan</h1>
           <form onSubmit={handleSubmit}>
@@ -42,7 +45,7 @@ const Edit = ({ paymentPlan, auth }) => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="border-2 border-gray-300 p-2 rounded-md w-full"
+                className="border-2 border-gray-300 p-2 rounded-md w-full dark:text-gray-900"
               />
               {/* Include other form fields for editing other details */}
               <button

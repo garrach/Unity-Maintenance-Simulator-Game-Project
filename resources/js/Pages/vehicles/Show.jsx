@@ -1,5 +1,6 @@
 // resources/js/Pages/vehicles/Show.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 import React from 'react';
 
 const Show = ({ vehicle, auth }) => {
@@ -13,6 +14,8 @@ const Show = ({ vehicle, auth }) => {
           </h2>
         }
       >
+                                <Head title="Vehicle Details" />
+
         <div className="my-4">
           <h1 className="text-2xl font-semibold mb-4">Vehicle Details</h1>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">

@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = ({ auth , layer}) => {
+const Navbar = ({ auth, layer }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -48,6 +48,12 @@ const Navbar = ({ auth , layer}) => {
                   Home
                 </Link>
                 <Link
+                  href={route('previewService')}
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                >
+                  Gaming
+                </Link>
+                <Link
                   href={route('contact')}
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
                 >
@@ -60,11 +66,12 @@ const Navbar = ({ auth , layer}) => {
                   Documentation
                 </Link>
                 <Link
-                  href={route('about')}
-                  className=" px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
+                  href="/documentation#api-test"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
                 >
-                  About us
+                  API
                 </Link>
+         
                 <Link
                   href={route('devices.preview')}
                   className=" px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
@@ -112,6 +119,12 @@ const Navbar = ({ auth , layer}) => {
               Home
             </Link>
             <Link
+              href={route('previewService')}
+              className="lock text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
+            >
+              Gaming
+            </Link>
+            <Link
               href={route('contact')}
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
             >
@@ -124,11 +137,12 @@ const Navbar = ({ auth , layer}) => {
               Documentation
             </Link>
             <Link
-              href={route('about')}
+              href={route('documentation')}
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
             >
-              About us
+              API
             </Link>
+ 
             <Link
               href={route('devices.preview')}
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"

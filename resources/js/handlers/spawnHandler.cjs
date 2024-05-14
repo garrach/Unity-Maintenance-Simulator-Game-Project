@@ -32,6 +32,7 @@ const DataPlacement = mongoose.model('DataPlacement', dataPlacementSchema);
 
 // Define function to provide placement 
 async function ProvidePlacement(data) {
+    console.log({ProvidePlacement:data})
     const result = await DataPlacement.create(data);
 
 

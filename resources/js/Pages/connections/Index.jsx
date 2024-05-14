@@ -1,7 +1,7 @@
 // resources/js/Pages/Connections/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 
 const Index = ({ connections, vehicles, devices, auth }) => {
   const { props } = usePage();
@@ -55,6 +55,8 @@ const Index = ({ connections, vehicles, devices, auth }) => {
           </h2>
         }
       >
+                <Head title="Connection List" />
+
         <div className="dark:text-white my-4 max-w-7xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-3xl font-semibold mb-4">Connection List</h1>
           <ul className="space-y-2">

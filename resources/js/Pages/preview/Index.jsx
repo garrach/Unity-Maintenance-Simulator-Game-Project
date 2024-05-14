@@ -47,7 +47,7 @@ const Preview = ({ auth }) => {
             data: devicesList.map(element => JSON.parse(element.getAttribute('value')).data)
         };
         try {
-            await post(route('unity.move', databasearr)); // Assuming route() function is available
+            await post(route('unity.move', databasearr)); 
             // Clear the data array
             databasearr.data = [];
         } catch (error) {
@@ -157,16 +157,18 @@ const Preview = ({ auth }) => {
         );
     };
     const [showDetailsPnl,setshowDetailsPnl]=useState(false);
-const showDetails=()=>{
+const showDetails=(e)=>{
+    e.preventDefault()
     setshowDetailsPnl(!showDetailsPnl);
 }
     // JSX rendering
     return (
         <>
             <AuthenticatedLayout user={auth.user} header={<h2 className='dark:text-white'>Devices Placement</h2>}>
+            <Head title="Unity Details" />
 
                 <DeviceIncicator Device={currentDevice} />
-                <div className="place"></div>
+                <div className="place" onMouseDown={(e)=>{e.preventDefault();setshowDetailsPnl(!showDetailsPnl)}}></div>
                 <UserGuide layer="z-10" />
                 {unityTracking ? (
                     <>
@@ -197,7 +199,7 @@ const showDetails=()=>{
                                     <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                                     <h1 className="text-lg font-semibold">Device Details</h1>
                                     <button
-                                    onClick={showDetails} 
+                                    onClick={(e)=>{showDetails(e)}} 
                                     
                                     className="text-gray-600 hover:text-gray-800 focus:outline-none">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

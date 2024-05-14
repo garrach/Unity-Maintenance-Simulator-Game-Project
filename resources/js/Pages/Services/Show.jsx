@@ -1,7 +1,7 @@
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const Show = ({ service, auth }) => {
   return (
@@ -14,6 +14,8 @@ const Show = ({ service, auth }) => {
           </h2>
         }
       >
+                        <Head title="Service Details" />
+
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Service Details</h1>
           <div className="mb-4">

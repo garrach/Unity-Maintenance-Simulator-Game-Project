@@ -14,6 +14,7 @@ public function index()
 {
     $user = Auth::user();
         $users = [];
+        $RouteIDS=[];
 
 
         $usersUsage=DeviceUsage::all();
@@ -26,12 +27,12 @@ public function index()
         if($user->role=='admin' || $user->role=='employee'){
             foreach($users as $displayUser){
                 $maintenanceTasksz[$displayUser->name]=FullMaintenanceSuiteController::getMaintenanceTasks($displayUser,false);
+                $RouteIDS[$displayUser->name]=$displayUser->id;
             }
         }else{
             $maintenanceTasksz[$user->name]=FullMaintenanceSuiteController::getMaintenanceTasks($user,false);
         }
-        
     $maintenanceTasksz=json_encode($maintenanceTasksz);
-    return Inertia::render('BasicMaintenance/Index',compact('user','maintenanceTasksz'));
+    return Inertia::render('BasicMaintenance/Index',compact('user','maintenanceTasksz','RouteIDS'));
 }
 }

@@ -45,6 +45,8 @@ const Create = ({ auth }) => {
           </h2>
         }
       >
+        <Head title="Create Device" />
+
         <div className="my-4 mx-auto container w-80">
           <h1 className="text-2xl font-semibold mb-4 ">Create Device</h1>
           <form onSubmit={handleSubmit} className="space-y-4">

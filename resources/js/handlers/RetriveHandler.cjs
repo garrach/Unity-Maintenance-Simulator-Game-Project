@@ -2,8 +2,11 @@ const { handleVehicleMessages, Vehicle } = require('./VehiclesHandler.cjs');
 const { handleDeviceMessages, Device } = require('./DevicesHandler.cjs');
 const { handleConnectionMessages, Connection } = require('./ConnectionHandler.cjs');
 const { handleLogin, Auth } = require('./LoginHandler.cjs');
+const { handleApikey, Apikey } = require('./generateUserAPiKey.cjs');
 const { ProvidePlacement, DataPlacement } = require('./spawnHandler.cjs');
 const { ObjectId } = require('mongodb');
+const crypto = require('crypto');
+
 
 
 
@@ -21,21 +24,22 @@ async function fetch_placement(id, db) {
 async function Add_placement(prevData, db) {
   try {
     const { user_id, data, IDs } = prevData;
-    const validator=({ username: user_id, itsData: data, orArray: IDs });
+    console.log(prevData);
+    const validator = ({ username: user_id, itsData: data, orArray: IDs });
     if (IDs && IDs.length > 0) {
       IDs.map(async (user) => {
         const placementID = new ObjectId(user._id);
         const existingUser = await db.collection('dataplacements').findOne({ user_id: placementID });
-        if (existingUser === null){
+        if (existingUser === null) {
           ProvidePlacement({ user_id: placementID, data: validator.itsData });
-        }else{
-          console.log({error:'Data Placements Already exist.'});
+        } else {
+          console.log({ error: 'Data Placements Already exist.' });
         }
       })
 
     } else {
       const placementID = new ObjectId(user_id);
-      
+
       ProvidePlacement({ user_id: placementID, data: validator.itsData }, db);
     }
     return true;
@@ -44,8 +48,45 @@ async function Add_placement(prevData, db) {
     return false;
   }
 }
+const generateRandomHexString = (length) => {
+  const randomBytes = crypto.randomBytes(Math.ceil(length / 2));
+  const hexString = randomBytes.toString('hex').slice(0, length);
+  return hexString;
+};
+async function generateUserAPiKey(data, db) {
+  const key = generateRandomHexString(32);
+  const placementID = new ObjectId(data);
 
+  handleApikey({ user_id: placementID, userKey: key }, db);
+  return key;
+}
 
+// Retrieve Key by ID for the ApiKeys Collection
+async function getAPiKey(BD_id, db) {
+  // Check if the passed ID is a valid ObjectId
+  const userSQL = await db.collection('users').findOne({ BD_id:Number(BD_id) });
+  const userMongoID= userSQL._id;
+
+  if (!ObjectId.isValid(userMongoID)) {
+    return;
+  }
+
+  const _id = new ObjectId(userMongoID);
+
+  // Check if the user exists
+  const user = await db.collection('users').findOne({ _id });
+  if (!user) {
+    return;
+  }
+
+  // Check if the user already has an API key
+  const apiKey = await db.collection('apikeys').findOne({ user_id: _id });
+  if (apiKey) {
+    return apiKey;
+  }
+
+  return generateUserAPiKey(userMongoID, db);
+}
 
 
 
@@ -53,7 +94,7 @@ async function textToSpeech(text, res) {
   const options = {
     method: 'POST',
     headers: {
-      'xi-api-key': '5b7ada1e3a0c47edce2a270e12d21fab',
+      'xi-api-key': '959dcd7e1a90a72b9efee0f1c761d80c',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -171,4 +212,6 @@ module.exports = {
   textToSpeech,
   fetch_placement,
   Add_placement,
+  generateUserAPiKey,
+  getAPiKey,
 };
