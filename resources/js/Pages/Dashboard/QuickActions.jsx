@@ -55,8 +55,8 @@ const QuickActions = ({ auth, requests, userExp }) => {
 
             </Link>
           </span>
-          <span className='h-12 p-2'>
-            <Link href='#' className='p-2 hover:bg-orange-500 rounded-md'>
+          <span className='h-12  p-2'>
+            <Link href='#' className='p-2 hover:bg-orange-500 rounded-md w-24 block'>
               <FontAwesomeIcon icon={faStar} />
               <span className='ml-2'>{userExp.experience}</span>
 
