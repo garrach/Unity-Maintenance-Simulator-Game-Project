@@ -1,17 +1,52 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faHome, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import {
+    faWifi,
+    faToolbox,
+    faCog,
+    faMedal,
+    faChartLine,
+    faBars,
+    faCoins,
+    faBriefcase,
+    faTrophy,
+    faDatabase,
+    faCalendarCheck
+} from '@fortawesome/free-solid-svg-icons'; // Import necessary FontAwesome icons
+
 const Sidebar = ({ Children, auth, expand }) => {
     const { props } = usePage();
     const servicesRef = useRef();
     servicesRef.current = props.services;
     const [ssi, setSsi] = useState(expand);
-    useEffect(() => {
-    }, [ssi])
+    const iconMappings = {
+        "Basic Maintenance Tracking": faCog,
+        "Car Analytics": faChartLine,
+        "Connected Services": faWifi,
+        "Full Maintenance Suite": faToolbox,
+        "Customizable Maintenance Schedules": faCalendarCheck,
+        "Priority Customer Support": faDatabase,
+        "Coinsystem": faTrophy,
+        "JobApplications": faBriefcase,
+        "LeaderBoard": faTrophy,
+        "Unity Data Monitoring": faChartLine
+    };
+    const iconsList=useRef([]);
+    if (servicesRef.current) {
+        iconsList.current = servicesRef.current.map((feature, index) => {
+            const icon = iconMappings[feature.name]; // Get the icon corresponding to the service name
+            return icon ? <FontAwesomeIcon key={index} icon={icon} /> : null; // Return the icon component
+        });
+    }
+
     const handlSideBar = () => {
         setSsi((prevState) => !prevState)
     }
+
+
+
+
     return (
         <>
 
@@ -98,10 +133,10 @@ const Sidebar = ({ Children, auth, expand }) => {
                                         <FontAwesomeIcon icon={faBars} size="lg" />
                                     </span>
                                 </li>
-                                {servicesRef.current && (servicesRef.current.map((feature, index) =>
+                                {servicesRef.current && servicesRef.current.map((feature, index) => (
                                     <li key={index} className='text-white mx-5 mt-4'>
                                         <Link href={route(`${feature.route}`)}>
-                                            <FontAwesomeIcon icon={faCog} size="lg" />
+                                            {iconsList.current[index]} {/* Display the corresponding icon from the dynamic iconsList */}
                                         </Link>
                                     </li>
                                 ))}

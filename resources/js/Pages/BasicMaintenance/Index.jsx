@@ -103,7 +103,7 @@ useEffect(()=>{
                     <div className='relative left-24'>
 
                         <span style={{ zIndex: (index * 10 + 1), left: (index * 50) }} 
-                        className='p-4 absolute top-32 border-2 border-indigo-500 flex justify-center items-center dark:bg-gray-900 w-20 h-20 rounded-full uppercase text-xl dark:text-white text-gray-500 hover:bg-orange-500 cursor-pointer'>
+                        className='p-4 absolute top-32 border-2 border-indigo-500 flex justify-center items-center  bg-gray-900 dark:bg-gray-900 w-20 h-20 rounded-full uppercase text-xl dark:text-white text-gray-500 hover:bg-orange-500 cursor-pointer'>
                             <span>
                                 {console.log(namesRoute)}
                                 <Link href={route('userAccount.show',{userID:namesRoute[index]})}>

@@ -18,7 +18,6 @@ const EditProfileForm = ({userInfo}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add logic to update the user profile
   };
 
   return (

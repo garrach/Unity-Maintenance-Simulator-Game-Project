@@ -1,7 +1,9 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Account = () => {
   const { user, qt } = usePage().props;
@@ -11,9 +13,32 @@ const Account = () => {
   const colors = ['blue', 'green', 'red', 'yellow'];
 
   const [showInbox, setShowInbox] = useState(false);
+  const {
+    data,
+    setData,
+    delete: destroy,
+    processing,
+    reset,
+    errors,
+  } = useForm({
+    password: '',
+  });
+
   const toggleInbox = (e) => {
     e.preventDefault();
     setShowInbox(!showInbox)
+  }
+  const deleteMessage = (e, message) => {
+    e.preventDefault();
+    setShowInbox(!showInbox)
+    const rep = confirm(`are you sure about deleting message ? \n '${message.subject}'`);
+    if (rep) {
+      destroy(route('delete.message', message))
+      return;
+    } else {
+      setShowInbox(!showInbox)
+    }
+
   }
   return (
     <div className='dark:text-white dark:bg-gray-900'>
@@ -30,16 +55,26 @@ const Account = () => {
           <div onClick={(e) => toggleInbox(e)} className='absolute flex top-30 rounded-md shadow-md right-5 w-56 h-12 dark:bg-gray-200 justify-center items-center justify-around dark:text-gray-800'>
             <p className='cursor-pointer'>Inbox</p><span>{`${props.inbox.length}`}</span>
           </div>
-          {showInbox && <div className='absolute top-36 right-56 w-auto h-80 overflow-y-auto overflow-x-hidden dark:bg-gray-700 rounded-md shadow-md p-2 border border-gray-500'>
+          {showInbox && <div className={`absolute top-36 right-56 w-auto ${props.inbox.length > 0 ? 'h-auto' : 'hidden'} overflow-y-auto overflow-x-hidden dark:bg-gray-700 rounded-md shadow-md p-2 border border-gray-500`}>
             <table>
               {props.inbox.map((message, index) => (
                 <>
                   <tr>
                     <td className='dark:text-gray-200 p-4 hover:border-b-4 hover:border-indigo-500' >{`${Object.values(props.users)[index].name}`}</td>
                   </tr>
-                  <tr key={index} className='bg-gray-500 p-2'>
+                  <tr key={index} className='bg-gray-500 p-2 '>
                     <td className='dark:text-gray-300 p-4' >{`${message.subject}`}</td>
                     <td className='dark:text-gray-400 p-4' >{`${message.body}`}</td>
+                    <td className='dark:text-gray-400 p-4 relative mr-5' >
+                      <span className='w-10 left-0 top-5 h-10  flex justify-center items-center'>
+                          <FontAwesomeIcon 
+                          onClick={(e) => { deleteMessage(e, message) }}
+                          title='Delete Message'
+                          style={{ color: 'red' }}
+                          className='hover:bg-gray-200 rounded-full transition duration-300 ease-in-out transform hover:scale-105 p-2 cursor-pointer w-5 h-5'
+                          icon={faTrashAlt} />
+                      </span>
+                    </td>
                   </tr>
                 </>
 

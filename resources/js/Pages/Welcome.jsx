@@ -2,6 +2,7 @@ import { Link, Head } from '@inertiajs/react';
 import LandingPage from './landingPage';
 import { useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
+
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const landingPage = useRef(true);
     useEffect(() => {

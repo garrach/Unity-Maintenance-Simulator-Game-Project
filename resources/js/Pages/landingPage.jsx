@@ -3,12 +3,19 @@ import ThreeCar from './car';
 import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faLink,
+    faDownload,
+    faUsers,
+    faCar,
+} from '@fortawesome/free-solid-svg-icons';
 const LandingPage = ({ auth }) => {
     const { props } = usePage();
     const [loading, SetLoading] = useState(true);
     const topBack = useRef(null);
     const decData = useRef(null);
-    const [displayData,setDisplayData] = useState(null);
+    const [displayData, setDisplayData] = useState(null);
 
     function toggleAnimation(circle) {
         if (circle.classList.contains('paused')) {
@@ -19,30 +26,74 @@ const LandingPage = ({ auth }) => {
     }
     const decryptUserData = (encryptedDataDetails) => {
         try {
-          decData.current = atob(encryptedDataDetails);
-          return JSON.parse(decData.current);
+            decData.current = atob(encryptedDataDetails);
+            return JSON.parse(decData.current);
         } catch (error) {
-          console.error('Decryption failed:', error);
-          return null;
+            console.error('Decryption failed:', error);
+            return null;
         }
-      };
+    };
 
     const options = {
-      method: 'GET',
-      url: 'https://127.0.0.1:3002/api/testimonial',
+        method: 'GET',
+        url: 'https://127.0.0.1:3002/api/testimonial',
     };
- async function initTest(){
+    async function initTest() {
 
-    try {
-        const response = await axios.request(options);
-    } catch (error) {
-        console.error(error);
+        try {
+            const response = await axios.request(options);
+        } catch (error) {
+            console.error(error);
+        }
     }
- }   
-    useEffect(()=>{
+    useEffect(() => {
         initTest();
         setDisplayData(decryptUserData(props.tending))
-    },[])
+    }, [])
+    const iconsList = [faLink,
+        faUsers,
+        faCar,
+        faDownload
+    ]
+
+
+    const [countedValues, setCountedValues] = useState({});
+
+
+    useEffect(() => {
+        // Function to animate counting
+        const animateCounting = () => {
+            const newData = {};
+            Object.entries(displayData).forEach(([key, value]) => {
+                // If the value is a number and it's not already counted
+                if (!countedValues[key]) {
+                    const step = 2 // Change the speed of animation by adjusting the divisor
+                    let currentCount = 0;
+                    const interval = setInterval(() => {
+                        currentCount += step;
+                        if (currentCount >= (value.length +200)) {
+                            // Stop counting when it reaches the original value
+                            clearInterval(interval);
+                            currentCount = value.length;
+                        }
+                        newData[key] = (currentCount);
+                        setCountedValues((prev) => ({ ...prev, ...newData }));
+                    }, 20); // Change the interval duration to adjust the animation speed
+                } else {
+                    newData[key] = value.length;
+                }
+            });
+        };
+
+        if (displayData) {
+            animateCounting();
+        }
+
+        // Clean up function to clear intervals
+        return () => {
+            Object.values(countedValues).forEach((interval) => clearInterval(interval));
+        };
+    }, [displayData]);
     return (
         <>
             <Navbar />
@@ -93,11 +144,11 @@ const LandingPage = ({ auth }) => {
                                     <p className='text-4xl text-gray-900 dark:text-gray-300 mt-10 font-bold'>Why Us!</p>
 
                                     <p className='text-2xl dark:text-gray-300 indent-8 mt-2'>we offer an <b className='underline decoration-sky-500'>Open Source Dynamic</b> project that seamlessly integrates <b className='underline decoration-sky-500'>Game Development</b> and <b className='underline decoration-sky-500'>Web Development</b> expertise.
-                                        Our solution synchronizes resources,<br/> processes user-provided information, and securely stores data in both a local and Cloud <b className='underline decoration-sky-500'>database</b>.
-                                        Leveraging our team's <b className='underline decoration-sky-500'>Academic Knowledge</b> and experience,<br/> we've developed an innovative web application powered by <b className='underline decoration-sky-500'>Nodejs</b>.<br/>
-                                        This application analyzes user data in <b className='underline decoration-red-500'>Real-time</b>, providing dynamic responses tailored to the user's interactions.<br/>
-                                        Additionally, we developed <b className='underline decoration-sky-500'>3D game</b>, environment provides immersive visualization of resources, requires authentication.<br/>
-                                        With our comprehensive solution, clients benefit from efficient resource management,<br/> secure data handling, and seamless integration between web and gaming environments.
+                                        Our solution synchronizes resources,<br /> processes user-provided information, and securely stores data in both a local and Cloud <b className='underline decoration-sky-500'>database</b>.
+                                        Leveraging our team's <b className='underline decoration-sky-500'>Academic Knowledge</b> and experience,<br /> we've developed an innovative web application powered by <b className='underline decoration-sky-500'>Nodejs</b>.<br />
+                                        This application analyzes user data in <b className='underline decoration-red-500'>Real-time</b>, providing dynamic responses tailored to the user's interactions.<br />
+                                        Additionally, we developed <b className='underline decoration-sky-500'>3D game</b>, environment provides immersive visualization of resources, requires authentication.<br />
+                                        With our comprehensive solution, clients benefit from efficient resource management,<br /> secure data handling, and seamless integration between web and gaming environments.
                                     </p>
                                 </center>
 
@@ -139,10 +190,12 @@ const LandingPage = ({ auth }) => {
                     </div>
                 </div>
                 <ul className='grid md:grid-cols-4 grid-cols-1 py-4 px-32 bg-gray-300 dark:bg-gray-800'>
-                    { displayData &&
+                    {displayData &&
                         Object.entries(displayData).map(([keys, att], index) => (
                             <li key={index} className='text-3xl p-4 flex justify-center'>
-                                {`${(att.length > 100) ? att.length : att.length} \n ${keys}`}
+                                <FontAwesomeIcon icon={iconsList[index]} />
+                                <span className='ml-2'> {`${(att.length > 100) ? att.length : countedValues[keys] ? countedValues[keys]:0} \n ${keys}`}</span>
+
                             </li>
                         ))
                     }
@@ -316,7 +369,7 @@ const LandingPage = ({ auth }) => {
                         </div>
                     </div>
                 </div>
-                
+
 
 
 

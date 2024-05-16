@@ -1,12 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-
 import DashboardElements from './mainElements/DashboardElements';
-
 import { useDynamicContext } from './DynamicContext';
 import Cookies from 'js-cookie';
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faUserShield,
+  faUserCircle,
+  faUserTie,
+} from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
@@ -26,7 +28,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
     wishListItems: wishListItems,
   });
   const [messageObject, setUserMessage] = useState({ type: 'head', message: 'Welcome, WebSocket to provide realtime data monitoring', data: '' });
-
   const {
     data,
     setData,
@@ -35,7 +36,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
     planstate: 'planstate',
     message: '',
   });
-
   const onClose = () => {
     setAlertDialogOpen(!isAlertDialogOpen)
   }
@@ -51,7 +51,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
   const webSocket = dynamicValues.socket;
   webSocket.addEventListener('open', (event) => {
     updateValues({ dash: 'open' });
-
     setData({
       currentwebSocket: webSocket,
       planstate: 'planstate',
@@ -65,7 +64,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
       setAlertDialogOpen(!isAlertDialogOpen)
     const host = new URL(webSocket.url).host;
     setwebSocketHost(host);
-
     webSocket.addEventListener('message', (msg) => {
       setData({
         currentwebSocket: webSocket,
@@ -73,12 +71,10 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
         message: makeJson(msg.data),
       })
       let reqq = { type: '', message: '', data: '' };
-
       try {
         reqq = JSON.parse(msg);
         const { type, message, data } = reqq;
       } catch (error) {
-
       }
     })
   }
@@ -86,13 +82,10 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
   const [clientReq, setClientReq] = useState()
   useEffect(() => {
     handlewebSocket(false);
-
     return () => {
       handlewebSocket(false);
     }
   }, [])
-
-
   const skipping = (e, pops) => {
     e.preventDefault();
     try {
@@ -107,29 +100,38 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
       nextGuid.current = 0;
     }
   }
-
   useEffect(() => {
     setstoredMenuState(Cookies.get('Guide'));
     return () => {
       setstoredMenuState(0);
     }
   }, [])
-
   const closeGuide = (e) => {
     e.preventDefault();
     setstoredMenuState(0);
     Cookies.set('Guide', 0);
-
   }
   useEffect(() => {
     setGuideElemnt(document.querySelectorAll('#pop'))
   }, [nextguideElemnt])
+  const IconsByRole = ({userRole}) => {
+    switch (userRole) {
+      case "admin":
+        return <><FontAwesomeIcon icon={faUserShield} /><span className='ml-2 font-bold uppercase'>{userRole}</span></>
+      case "client":
+        return <><FontAwesomeIcon icon={faUserCircle} /><span className='ml-2 font-bold uppercase'>{userRole}</span></>
+      case "employee":
+        return <><FontAwesomeIcon icon={faUserTie} /><span className='ml-2 font-bold uppercase'>{userRole}</span></>
+    }
+  }
   return (
     <>
       <AuthenticatedLayout
         webSocket={currentwebSocket}
         user={auth.user}
-        header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" id='pop'>Dashboard - {auth.user.role}
+        header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" id='pop'>
+          Dashboard - <IconsByRole userRole={auth.user.role}/>
+
           {auth.user.role === "admin" && (<span className='flex w-56 m-2 justify-around p-2 hover:bg-orange-500 rounded-md'>
             <Link href={route('unityRefresh')} id='pop'>Unity Refresh</Link>
           </span>)}
@@ -139,25 +141,20 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
         {isAlertDialogOpen && (<AlertDialog title="WebSocket" message={messageObject.message} onClose={onClose} />)}
         <div className="py-0 bgstyleglass">
           {clientReq && (<AlertDialog title="Role Request" message='Request From Client' onClose={onClose} />)}
-
           <div ref={pnl} className={`flex ${auth.user.role === "client" ? "w-full" : ""}`}>
             {(auth.user.role === "admin" || auth.user.role === "employee") ? <div className="sm:flex side-menu">
               <div className="flex">
                 <Sidebar auth={auth} expand={true} Children={
                   <ul>
-
                     <li className='text-gray-200 mt-4 hover:text-white'>
                       <Link href={route('paymentPlans.index')} id='pop'>Subscribe</Link>
                     </li>
                     <li className='text-gray-200 mt-4 hover:text-white'>
                       <Link href={route('users')} id='pop'>Users List</Link>
                     </li>
-
                   </ul>} />
               </div>
-
             </div> : (
-
               <div className="sm:flex side-menu">
                 <div className="flex">
                   <Sidebar auth={auth} expand={true} />
@@ -167,9 +164,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
               <DashboardElements requests={requests} auth={auth} usersList={usersList} webSocket={webSocket} currentwebSocket={setwebSocketHost} display={data} userExp={userExp} />
             </div>
           </div>
-
         </div>
-
       </AuthenticatedLayout>
       <div className="fixed bottom-4 right-4"
         onClick={handlewebSocket}
@@ -185,7 +180,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
             <span>WebSocket-ON</span>
           </span>
         </>)}
-
       </div>
       {guideElemnt && (storedMenuState != 0) && (
         <div
@@ -195,7 +189,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
           }}
           className="w-80 h-auto absolute bg-gray-700 dark:bg-white border border-gray-300 rounded-lg shadow-lg p-4"
         >
-          <div className="mb-4" id='showGuid'>
+          <div className="mb-4 text-gray-300 dark:text-gray-800" id='showGuid'>
             <button onClick={(e) => { closeGuide(e) }} className="absolute top-0 left-0 text-white dark:text-gray-500 px-4 py-2 rounded-md">skip</button>
             <h1 className="text-xl font-bold mt-4">Guide !!</h1>
             <p className="text-sm">{guideElemnt[nextGuid.current].textContent}</p>
@@ -203,14 +197,11 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
           <button onClick={(e) => { skipping(e, guideElemnt) }} className="absolute top-2 right-2 bg-red-500 text-white px-4 py-2 rounded-md">Next</button>
         </div>
       )}
-
-
       <style>
         {` 
         .rounded-md{
           border-radius: 1.3rem !important;
         }
-       
         @media (prefers-color-scheme: dark) {
           .bgstyleglass{
             background: rgb(0,23,69);
@@ -237,7 +228,6 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
           position:absolute;
           border-radius:0.3rem;
           background-color: white;
-         
         }
           `}
       </style>

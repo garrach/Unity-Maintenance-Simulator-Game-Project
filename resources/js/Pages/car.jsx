@@ -12,7 +12,6 @@ const ThreeCar = ({ carModel, SetLoading }) => {
   const [cammm, setCamm] = useState(null);
   const childs = useRef([]);
   const exhausttips = useRef()
-
   useEffect(() => {
     let scene, camera, renderer, car, light, distanceCam, myscreenX, myscreenY, particles;
     // Create a clock
@@ -26,10 +25,8 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       { x: 2.4953740181776554, y: 3.341296773273761, z: -7.298813993342782 },
     ];
     const ex = ({ x, y, z }, { object }) => {
-
       const getWorldPosition = () => {
         const worldPosition = new THREE.Vector3();
-
         // Traverse the object's ancestors and accumulate their positions
         const traverseAncestors = (obj) => {
           if (obj.parent) {
@@ -38,9 +35,7 @@ const ThreeCar = ({ carModel, SetLoading }) => {
             worldPosition.applyMatrix4(obj.matrixWorld);
           }
         };
-
         traverseAncestors(object);
-
         return worldPosition;
       };
       getWorldPosition();
@@ -85,21 +80,21 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       mount.current.appendChild(renderer.domElement);
       // Create cylinder
       const geometry = new THREE.CylinderGeometry(1, 1, 2, 128);
-      const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+      const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
       const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.scale.set(6, 0.25, 6)
+      cylinder.scale.set(6, 0.09, 6)
       scene.add(cylinder);
       // Create cylinder
       const geometryRim = new THREE.CylinderGeometry(1, 1, 2, 128);
-      const materialRim = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+      const materialRim = new THREE.MeshStandardMaterial({ color: 0x00aaff });
       const cylinderRim = new THREE.Mesh(geometryRim, materialRim);
-      cylinderRim.scale.set(6.3, 0.2, 6.3)
+      cylinderRim.scale.set(6.3, 0.08, 6.3)
       scene.add(cylinderRim);
       // Create cylinder
       const geometryBase = new THREE.CylinderGeometry(1, 1, 2, 128);
       const materialBase = new THREE.MeshStandardMaterial({ color: 0x000000 });
       const cylinderBase = new THREE.Mesh(geometryBase, materialBase);
-      cylinderBase.scale.set(10, 0.1, 10)
+      cylinderBase.scale.set(10, 0.07, 10)
       scene.add(cylinderBase);
       // Orbit controls setup
       controls.current = new OrbitControls(camera, renderer.domElement);
@@ -110,19 +105,8 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       controls.current.minTargetRadius = 3;
       controls.current.minDistance = 6;
       controls.current.maxDistance = 9;
-
-
-
-
-
       scene.background = new THREE.Color(0x000000);
-
-
-
-
-
       // Set the texture to repeat
-      
       // Create particle system for smoke
       // Texture loader
       const textureLoader = new TextureLoader();
@@ -130,17 +114,15 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       // Set the texture to repeat
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      const repeatFactor = 128; // Adjust the repeat factor based on your preference
+      const repeatFactor = 1024; // Adjust the repeat factor based on your preference
       texture.repeat.set(repeatFactor, repeatFactor);
       // Ground
       const groundGeometry = new THREE.PlaneGeometry(1000, 1000, 32, 32);
       const groundMaterial = new THREE.MeshPhongMaterial({
         map: texture,
         side: THREE.DoubleSide,
-        shininess: 2,
+        shininess: 0.5,
         specular: new THREE.Color(0xaaaaaa),
-        emissive: new THREE.Color(0x000000),
-        emissiveIntensity: 0.1,
       });
       const ground = new THREE.Mesh(groundGeometry, groundMaterial);
       ground.rotation.x = (Math.PI / 2);
@@ -158,66 +140,76 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       }
       // setupGUI(camera,ground, groundMaterial,camP,camR);
       const loader = new GLTFLoader();
-
       // Start loading the model asynchronously
       setTimeout(() => {
-          loader.load(
-              'storage/mersedes-benz_s65_w222.glb',
-              (gltf) => {
-                  const modelMesh = gltf.scene;
-      
-                  // Apply transformations to the loaded modelMesh
-                  modelMesh.position.set(0, 0, 0);
-                  modelMesh.scale.set(2, 2, 2);
-      
-                  // Traverse the model's children and perform necessary operations
-                  modelMesh.traverse((child) => {
-                      if (child instanceof THREE.Mesh) {
-                          // Check for duplicates before pushing into the array
-                          if (!childs.current.includes(child)) {
-                              childs.current.push(child);
-                          }
-      
-                          // consider if it's necessary to call it for every mesh.
-                          // If not, adjust as needed.
-                          TH3dPointTOscreen(child.position, camera, child);
-                      }
-                  });
-      
-                  // Add the modelMesh to the scene
-                  scene.add(modelMesh);
-      
-                  // Assign the loaded modelMesh to the 'car' variable if needed
-                  car = modelMesh;
-      
-                  // Signal that loading has completed
-                  SetLoading(false);
-              },
-              undefined,
-              (error) => {
-                  console.error('Error loading model', error);
-                  // Signal that loading has failed
-                  SetLoading(false);
-                  // Optionally, inform the user about the error
-                  alert('Failed to load the model. Please try again later.');
+        loader.load(
+          'storage/mersedes-benz_s65_w222.glb',
+          (gltf) => {
+            const modelMesh = gltf.scene;
+            // Apply transformations to the loaded modelMesh
+            modelMesh.position.set(0, 0, 0);
+            modelMesh.scale.set(2, 2, 2);
+            // Traverse the model's children and perform necessary operations
+            modelMesh.traverse((child) => {
+              if (child instanceof THREE.Mesh) {
+                // Check for duplicates before pushing into the array
+                if (!childs.current.includes(child)) {
+                  childs.current.push(child);
+                }
+                // consider if it's necessary to call it for every mesh.
+                // If not, adjust as needed.
+                TH3dPointTOscreen(child.position, camera, child);
               }
-          );
+            });
+            // Add the modelMesh to the scene
+            scene.add(modelMesh);
+            // Assign the loaded modelMesh to the 'car' variable if needed
+            car = modelMesh;
+            // Signal that loading has completed
+            SetLoading(false);
+          },
+          undefined,
+          (error) => {
+            console.error('Error loading model', error);
+            // Signal that loading has failed
+            SetLoading(false);
+            // Optionally, inform the user about the error
+            alert('Failed to load the model. Please try again later.');
+          }
+        );
       }, 0);
-      
-
       // Point Light
-      const pointLight = new THREE.PointLight(0xffffff, 100, 100);
+      const pointLight = new THREE.PointLight(0xffffff, 100, 10);
       pointLight.castShadow = true;
       lights.current = pointLight;
       scene.add(pointLight);
+
+      // Define parameters
+      const radius = 5; // Radius of the circle
+      const numLights = 3; // Number of lights
+      const angleStep = (Math.PI * 2) / numLights; // Angle step between lights
+      const lightsArrColor=[0x00ffff,0xff00ff,0xffff00]
+
+      // Create PointLights with different colors and position them in a circle
+      for (let i = 0; i < numLights; i++) {
+        const angle = i * angleStep;
+        const x = radius * Math.cos(angle);
+        const z = radius * Math.sin(angle);
+
+
+        const pointLight = new THREE.PointLight(lightsArrColor[i], 50, 30);
+        pointLight.position.set(x, 0, z);
+        scene.add(pointLight);
+      }
+
+
       // Hemisphere Light
-      const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 5);
+      const hemisphereLight = new THREE.HemisphereLight(0x404040, 0xffffff, 3);
       scene.add(hemisphereLight);
       animate();
     };
     let dying = []
     const animate = () => {
-
       requestAnimationFrame(animate);
       if (PlayState) {
         //car.rotation.z-=Math.PI/1800;
@@ -227,14 +219,11 @@ const ThreeCar = ({ carModel, SetLoading }) => {
       lights.current.position.z = camera.position.z + 1;
       if (car) {
         car.rotation.y -= 0.001;
-
         //particles.position.set(car.position.x, car.position.y, car.position.z - 6)
       }
       controls.current.update();
       renderer.render(scene, camera);
     };
-
-
     const lerpFactor = 0.05;
     let isAnimPlaying = false;
     const changeScene = (index) => {
@@ -289,7 +278,6 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     window.addEventListener('keydown', (key) => {
       exhausttips.current = [];
       if (key.key == "Enter") {
-
         // Create a new material with a specific color (e.g., red)
         const newMaterial = new THREE.MeshStandardMaterial({
           color: 0x0aaff0, // Hex color for red
@@ -298,21 +286,15 @@ const ThreeCar = ({ carModel, SetLoading }) => {
         childs.current.map((elemnt) => {
           if (elemnt.name.includes('xxxx')) {
             exhausttips.current.push(elemnt)
-
             elemnt.children.map(item => {
               if (item.material) {
                 item.material = newMaterial;
                 item.rotation.set(0, 0, Math.PI / 3);
               }
             });
-
           }
         })
-
-
-
       }
-
     })
     const Carcalls = document.createElement('span');
     const TH3dPointTOscreen = (position, Camera, yo) => {
@@ -342,7 +324,6 @@ const ThreeCar = ({ carModel, SetLoading }) => {
     return () => {
       window.removeEventListener('resize', () => { });
       //mount.current.removeChild(renderer.domElement);
-
     };
   }, []);
   return <div ref={mount} />;

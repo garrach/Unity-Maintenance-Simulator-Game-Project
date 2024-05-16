@@ -70,6 +70,7 @@ Route::middleware(('auth'))->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/myaccount', [ProfileController::class, 'create'])->name('myaccount');
     Route::post('/send-message', [ProfileController::class, 'sendMessage'])->name('send-message');
+    Route::delete('/send-message', [ProfileController::class, 'DeleteMessage'])->name('delete.message');
     Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
     Route::get('/userAccount/user/{id?}', [ProfileController::class, 'editUser'])->name('userAccount.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

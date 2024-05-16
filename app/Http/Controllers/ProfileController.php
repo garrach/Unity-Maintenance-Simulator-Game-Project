@@ -60,6 +60,12 @@ class ProfileController extends Controller
         $msg->save();
         //return $msg;
     }
+    public function DeleteMessage(Request $request)
+    {   
+        $Message=Message::findOrFail($request->id);
+        $Message->delete();
+        return redirect()->route('myaccount');
+    }
     
 
     public function show(Request $request)
