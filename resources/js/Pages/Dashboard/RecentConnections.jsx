@@ -3,6 +3,8 @@ import { usePage } from '@inertiajs/react';
 import React from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faLink,faLineChart } from '@fortawesome/free-solid-svg-icons';
 const RecentConnections = ({ connection, webSocket }) => {
   const { props } = usePage();
   const devices = useRef();
@@ -37,13 +39,19 @@ const RecentConnections = ({ connection, webSocket }) => {
 
   return (
     <div className="p-2 dark:text-white text-gray-800">
-      <h2 className="text-lg font-semibold mb-2" id='pop'>Recent Connections</h2>
+      <h2 className="text-lg font-semibold mb-2" id='pop'>
+      <FontAwesomeIcon icon={faLineChart} />
+      <span className='ml-2'> Recent Connections</span>
+
+       </h2>
       <div className='w-full overflow-x-hidden h-80 overflow-y-auto'>
         <table className='w-full'>
           {sortArray.current.map((purchase, index) => (
             <tr className='uppercase p-4 hover:bg-gray-900 hover:text-gray-200 rounded shadow-md transition-transform transform hover:scale-105'>
               <td>
-                <span className='w-10 relative h-10'>...</span>
+                <span className='w-10 relative h-10'>
+                <FontAwesomeIcon icon={faLink} />
+                </span>
               </td>
               <td>
                 <span >{` user : ${usersArr.current[usersArr.current.length - index - 1].name} `}</span>

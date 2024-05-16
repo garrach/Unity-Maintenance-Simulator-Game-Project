@@ -1,7 +1,7 @@
 // resources/js/Pages/devices/Edit.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 
 const Edit = ({ auth, device }) => {
@@ -44,6 +44,8 @@ const Edit = ({ auth, device }) => {
           </h2>
         }
       >
+                <Head title="Create Device" />
+
         <div className="my-4 mx-auto container w-80">
           <h1 className="text-2xl font-semibold mb-4 ">Edit Device</h1>
           <form onSubmit={handleSubmit} className="space-y-4" encType='multipart/form-data'>

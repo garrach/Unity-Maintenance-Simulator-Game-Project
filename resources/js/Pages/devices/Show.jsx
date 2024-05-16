@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode.react';
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import StarsReview from '../StarsReview';
 
 const Show = ({ device, purchase, deviceReview, auth }) => {
@@ -112,6 +112,9 @@ const Show = ({ device, purchase, deviceReview, auth }) => {
       </h2>
     }
   >
+            <Head title="Create Device" />
+        
+
     {requestSent && (
       <div className="fixed z-10 w-screen text-center bg-green-500 text-white p-4 mx-auto rounded">
         Request Sent

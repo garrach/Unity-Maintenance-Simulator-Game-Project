@@ -5,7 +5,7 @@ import Navigation from '../Navigation';
 import { clientSocket, TMD } from '../client.cjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faCoins } from '@fortawesome/free-solid-svg-icons';
-import { faMobileAlt, faBriefcase, faClipboard, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt, faBriefcase, faClipboard, faCalendarAlt,faWrench } from '@fortawesome/free-solid-svg-icons';
 import {
   faCar,
   faPencilAlt,
@@ -67,7 +67,10 @@ const QuickActions = ({ auth, requests, userExp }) => {
 
       </>)}
 
-      <h2 className="text-lg dark:text-white text-gray-800 font-semibold  mb-2" id='pop'>Quick Actions</h2>
+      <h2 className="text-lg dark:text-white text-gray-800 font-semibold  mb-2" id='pop'>
+      <FontAwesomeIcon icon={faWrench} />
+            <span className='ml-2'>Quick Actions</span>
+        </h2>
 
       <div className='mt-20' id='pop'>
         {auth.user.role === 'admin' ? (

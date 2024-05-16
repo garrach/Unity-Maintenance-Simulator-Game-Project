@@ -1,7 +1,7 @@
 // resources/js/Pages/devices/Index.jsx
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const Index = ({ devices, auth }) => {
   const purchased=false;
@@ -16,6 +16,8 @@ const Index = ({ devices, auth }) => {
           </h2>
         }
       >
+                <Head title="Create Device" />
+
         <div className="container mx-auto">
           <h1 className="text-2xl font-semibold mb-4">Device List</h1>
           <ul className="sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid gap-4 ">

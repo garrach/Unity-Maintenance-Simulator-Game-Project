@@ -34,11 +34,11 @@ const DashboardCard = ({ number, icon, children, span, margin }) => {
                 
                 .glass-container {
                     color:white
-                    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent white */
+                    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent white */
                     padding: 1rem;
                     border-radius: 0.5rem;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional box shadow */
-                    backdrop-filter: blur(100px); /* Apply the glassy effect */
+                    box-shadow: 0 4px 7x rgba(0, 0, 0, 0.5); /* Optional box shadow */
+                    backdrop-filter: blur(200px); /* Apply the glassy effect */
                 }
                 
                 .glass-container + .glass-container {

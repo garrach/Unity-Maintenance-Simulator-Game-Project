@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { clientSocket } from '../client.cjs';
 import { useDynamicContext } from '../DynamicContext';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faServer } from '@fortawesome/free-solid-svg-icons';
 const SystemStatus = ({ currentWebSocket, display }) => {
   const { dynamicValues, updateValues } = useDynamicContext();
   const [sys, setSys] = useState(false);
@@ -21,7 +22,11 @@ const SystemStatus = ({ currentWebSocket, display }) => {
   },[sys])
   return (
     <div className="dark:text-white text-gray-800 p-4 rounded-md shadow-md">
-      <h2 className="text-lg font-semibold mb-2" id='pop'>System Status</h2>
+      <h2 className="text-lg font-semibold mb-2" id='pop'>
+      <FontAwesomeIcon icon={faServer} />
+        <span className='ml-2'>System Status</span>
+        
+        </h2>
 
       {(display.message) ? (<>
 

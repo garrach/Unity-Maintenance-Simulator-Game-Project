@@ -92,7 +92,7 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz }) => {
                 placeholder="Search Client..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="border p-2 w-full"
+                className="border p-2 w-full dark:text-gray-800"
               />
             </div>}
 

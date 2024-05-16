@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
 import { useRef } from 'react';
+import GuideComponent from '@/Components/GuideComponent';
 export default function Dashboard({ auth, usersList, reports, requestJob, wishListItems, userExp }) {
   const [storedMenuState, setstoredMenuState] = useState(Cookies.get('Guide'));
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
@@ -114,7 +115,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
   useEffect(() => {
     setGuideElemnt(document.querySelectorAll('#pop'))
   }, [nextguideElemnt])
-  const IconsByRole = ({userRole}) => {
+  const IconsByRole = ({ userRole }) => {
     switch (userRole) {
       case "admin":
         return <><FontAwesomeIcon icon={faUserShield} /><span className='ml-2 font-bold uppercase'>{userRole}</span></>
@@ -130,10 +131,10 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
         webSocket={currentwebSocket}
         user={auth.user}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" id='pop'>
-          Dashboard - <IconsByRole userRole={auth.user.role}/>
+          Dashboard - <IconsByRole userRole={auth.user.role} />
 
           {auth.user.role === "admin" && (<span className='flex w-56 m-2 justify-around p-2 hover:bg-orange-500 rounded-md'>
-            <Link href={route('unityRefresh')} id='pop'>Unity Refresh</Link>
+            <Link href={route('unityRefresh')}>Unity Refresh</Link>
           </span>)}
         </h2>}
       >
@@ -181,22 +182,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
           </span>
         </>)}
       </div>
-      {guideElemnt && (storedMenuState != 0) && (
-        <div
-          style={{
-            left: guideElemnt[nextGuid.current].getBoundingClientRect().left,
-            top: guideElemnt[nextGuid.current].getBoundingClientRect().top
-          }}
-          className="w-80 h-auto absolute bg-gray-700 dark:bg-white border border-gray-300 rounded-lg shadow-lg p-4"
-        >
-          <div className="mb-4 text-gray-300 dark:text-gray-800" id='showGuid'>
-            <button onClick={(e) => { closeGuide(e) }} className="absolute top-0 left-0 text-white dark:text-gray-500 px-4 py-2 rounded-md">skip</button>
-            <h1 className="text-xl font-bold mt-4">Guide !!</h1>
-            <p className="text-sm">{guideElemnt[nextGuid.current].textContent}</p>
-          </div>
-          <button onClick={(e) => { skipping(e, guideElemnt) }} className="absolute top-2 right-2 bg-red-500 text-white px-4 py-2 rounded-md">Next</button>
-        </div>
-      )}
+      {guideElemnt && (storedMenuState != 0) && <GuideComponent guideElemnt={guideElemnt} nextGuid={nextGuid} storedMenuState={storedMenuState} closeGuide={closeGuide} skipping={skipping} />}
       <style>
         {` 
         .rounded-md{
@@ -205,13 +191,13 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
         @media (prefers-color-scheme: dark) {
           .bgstyleglass{
             background: rgb(0,23,69);
-            background: linear-gradient(215deg, rgb(31, 41, 55) 21%, rgb(0, 44, 104) 47%, rgb(0, 0, 39) 50%);   
+            background: linear-gradient(215deg, rgb(31, 41, 55) 21%, rgba(87, 52, 213, 0.52) 47%, rgb(31, 41, 55) 50%)   
           }
         }
         @media (prefers-color-scheme: light) {
           .bgstyleglass{
             background: rgb(0,23,69);
-            background: linear-gradient(215deg, rgb(255, 255, 255) 21%, rgb(255, 143, 0) 47%, rgb(255, 255, 255) 50%);   
+            background: linear-gradient(215deg, rgb(247, 247, 247) 21%, rgb(227, 227, 227) 47%, rgb(255, 255, 255) 50%)  
           }
         }
         .websocket{

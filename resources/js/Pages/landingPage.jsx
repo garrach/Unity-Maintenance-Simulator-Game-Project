@@ -71,7 +71,7 @@ const LandingPage = ({ auth }) => {
                     let currentCount = 0;
                     const interval = setInterval(() => {
                         currentCount += step;
-                        if (currentCount >= (value.length +200)) {
+                        if (currentCount >= (value.length +400)) {
                             // Stop counting when it reaches the original value
                             clearInterval(interval);
                             currentCount = value.length;
