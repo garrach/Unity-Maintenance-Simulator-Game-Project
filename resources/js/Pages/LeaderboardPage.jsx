@@ -16,9 +16,7 @@ const LeaderboardPage = ({ getLeaderboardData, auth }) => {
       console.error('Error fetching leaderboard data:', error);
     }
   };
-  function CardUser (user) {
-    console.log(user)
-  }
+
   return (
     <AuthenticatedLayout
       user={auth}

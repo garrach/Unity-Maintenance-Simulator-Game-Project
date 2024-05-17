@@ -8,13 +8,28 @@ if "%~1"=="" (
 )
 
 REM Set project path to the provided file path
-echo project path.
-echo %1
-cd %1
+echo Project path: %~1
+cd %~1 || (
+    echo Failed to change directory to %~1.
+    pause
+    exit /b 1
+)
 
-REM Start server
-echo runing NPM.
-call npm run prodBuild
+REM Start the build process
+echo Running npm build...
+call npm run build || (
+    echo npm build failed.
+    pause
+    exit /b 1
+)
+
+REM Start the production build
+echo Running npm production build...
+call npm run prodBuild || (
+    echo npm production build failed.
+    pause
+    exit /b 1
+)
 
 REM Keep the batch file open
 pause

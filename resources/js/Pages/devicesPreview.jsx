@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 const Index = ({ devices, reviews, comments, auth }) => {
-    console.log({ devices: devices, reviews: reviews, comments: comments });
     const [preview, setPreview] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState(null);
     const deviceRef = useRef();

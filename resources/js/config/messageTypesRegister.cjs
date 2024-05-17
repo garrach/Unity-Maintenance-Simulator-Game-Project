@@ -81,7 +81,6 @@ async function handleDeviceMovement(movementData, clientKey, ws, db, clients, cl
 let Createdrooms = 0;
 
 async function handleUserRoom(TMD, clientKey, ws, db, clients, clientInfo) {
-    console.log(clientInfo.clientId)
     retriveUserDevices(false, TMD.data, ws, null, db);
 }
 async function handleUserInstance(TMD, clientKey, ws, db, clients, clientInfo) {
@@ -97,14 +96,12 @@ let currentUserID=0;
 async function tryParsJSON(data,db) {
     try {
         const updatingInfo = data.data.replace("'", "");
-        console.log(updatingInfo)
 
         const parsedData = JSON.parse(updatingInfo)
         experiencePt = parsedData.exp; 
         const user = await getUserById(parsedData.clientID,db)
 
         currentUserID=user.BD_id
-        console.log(user);
     } catch (error) {
 
         console.log(error);
@@ -112,7 +109,6 @@ async function tryParsJSON(data,db) {
 }
 
 async function handleUserInstanceVehicle(TMD, clientKey, ws, db, clients, clientInfo, SQLDB) {
-    console.log(TMD);
     // Example: Check if SQLDB is not null before using it
     if (SQLDB) {
         console.log('SQLDB is operatinal For Vehicle stat..')
@@ -161,8 +157,6 @@ async function handleUserInstanceDevice(TMD, clientKey, ws, db, clients, clientI
 
 // ClientKeyRequest handler
 function handleClientKeyRequest(TMD, clientKey, ws) {
-    console.log(TMD)
-    console.log(clientKey.ID)
     ws.send(JSON.stringify({ TMD: TMD, client: clientKey.ID, Key: clientKey.key }))
 }
 
@@ -200,7 +194,6 @@ function handleMovingPart(TMD, clientKey, ws, db) {
 async function handleUnityLogin(TMD, clientKey, ws, db, clients, clientInfo) {
 
     const user = await findUser(TMD.data, ws, db)
-    console.log(user);
     if (user) {
         unityInstance.set('unity', ws);
         broadcast({ type: "auth", message: "valid user", data: { user: user } }, clientKey, ws, db, clients)

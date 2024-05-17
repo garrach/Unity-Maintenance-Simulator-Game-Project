@@ -135,7 +135,6 @@ function configureRoutes(app, db) {
         res.send({ type: 'UserApiRegistedPlacement', message: 'Device Placement registered ', data: response })
       } catch (error) {
         res.send(req.query)
-        console.log(req.query)
       }
 
 
@@ -146,7 +145,6 @@ function configureRoutes(app, db) {
 
       try {
         const resp = await Add_placement(req.body, db);
-        console.log(req.body)
         res.send({ type: 'UserApiRegistedPlacement', message: 'New Placement registered ', data: {} })
       } catch (error) { 
         res.send({ type: 'fatal', message: 'Error adding New Placement', data: {} })
@@ -174,10 +172,10 @@ function configureRoutes(app, db) {
     });
     
     app.post('/api/get-key',async (req,res)=>{
+
       try {
         const key=await generateUserAPiKey(req.query.ID,db);
         res.send({userApiKey:key});
-        
       } catch (error) {
         res.send({userApiKey:error});
         return;

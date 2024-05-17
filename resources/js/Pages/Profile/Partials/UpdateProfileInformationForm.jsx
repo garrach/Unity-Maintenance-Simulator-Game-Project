@@ -29,7 +29,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Update your account's profile information and email address.
-                    {console.log(editUser)}
                 </p>
             </header>
 

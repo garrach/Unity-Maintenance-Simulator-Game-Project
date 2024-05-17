@@ -144,9 +144,9 @@ const UnityRefresh = ({ DBsync }) => {
   }
   const sysnncronize = async () => {
     try {
-      //fetchDataPOST('/api/connections', { type: "addConnectin", message: 'syncData', data: data.connections }, setValidPost);
-      //fetchDataPOST('/api/vehicles', { type: "addvehicles", message: 'syncData', data: data.Vehicle }, setValidPost);
-      //fetchDataPOST('/api/devices', { type: "adddevices", message: 'syncData', data: data.Device }, setValidPost);
+      fetchDataPOST('/api/connections', { type: "addConnectin", message: 'syncData', data: data.connections }, setValidPost);
+      fetchDataPOST('/api/vehicles', { type: "addvehicles", message: 'syncData', data: data.Vehicle }, setValidPost);
+      fetchDataPOST('/api/devices', { type: "adddevices", message: 'syncData', data: data.Device }, setValidPost);
       fetchDataPOST('/api/login', { type: "addUser", message: 'syncData', data: data.User }, setValidPost);
 
       const placementData00={

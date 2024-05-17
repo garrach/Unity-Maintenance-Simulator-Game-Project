@@ -75,7 +75,6 @@ const JobsList = ({ auth, jobs, users }) => {
           </button>
           <div className='block max-w-screen text-center'>
             {(parseCoverLetter(searchDes))['Cover Letter']}
-            {console.log(currentJobs)}
           </div>
         </div>
       }

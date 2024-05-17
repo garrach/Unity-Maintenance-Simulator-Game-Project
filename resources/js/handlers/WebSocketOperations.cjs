@@ -33,7 +33,6 @@ class WebSocketSender {
   
   function handleClientConnected(webSocketSender, clientId, ws) {
     webSocketSender.addClient(clientId, ws);
-    console.log(webSocketSender.connectedClients);
   }
   
   function handleClientDisconnected(webSocketSender, clientId) {

@@ -8,7 +8,6 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { sendToMongo } from '../../mongoBackUP.cjs'
 
 export default function Register() {
-    const apiEndpoint = 'http://127.0.0.1:3002/api/login';
     const { props } = usePage();
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -29,7 +28,7 @@ export default function Register() {
     const submit = async (e) => {
         e.preventDefault();
         post(route('register'), {
-            onSuccess: () => { sendToMongo(data) }
+            onSuccess: () => { sendToMongo({data:[data]}) }
         });
 
 
@@ -39,7 +38,6 @@ export default function Register() {
     return (
         <GuestLayout>
             <Head title="Register" />
-
             <form onSubmit={submit}>
                 <div className='grid grid-cols-1 grid-cols-2 justify-center items-center'>
                     {props.user.role !== "" && (<>

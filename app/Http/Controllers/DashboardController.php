@@ -13,6 +13,7 @@ use App\Models\WishList;
 use App\Models\Userexpcoin;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -91,6 +92,11 @@ class DashboardController extends Controller
         } else {
             $x=Purchase::all()->toArray();
             arsort($x);
+
+
+            $pannier = Auth::user()->purchases->count();
+            $cookie = Cookie::make('pannier', $pannier);
+
             return Inertia::render('Dashboard',
                 ['usersList' => $usersList,
                     'someSocket' => 'ws://localhost:3004',
@@ -102,6 +108,7 @@ class DashboardController extends Controller
                     'reports' => $reports,
                     'requestJob' => $jobs,
                     'userExp'=>$userExp,
+                    'pannier'=>$pannier,
                     'wishListItems' => $reference,
                     'devices' => $devices,'users' => $users]);
         }

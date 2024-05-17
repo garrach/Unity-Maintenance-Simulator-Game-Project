@@ -74,7 +74,6 @@ const FullMaintenanceSuiteIndex = ({ auth, maintenanceTasksz, Vehicles }) => {
       >
         <Head title="Full Maintenance Suite" />
         {printReport && <PDFViewer width={window.innerWidth - 20} height={window.innerHeight}>
-          {console.log(data)}
           <FullMaintenancePDF data={data} />
         </PDFViewer>}
         <div className="my-4 p-6 bg-white dark:bg-gray-800 dark:text-gray-200 rounded-md shadow-md">

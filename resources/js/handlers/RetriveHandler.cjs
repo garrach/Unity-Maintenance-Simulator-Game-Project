@@ -24,7 +24,6 @@ async function fetch_placement(id, db) {
 async function Add_placement(prevData, db) {
   try {
     const { user_id, data, IDs } = prevData;
-    console.log(prevData);
     const validator = ({ username: user_id, itsData: data, orArray: IDs });
     if (IDs && IDs.length > 0) {
       IDs.map(async (user) => {
@@ -55,17 +54,30 @@ const generateRandomHexString = (length) => {
 };
 async function generateUserAPiKey(data, db) {
   const key = generateRandomHexString(32);
-  const placementID = new ObjectId(data);
+  if (Object.values(data).length < 6) {
+      const userSQL = await db.collection('users').findOne({ BD_id: Number(data) });
+      const placementID = new ObjectId(userSQL._id);
 
-  handleApikey({ user_id: placementID, userKey: key }, db);
-  return key;
+      const apiKey = await db.collection('apikeys').findOne({ user_id: userSQL._id });
+      if (apiKey) {
+        return apiKey.userKey;
+      }else{
+        handleApikey({ user_id: placementID, userKey: key }, db);
+        return;
+      }
+  } else {
+    const placementID = new ObjectId(data);
+    handleApikey({ user_id: placementID, userKey: key }, db);
+    return key;
+  }
+
 }
 
 // Retrieve Key by ID for the ApiKeys Collection
 async function getAPiKey(BD_id, db) {
   // Check if the passed ID is a valid ObjectId
-  const userSQL = await db.collection('users').findOne({ BD_id:Number(BD_id) });
-  const userMongoID= userSQL._id;
+  const userSQL = await db.collection('users').findOne({ BD_id: Number(BD_id) });
+  const userMongoID = userSQL._id;
 
   if (!ObjectId.isValid(userMongoID)) {
     return;

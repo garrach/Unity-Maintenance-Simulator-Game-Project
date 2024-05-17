@@ -31,7 +31,6 @@ const Show = ({ report, RepUser, auth }) => {
       >
                         <Head title="Report Details" />
 
-        {console.log(RepUser)}
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
           <h1 className="text-2xl font-semibold mb-4">Report Details</h1>
           <div className="mb-4 text-gray-800 dark:text-gray-200">

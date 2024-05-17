@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import DashboardElements from './mainElements/DashboardElements';
 import { useDynamicContext } from './DynamicContext';
 import Cookies from 'js-cookie';
@@ -14,7 +14,22 @@ import AlertDialog from '@/Components/AlertDialog';
 import Sidebar from './sideBar';
 import { useRef } from 'react';
 import GuideComponent from '@/Components/GuideComponent';
+import axios from 'axios';
 export default function Dashboard({ auth, usersList, reports, requestJob, wishListItems, userExp }) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'api-key': 'YOUR_SECRET_API_KEY', 
+};
+useEffect(()=>{
+  async function retriveUserKey(){
+    await axios.post(`http://127.0.0.1:3002/api/get-key?ID=${auth.user.id}`,auth, { headers }).then((response)=>{
+      //Done something with the key
+    })
+  }
+  retriveUserKey();
+},[])
+
+
   const [storedMenuState, setstoredMenuState] = useState(Cookies.get('Guide'));
   const [isAlertDialogOpen, setAlertDialogOpen] = useState(false);
   const [WebSocketOn, setWebSocketOn] = useState(false);
@@ -28,6 +43,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
     requestJob: requestJob,
     wishListItems: wishListItems,
   });
+  const { props } = usePage();
   const [messageObject, setUserMessage] = useState({ type: 'head', message: 'Welcome, WebSocket to provide realtime data monitoring', data: '' });
   const {
     data,
@@ -130,6 +146,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
       <AuthenticatedLayout
         webSocket={currentwebSocket}
         user={auth.user}
+        pannier={props.pannier}
         header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" id='pop'>
           Dashboard - <IconsByRole userRole={auth.user.role} />
 

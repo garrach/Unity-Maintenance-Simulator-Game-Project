@@ -10,7 +10,7 @@ const sendToMongo = async ({data})=>{
     };
 
     // Second Axios POST request
-    axios.post(apiEndpoint, data, { headers })
+    axios.post(apiEndpoint, {data}, { headers })
         .then(response => {
             console.log('Success:', response.data);
 
@@ -20,4 +20,4 @@ const sendToMongo = async ({data})=>{
 
         });
 }
-export {sendToMongo};
+export {sendToMongo}; 

@@ -31,7 +31,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 //static Pages Routes
 Route::get('/api/key',function(){
@@ -43,6 +43,7 @@ Route::get('/documentation',function(){
 })->name('documentation');
 
     Route::get('/', function () {
+       
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),

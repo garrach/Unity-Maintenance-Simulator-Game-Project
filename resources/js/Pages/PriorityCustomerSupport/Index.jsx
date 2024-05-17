@@ -149,7 +149,6 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
             ...prevData,
             [name]: val,
         }));
-        console.log(e.target);
     };
 
     const handleSubmit = (e) => {
@@ -162,7 +161,6 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
         formData.append('resume', data.resume);
         formData.append('coverLetter', data.coverLetter);
 
-        console.log(formData)
         post(route('applyforjob.store'), formData);
 
         //sendRoleRequest(e); notification
