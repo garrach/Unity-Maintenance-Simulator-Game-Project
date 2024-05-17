@@ -22,10 +22,10 @@ const UsersList = ({ auth, users, userexp }) => {
     }, [searchQuery, users]);
 
     useEffect(() => {
-        users.forEach(() => {
+        users && users.forEach(() => {
             exp.current = Object.entries(userexp);
         });
-    }, [users, userexp]);
+    }, [userexp]);
 
     return (
         <AuthenticatedLayout user={auth.user} header={<h2 className='font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight'>Users List</h2>}>

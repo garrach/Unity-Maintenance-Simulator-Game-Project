@@ -70,6 +70,7 @@ class FullMaintenanceSuiteController extends Controller
     {
         $user = Auth::user();
         $users = User::all();
+        $Vehicles = Vehicle::all();
         $maintenanceTasksz = [];
         if($user->role=='admin' || $user->role=='employee'){
             foreach($users as $displayUser){
@@ -79,8 +80,9 @@ class FullMaintenanceSuiteController extends Controller
             $maintenanceTasksz[$user->name] = $this->getMaintenanceTasks($user,true);
         }
         
-        $maintenanceTasksz=json_encode($maintenanceTasksz);
-        return Inertia::render('FullMaintenanceSuite/Index', compact('user', 'maintenanceTasksz'));
+        $maintenanceTasksz=base64_encode(json_encode($maintenanceTasksz));
+        $Vehicles=base64_encode(json_encode($Vehicles));
+        return Inertia::render('FullMaintenanceSuite/Index', compact('maintenanceTasksz','Vehicles'));
     }
     public function markAsComplete(Request $request)
     {
@@ -114,19 +116,26 @@ class FullMaintenanceSuiteController extends Controller
             'coins'=>$score->coins+10,
         ]);
 
-        $vehicle=Vehicle::all()->first();
+        $VID=$request->VID;
+        $vehicle=Vehicle::findOrFail($VID);
 
+        //return response()->json(['vehicle'=>$vehicle]) ;
+        
+
+        $Schedule=null;
+        if($Purchase){
+        $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
+        //$Schedule->delete();
+        }
         Connection::create([
             'name'=>$Purchase->user->name.": ".$Purchase->device->type.". Connected",
+            'connection_id'=>$user->id,
+            'schedules_id'=>$Schedule ? $Schedule->id : null ,
+            'user_id'=>$Purchase->user->id,
             'vehicle_id'=>$vehicle->id,
             'device_id'=>$Purchase->device->id,
             'installationdate'=> date("Y-m-d")
         ]);
-
-        /*if($Purchase){
-        $Schedule=Schedule::where('purchase_id',$Purchase->id)->first();
-        $Schedule->delete();
-        }*/
 
         return redirect()->route('basic-maintenance');
     }

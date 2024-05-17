@@ -9,7 +9,7 @@ class Connection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['vehicle_id','device_id','name','installationdate'];
+    protected $fillable = ['vehicle_id','device_id','connection_id','user_id','name','installationdate'];
 
     public function vehicles()
     {

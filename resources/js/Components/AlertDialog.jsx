@@ -1,56 +1,50 @@
 // resources/js/components/AlertDialog.jsx
 
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AlertDialog = ({ title, message, onClose, children }) => {
-
-  const [popup, setpopup] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    async function setDataPost() {
+    async function handleOnClose() {
       await onClose();
     }
-    setDataPost();
-  }, [])
-  async function handleInputChange() {
-    setpopup(false);
-  }
+    handleOnClose();
+  }, [onClose]);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    onClose();
+  };
+
   return (
-    popup && <div className="fixed hover:bg-[#181818b2] inset-0 z-50 flex items-center justify-center "
-    >
-      {console.log(message)}
-      <div className="relative w-auto max-w-md mx-auto my-6">
-        {/* Modal content */}
-        <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
-          {/* Header */}
-          <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
-            <h3 className="text-lg font-semibold dark:text-gray-800">{title}</h3>
+    isVisible && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="relative w-full max-w-lg mx-auto my-6 bg-white rounded-lg shadow-lg">
+          <div className="flex items-start justify-between p-5 border-b border-gray-300 rounded-t">
+            <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
             <button
-              className="p-1 ml-auto bg-transparent border-0 text-gray-500 opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-              onClick={handleInputChange}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              onClick={handleClose}
             >
-              <span className="text-xl">×</span>
+              <span className="text-2xl">&times;</span>
             </button>
           </div>
-          {/* Body */}
-          <div className="relative p-6 flex-auto">
-            <p className="text-sm leading-relaxed text-gray-600">{message}</p>
+          <div className="p-6">
+            <p className="text-gray-700">{message}</p>
+            <div className="mt-4">{children}</div>
           </div>
-          {/* Footer */}
-          <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-            {children}
+          <div className="flex items-center justify-end p-6 border-t border-gray-300">
             <button
-              className="text-blue-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={handleInputChange}
+              className="px-4 py-2 text-sm font-semibold text-blue-600 bg-transparent border border-blue-600 rounded hover:bg-blue-600 hover:text-white focus:outline-none transition duration-150"
+              onClick={handleClose}
             >
               Close
             </button>
           </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 
