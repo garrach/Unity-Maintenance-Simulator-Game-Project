@@ -1,108 +1,127 @@
-# Projet de Développement de Jeux et Web
+# Unity and Web App Communication via Express.js Server
 
----
+## Introduction
+This project demonstrates how to establish communication between a Unity game (C#) and a web application using an Express.js server. The Unity game sends data to the server, which can also receive data from a web app.
 
-## Table des matières
+## Prerequisites
+- Node.js installed
+- Unity installed
 
-1. Introduction
-2. Architecture Globale du Projet
-3. Composantes Principales
-   - 3.1 Application Web
-   - 3.2 Base de Données
-   - 3.3 Serveur Express.js
-   - 3.4 Composant de Jeu Vidéo
-4. Synchronisation des Ressources
-5. Stockage des Données
-6. Interactions Utilisateur
-7. Authentification et Sécurité
-8. Visualisation Immersive
-9. Périphériques d'Entrée Standard
-10. Conclusion
-11. Références
+## Setup
 
----
+### 1. Setting Up the Express.js Server
 
-## 1. Introduction
+#### Step 1: Create a new project and install Express.js
+```bash
+mkdir my-server
+cd my-server
+npm init -y
+npm install express
+```
 
-Ce document présente un projet ambitieux qui vise à développer une application web et un jeu vidéo intégrés, offrant aux utilisateurs une expérience immersive et interactive. L'initiative combine l'expertise académique pour concevoir une architecture robuste qui synchronise les ressources et traite de manière complexe les données utilisateur.
+#### Step 2: Configure the server
+Create a file named `server.js` and add the following code:
 
----
+```javascript
+const express = require('express');
+const app = express();
+const port = 3000;
 
-## 2. Architecture Globale du Projet
+app.use(express.json());
 
-Le projet repose sur une architecture moderne, combinant une application web, une base de données locale et MongoDB Atlas pour la sauvegarde dans le cloud. L'utilisation de technologies comme Laravel, Vue.js et Unity assure une intégration harmonieuse et des performances optimales.
+app.post('/data', (req, res) => {
+    console.log(req.body);
+    res.send('Data received');
+});
 
----
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
+```
 
-## 3. Composantes Principales
+Start the server by running:
+```bash
+node server.js
+```
 
-### 3.1 Application Web
+### 2. Configuring Unity to Send HTTP Requests
 
-L'application web dynamique offre une interface conviviale pour les utilisateurs, exploitant RestApi pour l'acquisition et la manipulation des données. Elle repose sur Laravel et Vue.js pour une expérience utilisateur fluide et réactive.
+#### Step 1: Create a C# script in Unity
+Create a script named `DataSender.cs` and add the following code:
 
-### 3.2 Base de Données
+```csharp
+using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
 
-La base de données locale stocke les données utilisateur de manière sécurisée, tandis que MongoDB Atlas assure une compatibilité de sauvegarde dans le cloud, garantissant la disponibilité et la redondance des données.
+public class DataSender : MonoBehaviour
+{
+    void Start()
+    {
+        StartCoroutine(SendData());
+    }
 
-### 3.3 Serveur Express.js
+    IEnumerator SendData()
+    {
+        string json = "{\"message\": \"Hello from Unity\"}";
 
-Le serveur Express.js gère les requêtes entre l'application web et la base de données, offrant des performances élevées et une gestion efficace des données.
+        UnityWebRequest request = new UnityWebRequest("http://localhost:3000/data", "POST");
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
 
-### 3.4 Composant de Jeu Vidéo
+        yield return request.SendWebRequest();
 
-Le composant de jeu vidéo offre une visualisation immersive des ressources dans un monde 3D. Il intègre Unity pour la création d'environnements interactifs, avec une authentification sécurisée pour les utilisateurs.
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Data sent successfully: " + request.downloadHandler.text);
+        }
+    }
+}
+```
 
----
+Attach the `DataSender` script to a GameObject in your Unity scene and run the game to test the data sending functionality.
 
-## 4. Synchronisation des Ressources
+### 3. Creating the Web App to Interact with the Server
 
-Les ressources sont synchronisées en temps réel entre l'application web et le jeu vidéo, offrant une expérience utilisateur cohérente et fluide.
+#### Step 1: Create an HTML file
+Create a file named `index.html` with the following content:
 
----
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App</title>
+</head>
+<body>
+    <h1>Web App</h1>
+    <button id="sendDataBtn">Send Data</button>
 
-## 5. Stockage des Données
+    <script>
+        document.getElementById('sendDataBtn').addEventListener('click', async () => {
+            const response = await fetch('http://localhost:3000/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: 'Hello from Web App' })
+            });
+            const data = await response.text();
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
+```
 
-Les données utilisateur sont stockées de manière sécurisée dans la base de données locale, avec une sauvegarde automatique dans MongoDB Atlas pour une protection supplémentaire contre la perte de données.
+Open `index.html` in a browser and click the "Send Data" button to send data to the server.
 
----
-
-## 6. Interactions Utilisateur
-
-Les utilisateurs peuvent interagir de manière dynamique avec l'application web et le jeu vidéo, fournissant des entrées qui sont traitées de manière adaptée pour offrir une expérience utilisateur personnalisée.
-
----
-
-## 7. Authentification et Sécurité
-
-Un système d'authentification robuste est mis en place pour protéger les données utilisateur et garantir l'accès sécurisé aux fonctionnalités de l'application web et du jeu vidéo.
-
----
-
-## 8. Visualisation Immersive
-
-La visualisation immersive offre aux utilisateurs une expérience réaliste et engageante, en exploitant les capacités graphiques avancées de Unity pour créer un monde 3D captivant.
-
----
-
-## 9. Périphériques d'Entrée Standard
-
-Les périphériques d'entrée standard tels que la souris et le clavier sont pris en charge pour offrir une interaction intuitive avec l'application web et le jeu vidéo.
-
----
-
-## 10. Conclusion
-
-Ce projet représente une fusion innovante entre le développement de jeux et le web, offrant une expérience utilisateur immersive et interactive. En mettant l'accent sur l'architecture solide, la synchronisation des ressources et l'expérience utilisateur, le projet vise à repousser les limites de l'innovation technologique.
-
----
-
-## 11. Références
-
-1. Documentation de [Laravel](https://laravel.com/docs)
-2. Documentation de [Vue.js](https://vuejs.org/v2/guide/)
-5. Documentation de [Express js](https://expressjs.com/en/4x/api.html)
-3. Documentation de [MongoDB Atlas](https://docs.atlas.mongodb.com/)
-4. Documentation de [Unity](https://docs.unity3d.com/Manual/index.html)
-
-
----
+## Conclusion
+With these steps, you have set up a basic communication system between a Unity game, a web application, and an Express.js server. This setup can be extended to support more complex interactions and data exchanges as needed.
