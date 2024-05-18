@@ -45,10 +45,10 @@ class PaymentPlanController extends Controller
 
         if ($user->plans()->exists()) {
             $user->plans()->sync($plan);
-            return redirect()->route('dashboard')->with('success', 'Payment Plan updated successfully.');
+            return redirect()->route('dashboard');
         } else {
             $user->plans()->attach($plan);
-            return redirect()->route('dashboard')->with('success', 'Payment Plan created successfully.');
+            return redirect()->route('dashboard');
         }
 
     }

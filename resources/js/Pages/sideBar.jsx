@@ -122,10 +122,10 @@ const Sidebar = ({ Children, auth, expand }) => {
                     </style>
 
 
-
+                    
                 </>) : (
                 <>
-                    {(<><aside className="glass-container" >
+                    {(<><aside className="glass-container bg-gray-900" >
                         <nav>
                             <ul className="mmLi ">
                                 <li>

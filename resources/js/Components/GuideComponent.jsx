@@ -22,7 +22,7 @@ const GuideComponent = ({ guideElemnt, nextGuid, storedMenuState, closeGuide, sk
                 left: left - 50,
                 top: top + window.scrollY
             }}
-            className="w-80 h-auto absolute bg-gray-800 dark:bg-white border border-gray-300 rounded-lg shadow-lg p-6 z-50 focus:outline-none"
+            className="w-80 h-auto absolute bg-gray-800 dark:bg-gray-300 border border-gray-300 rounded-lg shadow-lg p-6 z-50 focus:outline-none"
             tabIndex="-1"
         >
             <div className="mb-4 text-gray-300 dark:text-gray-800" id="showGuid">
@@ -33,7 +33,7 @@ const GuideComponent = ({ guideElemnt, nextGuid, storedMenuState, closeGuide, sk
                     Skip
                 </button>
                 <h1 className="text-xl font-bold mt-4">Guide</h1>
-                <div  ref={guideRef} className="text-sm grid grid-cols-1 gap-1"  dangerouslySetInnerHTML={{ __html: content }} />
+                <div  ref={guideRef} className="text-sm grid grid-cols-1 gap-1 dark:text-gray-800"  dangerouslySetInnerHTML={{ __html: content }} />
             </div>
             <button
                 onClick={(e) => {

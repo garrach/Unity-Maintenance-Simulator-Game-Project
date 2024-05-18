@@ -1,75 +1,58 @@
-// resources/js/Components/Dashboard/RecentConnections.jsx
+import React, { useEffect, useRef } from 'react';
 import { usePage } from '@inertiajs/react';
-import React from 'react';
-import { useEffect } from 'react';
-import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faLink,faLineChart } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faLineChart } from '@fortawesome/free-solid-svg-icons';
+
 const RecentConnections = ({ connection, webSocket }) => {
   const { props } = usePage();
-  const devices = useRef();
-  const devicesArr = useRef([]);
-  const users = useRef();
-  const usersArr = useRef([]);
+  const devicesArr = useRef(Object.values(props.devices) || []);
+  const usersArr = useRef(Object.values(props.users) || []);
+  const sortArray = useRef(Object.values(props.Purchases) || []);
 
-
-  devices.current = Object.entries(props.devices);
-  devices.current.map(([key, element]) => {
-    devicesArr.current.push(element);
-  });
-  users.current = Object.entries(props.users);
-  users.current.map(([key, element]) => {
-    usersArr.current.push(element);
-  });
-  const sortArray = useRef(props.Purchases);
-  const sortArraydevicesArr = useRef(devicesArr.current);
-  const sortArrayusersArr = useRef( usersArr.current);
   useEffect(() => {
-
-    sortArray.current = Object.values(sortArray.current);
-    sortArray.current = sortArray.current.map((value, index, arr) => arr[arr.length - index - 1]);
-
-    sortArraydevicesArr.current = Object.values(sortArraydevicesArr.current);
-    sortArraydevicesArr.current = sortArraydevicesArr.current.map((value, index, arr) => arr[arr.length - index - 1]);
-
-    sortArrayusersArr.current = Object.values(sortArrayusersArr.current);
-    sortArrayusersArr.current = sortArrayusersArr.current.map((value, index, arr) => arr[arr.length - index - 1]);
-
-  }, [])
+    sortArray.current.reverse();
+    devicesArr.current.reverse();
+    usersArr.current.reverse();
+  }, []);
 
   return (
-    <div className="p-2 dark:text-white text-gray-800">
-      <h2 className="text-lg font-semibold mb-2" id='pop'>
-      <FontAwesomeIcon icon={faLineChart} />
-      <span className='ml-2'> Recent Connections</span>
-
-       </h2>
-      <div className='w-full overflow-x-hidden h-80 overflow-y-auto'>
+    <div className="p-4 dark:text-white text-gray-800">
+      <h2 className="text-lg font-semibold mb-4 flex items-center">
+        <FontAwesomeIcon icon={faLineChart} className="mr-2" />
+        Recent Connections
+      </h2>
+      <div className='w-full overflow-x-hidden overflow-y-auto'>
         <table className='w-full'>
-          {sortArray.current.map((purchase, index) => (
-            <tr className='uppercase p-4 hover:bg-gray-900 hover:text-gray-200 rounded shadow-md transition-transform transform hover:scale-105'>
-              <td>
-                <span className='w-10 relative h-10'>
-                <FontAwesomeIcon icon={faLink} />
-                </span>
-              </td>
-              <td>
-                <span >{` user : ${usersArr.current[usersArr.current.length - index - 1].name} `}</span>
-              </td>
-              <td>
-                <span> Device : <b><span className='underline decoration-sky-500' >{devicesArr.current[devicesArr.current.length - index - 1].type}</span></b></span>
-              </td>
-              <td>
-                <span>{` Date: ${purchase.date}`}</span>
-              </td>
+          <thead>
+            <tr className="bg-gray-800 dark:bg-gray-900 text-white">
+              <th className='p-3 text-left'>Linked</th>
+              <th className='p-3 text-left'>User</th>
+              <th className='p-3 text-left'>Device</th>
+              <th className='p-3 text-left'>Date Link</th>
             </tr>
-
-          )
-          )}
+          </thead>
+          <tbody>
+            {sortArray.current.map((purchase, index) => (
+              <tr key={index} className='dark:bg-gray-800 dark:hover:bg-gray-900 hover:bg-gray-200 transition-colors'>
+                <td className="p-4">
+                  <FontAwesomeIcon icon={faLink} className="text-blue-500" />
+                </td>
+                <td className="p-4">
+                  <span>{`User: ${usersArr.current[index]?.name || ''}`}</span>
+                </td>
+                <td className="p-4">
+                  <span>{`Device: ${devicesArr.current[index]?.type || ''}`}</span>
+                </td>
+                <td className="p-4">
+                  <span>{`Date: ${purchase.date}`}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
-
     </div>
   );
 };
+
 export default RecentConnections;

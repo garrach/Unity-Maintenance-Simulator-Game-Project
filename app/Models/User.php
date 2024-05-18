@@ -63,4 +63,12 @@ class User extends Authenticatable
     {
         return $this->hasmany(Message::class,'recipient_id');
     }
+    public function comments()
+    {
+        return $this->hasmany(Comment::class);
+    }
+    public function reviews()
+    {
+        return $this->hasmany(Review::class);
+    }
 }

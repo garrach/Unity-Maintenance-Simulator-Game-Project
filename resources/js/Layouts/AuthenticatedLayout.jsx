@@ -4,9 +4,8 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import Cookies from 'js-cookie';
+import Pannier from '@/Components/pannier';
+
 export default function Authenticated({ user, header, children, webSocket}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const { url , props } = usePage();
@@ -28,7 +27,7 @@ export default function Authenticated({ user, header, children, webSocket}) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id='pop'>
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
@@ -97,14 +96,7 @@ export default function Authenticated({ user, header, children, webSocket}) {
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="ms-3 relative">
-                                <div className='absolute z-40 -left-20 -top-2 hover:bg-gray-700 dark:hover:bg-gray-900 flex justify-center items-center rounded-full  w-12 h-12'>
-                                    <div className='relative'>
-                                        <span style={{ width: '25px', height: '25px' ,fontSize:'10px' }} className='absolute -left-5 top-2 rounded-full flex justify-center items-center  bg-gray-500 block text-gray-300'>
-                                           {isNaN(props.pannier) ? 0 : props.pannier }
-                                        </span>
-                                        <FontAwesomeIcon icon={faCartShopping} style={{ color: 'orange' }} />
-                                    </div>
-                                </div>
+                               <Pannier data={props}/>
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md" id='pop'>

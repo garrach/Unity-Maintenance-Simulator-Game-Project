@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 
-use App\Models\Comment; // Make sure to import your Comment model
+use App\Models\Comment; 
 use Illuminate\Http\Request;
+use App\Models\Userexpcoin; 
 
 class CommentsController extends Controller
 {
@@ -21,7 +23,17 @@ class CommentsController extends Controller
 
     public function store(Request $request)
     {
-        Comment::create($request->all());
+        $user=Auth::user();
+        Comment::create([
+            'user_id'=>$user->id,
+            'device_id'=>$request->device_id,
+            'text'=>$request->text
+        ]);
+        $addExp=Userexpcoin::where('user_id',$user->id)->get();
+        $addExp->update([
+            'experience'=>$addExp->experience+5
+        ]);
+        return redirect()->route('leaderboard')->with('success','well done!');
     }
 
     public function show($id)

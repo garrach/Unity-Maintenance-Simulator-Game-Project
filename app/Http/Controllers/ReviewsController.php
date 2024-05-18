@@ -1,10 +1,11 @@
 <?php
 
-// app/Http/Controllers/ReviewsController.php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
-use App\Models\Review; // Make sure to import your Review model
+use App\Models\Review;
+use App\Models\Userexpcoin; 
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
@@ -22,7 +23,18 @@ class ReviewsController extends Controller
 
     public function store(Request $request)
     {
-        Review::create($request->all());
+        $user=Auth::user();
+        Review::create([
+            'user_id'=>$user->id,
+            'device_id'=>$request->device_id,
+            'rate'=>$request->rate
+        ]);
+        $addExp=Userexpcoin::where('user_id',$user->id)->get();
+        $addExp->update([
+            'experience'=>$addExp->experience+5
+        ]);
+        return redirect()->route('leaderboard')->with('success','well done!');
+
     }
 
     public function show($id)

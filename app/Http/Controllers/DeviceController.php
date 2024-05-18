@@ -70,13 +70,37 @@ class DeviceController extends Controller
 
     public function show(Device $device)
     {
-        $purchase=$device->purchase;
+        // Retrieve the purchase related to the device
+        $purchase = $device->purchase;
+
+        $comments = $device->comments;
+        $reviews = $device->review;
+    
+        // Initialize an array to collect unique users and their related reviews/comments
+        $users = [];
+    
+        // Collect users from comments and map their comments
+        foreach ($comments as $comment) {
+            $users[$comment->id] = $comment->user->id;
+        }
+    
+        // Convert the users array to an indexed array to suit your JavaScript code
+        $comments = $comments->toArray();
+    
+        // Prepare the data for encoding
+        $userDeviceData = base64_encode(json_encode([
+            'comments' => $comments,
+        ]));
+    
+        // Return the data to the Inertia view
         return Inertia::render('devices/Show', [
             'device' => $device,
-            'deviceReview'=>$device->review,
+            'deviceReview' => $reviews,
             'purchase' => $purchase,
+            'userInfo' => $userDeviceData
         ]);
     }
+    
 
     public function edit(Device $device)
     {

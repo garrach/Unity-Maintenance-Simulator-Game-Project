@@ -94,9 +94,21 @@ class DashboardController extends Controller
             arsort($x);
 
 
-            $pannier = Auth::user()->purchases->count();
-            $cookie = Cookie::make('pannier', $pannier);
+            $pannier = Auth::user()->purchases;
 
+            $dataEnc=base64_encode(json_encode( ['usersList' => $usersList,
+                    'someSocket' => env('APP_WEBSOCKET_ENDPOINT'),
+                    'services' => $services,
+                    'connections' => $connections,
+                    'paymentPlan' => $plans,
+                    'Purchases' => $Purchases,
+                    'vehicles' => $vehicles,
+                    'reports' => $reports,
+                    'requestJob' => $jobs,
+                    'userExp'=>$userExp,
+                    'pannier'=>$pannier,
+                    'wishListItems' => $reference,
+                    'devices' => $devices,'users' => $users]));
             return Inertia::render('Dashboard',
                 ['usersList' => $usersList,
                     'someSocket' => env('APP_WEBSOCKET_ENDPOINT'),

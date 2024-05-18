@@ -9,10 +9,14 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['device_id','text'];
+    protected $fillable = ['user_id','device_id','text'];
 
     public function device(): BelongsTo
     {
         return $this->belongsTo(device::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
