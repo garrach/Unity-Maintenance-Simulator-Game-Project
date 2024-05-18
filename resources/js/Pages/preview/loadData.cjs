@@ -1,4 +1,5 @@
 import { moveObject } from './dragAndDrop.cjs';
+const {getDomain,setDomain,getDomainString}=require('DomainProvider.cjs')
 
 const fetchData = async (url) => {
     try {
@@ -46,7 +47,7 @@ const instantiatePlaces = (arr) => {
 const instantiatePlaces2 = async (socket,user) => {
     const arr = [];
     const elements = [];
-    const jsonUrl = `http://127.0.0.1:3002/api/fetch-placement?id=${user.name}`;
+    const jsonUrl = `http://${getDomainString()}/api/fetch-placement?id=${user.name}`;
     try {
         const data = await fetchData(jsonUrl);
         const placeSP = document.querySelector('.place');

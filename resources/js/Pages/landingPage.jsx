@@ -10,6 +10,8 @@ import {
     faUsers,
     faCar,
 } from '@fortawesome/free-solid-svg-icons';
+import  getDomainString  from "@/Pages/DomainProviderFR.mjs";
+
 const LandingPage = ({ auth }) => {
     const { props } = usePage();
     const [loading, SetLoading] = useState(true);
@@ -33,21 +35,7 @@ const LandingPage = ({ auth }) => {
             return null;
         }
     };
-
-    const options = {
-        method: 'GET',
-        url: 'https://127.0.0.1:3002/api/testimonial',
-    };
-    async function initTest() {
-
-        try {
-            const response = await axios.request(options);
-        } catch (error) {
-            console.error(error);
-        }
-    }
     useEffect(() => {
-        initTest();
         setDisplayData(decryptUserData(props.tending))
     }, [])
     const iconsList = [faLink,

@@ -5,34 +5,32 @@ const WebSocket = require('ws');
 const { checkApiKey } = require('./resources/js/middleware/ApikeyChecker.cjs');
 const { configureRoutes } = require('./resources/js/config/routesConfig.cjs');
 const { configureWebSocket } = require('./resources/js/config/webSocketConfig.cjs');
-const { connectToDatabase ,connectToSqlDatabase} = require('./resources/js/utils/database.cjs');
+const { connectToDatabase, connectToSqlDatabase } = require('./resources/js/utils/database.cjs');
+const {getDomain,setDomain}=require('./DomainProvider.cjs')
 const app = express();
-const port = 3002;
+const port = getDomain().port;
 
 app.use(cors());
 app.use(express.json());
 app.use(checkApiKey);
 
-
-
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-async function yieldingConnetion(){
-const db= await connectToDatabase(true); 
-const SQLDB=await connectToSqlDatabase()
-//WEBSOKET-SERVER (REALTIME COMMUNICATION)
-configureWebSocket(wss,db,SQLDB);
-//API ENDPOINTS
-configureRoutes(app,db);
+async function yieldingConnection() {
+  const db = await connectToDatabase(true); 
+  const SQLDB = await connectToSqlDatabase();
+  
+  // WEBSOCKET-SERVER (REALTIME COMMUNICATION)
+  configureWebSocket(wss, db, SQLDB);
+  
+  // API ENDPOINTS
+  configureRoutes(app, db);
 }
-yieldingConnetion();
 
-//Start-Servers
-app.listen(port, () => {
-  console.log(`Server is listening on ^^ort ${port}`);
-  server.listen(port + 2, () => {
-    console.log(`Server WebSocket is listening on port ${port + 2}`);
-  });
+yieldingConnection();
+
+// Start the server (HTTP and WebSocket)
+server.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });
-//END SERVER

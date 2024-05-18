@@ -99,7 +99,7 @@ class DashboardController extends Controller
 
             return Inertia::render('Dashboard',
                 ['usersList' => $usersList,
-                    'someSocket' => 'ws://localhost:3004',
+                    'someSocket' => env('APP_WEBSOCKET_ENDPOINT'),
                     'services' => $services,
                     'connections' => $connections,
                     'paymentPlan' => $plans,

@@ -15,6 +15,8 @@ import Sidebar from './sideBar';
 import { useRef } from 'react';
 import GuideComponent from '@/Components/GuideComponent';
 import axios from 'axios';
+import  getDomainString  from "@/Pages/DomainProviderFR.mjs";
+
 export default function Dashboard({ auth, usersList, reports, requestJob, wishListItems, userExp }) {
   const headers = {
     'Content-Type': 'application/json',
@@ -22,7 +24,7 @@ export default function Dashboard({ auth, usersList, reports, requestJob, wishLi
 };
 useEffect(()=>{
   async function retriveUserKey(){
-    await axios.post(`http://127.0.0.1:3002/api/get-key?ID=${auth.user.id}`,auth, { headers }).then((response)=>{
+    await axios.post(`http://${getDomainString()}/api/get-key?ID=${auth.user.id}`,auth, { headers }).then((response)=>{
       //Done something with the key
     })
   }

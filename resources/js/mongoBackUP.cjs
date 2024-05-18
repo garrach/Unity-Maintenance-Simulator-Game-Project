@@ -1,6 +1,8 @@
 import axios from 'axios';
+const {getDomain,setDomain,getDomainString}=require('../../DomainProvider.cjs')
+
 const sendToMongo = async ({data})=>{
-    const apiEndpoint = 'http://127.0.0.1:3002/api/login';
+    const apiEndpoint = `http://${getDomainString()}/api/login`;
 
 
     // Inertia POST success callback

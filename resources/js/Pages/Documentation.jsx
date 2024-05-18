@@ -7,13 +7,14 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import FeedbackMessage from './FeedbackMessage';
 
 import GuestLayout from '@/Layouts/GuestLayout';
+import  getDomainString  from "@/Pages/DomainProviderFR.mjs";
 
 
 const fetchData = async (endpoint, apiKey, setDataFunction) => {
     try {
         const response = await axios({
             method: 'GET',
-            url: `http://localhost:3002/api/${endpoint}`,
+            url: `http://${getDomainString()}/api/${endpoint}`,
             headers: {
                 'Content-Type': 'application/json',
                 'api-key': apiKey,
@@ -87,7 +88,7 @@ const Documentation = (key) => {
         if (props.auth.user) {
             try {
                 // Adding 'http://' before the URL
-                const response = await fetch(`http://127.0.0.1:3002/api/get-key?ID=${props.auth.user.id}`);
+                const response = await fetch(`http://${getDomainString()}/api/get-key?ID=${props.auth.user.id}`);
                 const data = await response.json();
 
                 if (data && data.userApiKey) {
@@ -212,13 +213,13 @@ const Documentation = (key) => {
                                 <h2 className="text-2xl font-semibold mb-4">API Section</h2>
                                 <h3>Restful API provides real-time data transfer, with endpoints and websockets.</h3>
                                 <div className='absolute top-10 right-20'>
-                                {props.auth.user ? (
-                                    <button onClick={HandleApiRequest}>GET API Key</button>
-                                ) : (
-                                    <button onClick={HandleApiRequest}>Generate API Key</button>
-                                )}
+                                    {props.auth.user ? (
+                                        <button onClick={HandleApiRequest}>GET API Key</button>
+                                    ) : (
+                                        <button onClick={HandleApiRequest}>Generate API Key</button>
+                                    )}
                                 </div>
-                                
+
                                 <p className="text-gray-300">User fetch data:</p>
 
                                 <ul className="list-disc ml-6 mt-4">

@@ -2,6 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import  getDomainString  from "@/Pages/DomainProviderFR.mjs";
+
 const Create = ({ auth, vehicles, devices, connections }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -12,7 +14,7 @@ const Create = ({ auth, vehicles, devices, connections }) => {
     device_id: 1,
     connection_date: "",
   });
-  const [socket, setSocket] = useState(new WebSocket("ws://localhost:3004"));
+  const [socket, setSocket] = useState(new WebSocket(`ws://${getDomainString()}`));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
@@ -37,7 +39,7 @@ const Create = ({ auth, vehicles, devices, connections }) => {
           </h2>
         }
       >
-                    <Head title="Create Connection" />
+        <Head title="Create Connection" />
 
         <div className="max-w-2xl mx-auto dark:text-white">
           <h1 className="text-2xl font-semibold mb-4">Create Connection</h1>
