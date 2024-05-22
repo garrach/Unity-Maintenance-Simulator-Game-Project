@@ -4,16 +4,53 @@ namespace App\Http\Controllers;
 use App\Models\job;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Service;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
 
 
 class ReportController extends Controller
 {
+
+    
+    public function PurchaseServiceCheckout(Request $request){
+        $serviceID=$request->service;
+        $userID=$request->user;
+        $user=User::where('id',$userID)->first();
+        $service=Service::where('id',$serviceID)->first();
+
+        //return response()->json(['serviceID'=>$service,'userID'=>$user]);
+        return Inertia::render('Checkout/index', ['service' => $service, 'user' => $user]);
+
+    }
+
+    public function PurchaseService(Request $request){
+        $serviceID=$request->serviceID;
+        $userID=$request->userID;
+
+        $user=User::where('id',$userID)->first();
+        $service=Service::where('id',$serviceID)->first();
+
+        $currentDate = date("Y-m-d H:i:s");
+
+        $report=Report::create([
+        'user_id'=>$userID,
+        'application_status'=>0,
+        'application_date'=>$currentDate,
+        'title'=>'User Purchase Service',
+        'description'=>"User: ".$user->name." had request to purchase (".$service->name.") service",
+
+        ]);
+        $report->save();
+
+        return;
+
+    }
     public function apply(Request $request)
     {
         $request->validate([

@@ -30,6 +30,7 @@ const UsersList = ({ usersList }) => {
                   <th className='p-3 text-left'>Role</th>
                 </>
               )}
+              <th className='p-3 text-left'>Role</th>
               <th className='p-3 text-left'>Actions</th>
             </tr>
           </thead>
@@ -37,7 +38,7 @@ const UsersList = ({ usersList }) => {
             {usersList.map((user, index) => (
               <tr key={index} className='hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'>
                 <td className='p-3'>{user.name}</td>
-                {props.auth.user.role === "admin" && (
+                {props.auth.user.role === "admin" ? (
                   <>
                     <td className='p-3'>{user.email}</td>
                     <td className='p-3'>
@@ -45,7 +46,12 @@ const UsersList = ({ usersList }) => {
                       <span className='ml-2'>{user.role}</span>
                     </td>
                   </>
-                )}
+                ) : <>
+                  <td className='p-3'>
+                    <FontAwesomeIcon icon={iconsByUser[user.role]} />
+                    <span className='ml-2'>{user.role}</span>
+                  </td>
+                </>}
                 <td className='p-3'>
                   {props.auth.user.role === "admin" ? (
                     <div>

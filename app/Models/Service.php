@@ -11,7 +11,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description','route'];
+    protected $fillable = ['name', 'description','route','stat'];
 
     public function paymentPlans()
     {

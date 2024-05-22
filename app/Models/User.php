@@ -71,4 +71,7 @@ class User extends Authenticatable
     {
         return $this->hasmany(Review::class);
     }
+    public function subs(){
+        return $this->hasMany(SubAgent::class);
+    }
 }

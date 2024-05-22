@@ -22,6 +22,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $paidSv=SubAgentController::getUserPaidServices($user->id);
         $route = Route::currentRouteName();
         $valid = $this->checkRole($route);
 
@@ -96,19 +97,7 @@ class DashboardController extends Controller
 
             $pannier = Auth::user()->purchases;
 
-            $dataEnc=base64_encode(json_encode( ['usersList' => $usersList,
-                    'someSocket' => env('APP_WEBSOCKET_ENDPOINT'),
-                    'services' => $services,
-                    'connections' => $connections,
-                    'paymentPlan' => $plans,
-                    'Purchases' => $Purchases,
-                    'vehicles' => $vehicles,
-                    'reports' => $reports,
-                    'requestJob' => $jobs,
-                    'userExp'=>$userExp,
-                    'pannier'=>$pannier,
-                    'wishListItems' => $reference,
-                    'devices' => $devices,'users' => $users]));
+            $dataEnc=base64_encode(json_encode($paidSv));
             return Inertia::render('Dashboard',
                 ['usersList' => $usersList,
                     'someSocket' => env('APP_WEBSOCKET_ENDPOINT'),
@@ -122,7 +111,7 @@ class DashboardController extends Controller
                     'userExp'=>$userExp,
                     'pannier'=>$pannier,
                     'wishListItems' => $reference,
-                    'devices' => $devices,'users' => $users]);
+                    'devices' => $devices,'users' => $users,'dataEnc'=>$dataEnc]);
         }
     }
     public static function checkRole($route)

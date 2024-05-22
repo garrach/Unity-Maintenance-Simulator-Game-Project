@@ -59,7 +59,7 @@ const Navbar = ({ auth, layer }) => {
                 >
                   Contact
                 </Link>
-                <Link
+               {/* <Link
                   href={route('documentation')}
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
                 >
@@ -70,7 +70,7 @@ const Navbar = ({ auth, layer }) => {
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-500"
                 >
                   API
-                </Link>
+  </Link>*/}
          
                 <Link
                   href={route('devices.preview')}
@@ -130,7 +130,7 @@ const Navbar = ({ auth, layer }) => {
             >
               Contact
             </Link>
-            <Link
+            {/*<Link
               href={route('documentation')}
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
             >
@@ -141,7 +141,7 @@ const Navbar = ({ auth, layer }) => {
               className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-gray-500"
             >
               API
-            </Link>
+      </Link>*/}
  
             <Link
               href={route('devices.preview')}

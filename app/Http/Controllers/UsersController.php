@@ -25,7 +25,7 @@ class UsersController extends Controller
                 $exp[$user->id]=Userexpcoin::create([
                     'user_id' => $user->id,
                     'experience' => 0, 
-                    'coins' => 0, 
+                    'coins' => 1000, 
                 ]);
                 $exp[$user->id]->save();
             }

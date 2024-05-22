@@ -1,9 +1,51 @@
 import React from "react";
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import FeedbackMessage from "./FeedbackMessage";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faWifi,
+    faToolbox,
+    faCog,
+    faMedal,
+    faChartLine,
+    faBars,
+    faCoins,
+    faBriefcase,
+    faTrophy,
+    faDatabase,
+    faCalendarCheck,
+    faScroll,
+    faScrollTorah
+} from '@fortawesome/free-solid-svg-icons';
 const Gaming = ({ displayArray }) => {
+    const [userData, setUserData] = useState(null);
+    const [downloadgame, setDownloadGame] = useState(false);
+
+    const AssetsBundle = {
+        name: 'Unity_Garage_Simulator_UnityGarage',
+        description: '',
+        version: 'v0.1',
+        platform: 'Windows',
+        file_size: '101',
+        file_path: 'Unity_Garage_Simulator.exe',
+    }
+    const { data, setData, post, processing } = useForm(AssetsBundle);
+    const DownloadGame = () => {
+        const link = document.createElement('a');
+        link.href = AssetsBundle.file_path;
+        link.download = AssetsBundle.name + ".exe";
+        link.click();
+        setTimeout(() => {
+            post(route('assetBundles.store', data))
+            setDownloadGame(true);
+        }, 2000);
+    }
     return <GuestLayout>
         <Head title="Gaming Guide" />
+        <FeedbackMessage show={downloadgame} />
+
         <div className="relative h-screen overflow-x-hidden overflow-y-auto">
             <div className="relative h-80 bg-gray-900">
                 <img src="banner.jpg" alt="" className='relative w-auto h-auto md:h-auto mx-auto' />
@@ -18,6 +60,49 @@ const Gaming = ({ displayArray }) => {
                 <p className="text-gray-800 dark:text-gray-200 text-xl text-center  rounded-md p-8 ">
                     Unity car mantaince provide a <b className="underline decoration-sky-500">Server-side</b> handling along with a Game client-side, this platform register users attached devices
                     along with <br />  competetive earning Exp by getting into the gaming users can earn <b className="underline decoration-sky-500">experience points</b> experience points classified on a <b className="underline decoration-sky-500">LeaderBoard</b>.</p>
+
+            <div className="w-24 h-24 relative rounded-full flex justify-center items-center">
+                <img src="home_mouse_icon.png" alt="Scroll" className="w-12 h-12 absolute -bottom-10 z-40"/>
+            </div>
+            </div>
+
+
+            <div className="relative h-auto bg-gray-500">
+                <div className="grid grid-cols-1 md:grid-cols-2 relative">
+                    <div className="relative flex h-screen bg-gray-200 dark:bg-gray-900 block justify-center items-center">
+                        <span className="w-auto h-80 bg-gray-300 block p-2">
+                            <div className='dark:bg-gray-900 relative h-full'>
+                                <img src="game.png" alt="" className='relative top-20 right-56 w-auto h-80' />
+                                <div className='absolute dark:bg-gray-900 dotsCon w-56 h-20 bottom-10 -right-24'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <defs>
+                                            <pattern id="dots" width="5" height="20" patternUnits="userSpaceOnUse">
+                                                <circle cx="5" cy="5" r="2" fill="#808080" />
+                                            </pattern>
+                                        </defs>
+                                        <rect x="0" y="0" width="100" height="100" fill="url(#dots)" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div className="relative flex h-screen bg-gray-200 dark:bg-gray-900 block justify-center items-center">
+                        <span className="w-auto h-80 text-gray-800 dark:text-gray-200 text-center block p-4">
+                            <p className="font-bold text-2xl">Unity Garage Simulator</p>
+
+                            <p className="text-xl">Welcome to the <b className="underline decoration-sky-500">Unity Garage Simulator</b>
+                                Step into the world of <b className="underline decoration-sky-500">automotive</b> innovation and exploration.</p>
+                            <p className="text-xl">Experience the thrill of <b className="underline decoration-sky-500">customizing</b> and interacting with intricately
+                                detailed car interiors.</p>
+                            <p className="text-xl">From tinkering with dashboard displays to adjusting seat configurations, this simulator offers</p>
+                            <p className="text-xl">a unique glimpse into the inner workings of <b className="underline decoration-sky-500">vehicle technology</b>.</p>
+                            <button onClick={DownloadGame} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Download Now</button>
+                        </span>
+
+                    </div>
+
+                </div>
             </div>
             <div className="relative h-12 bg-gray-200 flex mx-auto">
                 <marquee className="flex">
@@ -25,7 +110,7 @@ const Gaming = ({ displayArray }) => {
                         user.exp > 0 && <span className="mt-2 inline-block ml-2">
                             <span className="hover:bg-orange-500 p-2 rounded cursor-default"> {`${user.ID}`}</span>
                             <span className="font-bold uppercase"> {`${user.exp}exp`}</span>
-                           
+
                         </span>
                     )
                     )}

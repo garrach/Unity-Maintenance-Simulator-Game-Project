@@ -112,7 +112,7 @@ const Account = () => {
           <Link href='/profile'>
             <div className="dark:bg-gray-800 bg-white p-4 rounded shadow-md mb-4">
               <h2 className="text-lg font-bold mb-2">Security</h2>
-              <p>This section could allow users to change passwords and enable 2FA.</p>
+              <p>This section could allow users to change passwords or account deactivation.</p>
             </div></Link>
         </div>
       </AuthenticatedLayout>

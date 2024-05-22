@@ -57,7 +57,7 @@ class AddonRequestController extends Controller
         $score=Userexpcoin::where('user_id',$user->id)->get()->first();
         $score->update([
             'experience'=>$score->experience+10,
-            'coins'=>$score->coins+10,
+            'coins'=>$score->coins-10,
         ]);
 
         return redirect()->route('devices.index')->with('success', 'AddonRequest created successfully.');

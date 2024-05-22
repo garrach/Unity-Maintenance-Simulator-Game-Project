@@ -15,13 +15,6 @@ cd %~1 || (
     exit /b 1
 )
 
-REM Start the build process
-echo Running npm build...
-call npm run build || (
-    echo npm build failed.
-    pause
-    exit /b 1
-)
 
 REM Start the production build
 echo Running npm production build...

@@ -25,14 +25,24 @@ class ServicesController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Services/Create');
+        $paymentPlans=PaymentPlan::all()->toArray();
+        return Inertia::render('Services/Create',["paymentPlans"=>$paymentPlans]);
     }
 
     public function store(Request $request)
     {
-        // Validation logic here, if needed
+    
+    $data=$request->all();
+       $service=Service::create([
+            'name'=>$data['name'],
+            'description'=>$data['description'],
+            'route'=>$data['route'],
+            'stat'=>$data['stat'],
+        ]);
+        $service->save();
+        $paymentPlan=PaymentPlan::where('id',$data['plan'])->first();
+        $paymentPlan->services()->attach($service);
 
-        Service::create($request->all());
         return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 

@@ -3,13 +3,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-const Create = ({ paymentPlans, auth }) => {
+const Create = ({ auth }) => {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     description: '',
     route: '',
-    plan: 1,
-    stat: 'free',
     // Add other fields as needed
   });
 
@@ -36,28 +34,11 @@ const Create = ({ paymentPlans, auth }) => {
           </h2>
         }
       >
-        <Head title="Service Details" />
+                <Head title="Service Details" />
 
         <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-800 rounded-md shadow-md">
-
           <h1 className="text-2xl font-semibold mb-4">Create Service</h1>
           <form onSubmit={handleSubmit}>
-            <div className='relative h-32 flex justify-around items-center'>
-              {paymentPlans.map((plan, index) => (
-                <div key={index}>
-                  <label htmlFor={`plan` + index} className='mr-4 select-none'>{`${plan.name}`}</label>
-                  <input
-                    type="radio"
-                    name="plan"
-                    value={plan.id}
-                    onChange={handleChange}
-                    id={`plan` + index}
-                  />
-                </div>
-
-              ))}
-
-            </div>
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
                 Name:
@@ -73,7 +54,7 @@ const Create = ({ paymentPlans, auth }) => {
             </div>
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
-                description:
+              description:
               </label>
               <input
                 type="text"

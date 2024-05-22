@@ -3,33 +3,14 @@ import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import { clientSocket } from '../client.cjs';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 
-
-const JobCard = ({ line }) => {
-    return (<div className='bg-green-500 w-56 h-56'>
-        <h4>employee</h4>
-        <p>
-            {line}
-        </p>
-        <button onClick={handleAutoDataChange({ name: 'coverLetter', value: line })}>Apply</button>
-
-    </div>)
-
-};
 
 const PriorityCustomerSupportIndex = ({ auth }) => {
 
     const socket = clientSocket('dashdoard_sentRequest');
 
-    const sendRoleRequest = (e) => {
-        e.preventDefault();
-
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ type: 'roleRequest', message: 'a request from client to admin, to grant role', data: auth.user }))
-        }
-
-    }
-
+    const textref=useRef();
     const suggestCoverLetter = [
         `Dear [Hiring Manager name],
         As a highly focused and motivated individual with a passion for cars, 
@@ -133,6 +114,8 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
             ...prevData,
             [name]: value,
         }));
+        //target.focus();
+        console.log(textref.current.focus())
     };
     const { data, setData, post, processing, errors, reset } = useForm({
         fullName: '',
@@ -178,46 +161,50 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
     const JobCard = ({ line }) => {
 
         return (
-            <div className='relative dark:bg-gray-800 bg-gray-200 cover-letter-container hover:text-gray-800 text-gray-800 dark:text-white rounded-md hover:bg-orange-500 p-4'>
+            <div className='block py-8 mb-10'>
+                <div  className='relative dark:bg-gray-800 bg-gray-200 cover-letter-container hover:text-gray-800 text-gray-800 dark:text-white rounded-md hover:bg-orange-500 p-4'>
                 <h4 className='font-bold uppercase'>employee</h4>
                 <p className='cover-letter'>
                     {line}
                 </p>
                 <button className='absolute top-2 right-4' onClick={(e) => { e.preventDefault(); handleAutoDataChange({ name: 'coverLetter', value: line }) }}>Apply</button>
 
-            </div>)
+            </div>
+            </div>
+            )
 
     };
     return (
         <div>
             <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Customer Support</h2>}>
                 <Head title="Priority Customer Support" />
-                <div className='relative h-80 dark:bg-gray-900 p-4'>
+                <div className='grid grid-cols-1 gap-8 h-auto'>
+                    <div className='dark:bg-gray-900'>
+                        <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>Work opportunity</h3>
+                        <div className='grid grid-cols-1 md:grid-cols-4 gap-4 py-10 justify-around items-center'>
+                            {suggestCoverLetter.map((cover) => (
+                                <JobCard line={cover} />
+                            ))}
+                        </div>
 
-                    <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>Work opportunity</h3>
-                    <div className='w-full h-full flex p-4 justify-around items-center'>
-                        {suggestCoverLetter.map((cover) => (
-                            <JobCard line={cover} />
-                        ))}
                     </div>
+                    <div className='relative h-auto dark:bg-gray-900 p-4'>
 
-                </div>
-                <div className='relative h-80 dark:bg-gray-900 p-4'>
+                        <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>For Developer</h3>
+                        <div className='grid grid-cols-1 md:grid-cols-4 gap-4  p-4 justify-around items-center'>
+                            {DevCoverLetter.map((cover) => (
+                                <JobCard line={cover} />
+                            ))}
+                        </div>
 
-                    <h3 className='font-bold text-2xl text-gray-800 dark:text-gray-200'>For Developer</h3>
-                    <div className='w-full h-full flex p-4 justify-around items-center'>
-                        {DevCoverLetter.map((cover) => (
-                            <JobCard line={cover} />
-                        ))}
                     </div>
-
                 </div>
+
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-0 items-center justify-center p-12 rounded-md shadow-md dark:bg-gray-800'>
 
                     <div className='relative h-full'>
-                        <img src="joApplyToo.png" alt="" className='w-auto absolute bottom-20 right-0' />
+                        <img src="joApplyToo.png" alt="" className='w-auto md:absolute bottom-20 right-0' />
                     </div>
-
                     <div className='relative left-0'>
 
                         <form onSubmit={handleSubmit} className="dark:text-gray-200 p-6 rounded-md shadow-md w-80">
@@ -231,7 +218,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                     type="text"
                                     id="fullName"
                                     name="fullName"
-                                    value={data.fullName || autoData.fullName}
+                                    value={data.fullName}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full dark:text-gray-800  border rounded-md"
                                     required
@@ -247,7 +234,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                                     type="email"
                                     id="email"
                                     name="email"
-                                    value={data.email || autoData.email}
+                                    value={data.email}
                                     onChange={handleChange}
                                     className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
                                     required
@@ -289,14 +276,15 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                             </div>
 
                             {/* Cover Letter */}
-                            <div className="mb-4">
+                            <div className="mb-4" >
                                 <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-600 dark:text-gray-200">
                                     Cover Letter
                                 </label>
                                 <textarea
+                                    ref={textref}
                                     id="coverLetter"
                                     name="coverLetter"
-                                    value={data.coverLetter || autoData.coverLetter}
+                                    value={data.coverLetter}
                                     onChange={handleChange}
                                     rows="4"
                                     className="mt-1 p-2 w-full dark:text-gray-800 border rounded-md"
@@ -314,7 +302,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                         </form>
                     </div>
                     <div className='relative h-full'>
-                        <img src="skills02.png" alt="" className='w-auto absolute bottom-20 right-0' />
+                        <img src="skills02.png" alt="" className='w-auto md:absolute md:bottom-20 right-0' />
                     </div>
                 </div>
 
@@ -324,7 +312,7 @@ const PriorityCustomerSupportIndex = ({ auth }) => {
                     `
                 
                 .cover-letter-container {
-                    max-height: 200px; 
+                    max-height: 400px; 
                     max-width: 400px; 
                     overflow-y: auto; 
                   }

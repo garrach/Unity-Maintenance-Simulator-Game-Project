@@ -18,4 +18,4 @@ function setDomain(host, port) {
     domain.port = port
     return `${domain.host}:${domain.port}`
 }
-module.exports = { getDomain, setDomain ,getDomainString}
+module.exports = { getDomain, setDomain, getDomainString }

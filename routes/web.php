@@ -27,23 +27,23 @@ use App\Http\Controllers\WishListController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\UnityDevicesController;
 use App\Http\Controllers\UnityDataMonitorController;
+use App\Http\Controllers\SubAgentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
+
+
 //static Pages Routes
 Route::get('/api/key',function(){
     return response()->json(['key'=>env('APP_WEBSOCKET_KEY')]);
 });
-Route::get('/documentation',function(){
-    $key=env('APP_WEBSOCKET_KEY');
-    return Inertia::render('Documentation',compact('key'));
-})->name('documentation');
+
 
     Route::get('/', function () {
-       
+
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
@@ -54,17 +54,21 @@ Route::get('/documentation',function(){
     })->name('home');
     Route::get('/aboutUs', function () {return Inertia::render('About');})->name('about');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::get('/contact/list', [ContactController::class, 'list'])->name('contact.list');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    Route::delete('/contact', [ContactController::class, 'destroy'])->name('contact.delete');
     Route::get('/preview/devices', [DeviceController::class, 'preview'])->name('devices.preview');
     Route::get('/gaming', [UnityDataMonitorController::class, 'previewService'])->name('previewService');
 //Authenticated Routes
 Route::middleware(('auth'))->group(function () {
 
 
+    Route::post('/subservices/sub', [SubAgentController::class, 'sub'])->name('subservices.sub');
+    Route::get('/subservices/plans', [SubAgentController::class, 'viewPlans'])->name('subservices.viewPlans');
+
     //client and Admin and Employees
 
     Route::resource('assetBundles', AssetBundlesController::class);
-
     Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
     Route::get('/data-monitoring',[UnityDataMonitorController::class, 'index'])->name('data-monitoring');
 
@@ -87,7 +91,7 @@ Route::middleware(('auth'))->group(function () {
     Route::get('/meeting', function () {return Inertia::render('meeting');})->name('meeting.index');
     Route::get('/webPreview/unity', [UnityDevicesController::class,'index'])->name('unity.index');
     Route::post('/webPreview/unity', [UnityDevicesController::class,'move'])->name('unity.move');
-    Route::get('/unity-refresh', [DBsyncController::class, 'index'])->name('unityRefresh'); 
+    Route::get('/unity-refresh', [DBsyncController::class, 'index'])->name('unityRefresh');
 
     Route::middleware(('Admin'))->group(function () {
         Route::resource('vehicles', VehicleController::class);
@@ -97,8 +101,19 @@ Route::middleware(('auth'))->group(function () {
         Route::resource('connections', ConnectionController::class);
         Route::resource('schedules', ScheduleController::class);
         Route::resource('reports', ReportController::class);
-        Route::resource('whishlist', WishListController::class);
+           Route::resource('whishlist', WishListController::class);
+        Route::get('/subservices', [SubAgentController::class, 'index'])->name('subservices.index');
+        Route::get('/subservices/{id}/edit', [SubAgentController::class, 'EditSubservice'])->name('subservices.edit');
+        Route::put('/subservices/{id}', [SubAgentController::class, 'UpdateSubservice'])->name('subservices.update');
+        Route::delete('/subservices/{id}', [SubAgentController::class, 'DeleteSubservice'])->name('subservices.destroy');
+        Route::get('/documentation',function(){
+            $key=env('APP_WEBSOCKET_KEY');
+            return Inertia::render('Documentation',compact('key'));
+        })->name('documentation');
     });
+
+    Route::get('/report-purchase-service', [ReportController::class,"PurchaseServiceCheckout"])->name('purchase.checkout');
+    Route::post('/report-purchase-service', [ReportController::class,"PurchaseService"])->name('purchase.service');
 
     //client and Employees
     Route::resource('vehicles', VehicleController::class)->only(['show', 'index']);

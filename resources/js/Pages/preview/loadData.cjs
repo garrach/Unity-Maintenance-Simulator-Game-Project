@@ -1,12 +1,12 @@
 import { moveObject } from './dragAndDrop.cjs';
-const {getDomain,setDomain,getDomainString}=require('DomainProvider.cjs')
+//const {getDomain,setDomain,getDomainString}=require('DomainProviderFR.mjs')
 
 const fetchData = async (url) => {
     try {
         const response = await fetch(url, {
             headers: {
                 'api-key':'YOUR_SECRET_API_KEY'
-            } 
+            }
         });
         const data = await response.json();
         return data.data;
@@ -47,7 +47,7 @@ const instantiatePlaces = (arr) => {
 const instantiatePlaces2 = async (socket,user) => {
     const arr = [];
     const elements = [];
-    const jsonUrl = `http://${getDomainString()}/api/fetch-placement?id=${user.name}`;
+    const jsonUrl = `http://127.0.0.1:3002/api/fetch-placement?id=${user.name}`;
     try {
         const data = await fetchData(jsonUrl);
         const placeSP = document.querySelector('.place');

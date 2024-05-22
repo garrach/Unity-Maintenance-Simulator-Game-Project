@@ -5,11 +5,35 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Contact; // Make sure to import the Contact model
+use Illuminate\Support\Facades\Auth;
+
 class ContactController extends Controller
 {
     function index(){
-        return Inertia::render('Contact');
+        if (Auth::check()) {
+            return Inertia::render('Contacts/Create');
+        }else {
+            return Inertia::render('Contact');
+        }
     }
+
+    function list(){
+        if (Auth::check()) {
+            $contacts=Contact::all()->toArray();
+            return Inertia::render('Contacts/Index',compact('contacts'));
+        }else {
+            return Inertia::render('Contact');
+        }
+    }
+
+    function show(Contact $contact){
+        if (Auth::check()) {
+            return Inertia::render('Contacts/Show');
+        }else {
+            return Inertia::render('Contact');
+        }
+    }
+
     public function store(Request $request)
     {
         // Validate the form data
@@ -27,5 +51,12 @@ class ContactController extends Controller
     ]);
 
         return redirect()->route('home')->with('success', 'message submitted successfully!');
+    }
+
+    public function destroy(Request $request)
+    {
+        $contact=Contact::where('id',$request->id)->first();
+        $contact->delete();
+        return $request->all();
     }
 }

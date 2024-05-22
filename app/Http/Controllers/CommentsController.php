@@ -29,7 +29,7 @@ class CommentsController extends Controller
             'device_id'=>$request->device_id,
             'text'=>$request->text
         ]);
-        $addExp=Userexpcoin::where('user_id',$user->id)->get();
+        $addExp=Userexpcoin::where('user_id',$user->id)->first();
         $addExp->update([
             'experience'=>$addExp->experience+5
         ]);

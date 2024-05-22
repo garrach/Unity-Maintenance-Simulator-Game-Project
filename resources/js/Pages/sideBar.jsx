@@ -14,10 +14,10 @@ import {
     faDatabase,
     faCalendarCheck
 } from '@fortawesome/free-solid-svg-icons'; // Import necessary FontAwesome icons
-
 const Sidebar = ({ Children, auth, expand }) => {
     const { props } = usePage();
     const servicesRef = useRef();
+    const paindSv = useRef(JSON.parse(atob(props.dataEnc)));
     servicesRef.current = props.services;
     const [ssi, setSsi] = useState(expand);
     const iconMappings = {
@@ -32,27 +32,26 @@ const Sidebar = ({ Children, auth, expand }) => {
         "LeaderBoard": faTrophy,
         "Unity Data Monitoring": faChartLine
     };
-    const iconsList=useRef([]);
+    const listPaidServices = useRef([]);
+    useEffect(() => {
+        listPaidServices.current = [];
+        Object.entries(paindSv.current.services).map(([key, value]) => { listPaidServices.current.push(value) });
+    }, [])
+    const iconsList = useRef([]);
     if (servicesRef.current) {
         iconsList.current = servicesRef.current.map((feature, index) => {
             const icon = iconMappings[feature.name]; // Get the icon corresponding to the service name
             return icon ? <FontAwesomeIcon key={index} icon={icon} /> : null; // Return the icon component
         });
     }
-
     const handlSideBar = () => {
         setSsi((prevState) => !prevState)
     }
-
-
-
-
     return (
         <>
-
+            {console.log(listPaidServices.current)}
             {ssi ? (
                 <>
-
                     <aside className="dark:text-white glass-container text-gray-800 sm:w-56 ">
                         <nav>
                             <ul className="p-0 mmLi sm:w-56 ">
@@ -60,14 +59,23 @@ const Sidebar = ({ Children, auth, expand }) => {
                                     <span className='text-white'><FontAwesomeIcon icon={faBars} /></span>
                                 </li>
                                 {servicesRef.current && (servicesRef.current.map((feature, index) =>
-                                    <li key={index}><Link href={route(`${feature.route}`)}>{feature.name}</Link></li>
-
+                                    <li key={index}>
+                                        <Link href={route(`${feature.route}`)}>
+                                            <span>
+                                                {feature.name}
+                                            </span>
+                                            {Object.values(listPaidServices.current).map((value) => (
+                                                feature.name === value.name ? <div>
+                                                    <span style={{ padding: '4px', fontSize: '11px' }} className='ml-2 uppercase rounded bg-orange-500' >purchased</span>
+                                                </div> : ''
+                                            ))}
+                                        </Link>
+                                    </li>
                                 ))}
-
-
+                                <li><Link href={route('subservices.viewPlans')} id='pop'>Purchase service</Link></li>
+                                <li><Link href={route('contact')} id='pop'>Customer Support</Link></li>
                                 {auth.user.role === "admin" &&
                                     Children}
-
                             </ul>
                         </nav>
                         <div className='really-idk mx-auto flex'>
@@ -81,7 +89,6 @@ const Sidebar = ({ Children, auth, expand }) => {
                             </ul>
                         </div>
                     </aside>
-
                     <style>
                         {`
         .really-idk{
@@ -96,7 +103,6 @@ const Sidebar = ({ Children, auth, expand }) => {
     width:100%;
     height:auto;
     background-color:transparent;
-
     }
     .mmLi li{
     display:flex;
@@ -113,16 +119,12 @@ const Sidebar = ({ Children, auth, expand }) => {
     width:100%;
     height:auto;
     }
-    
     .mmLi li:hover{
     background-color:black;
     color:white;
     cursor:pointer;
     }`}
                     </style>
-
-
-                    
                 </>) : (
                 <>
                     {(<><aside className="glass-container bg-gray-900" >
@@ -142,7 +144,6 @@ const Sidebar = ({ Children, auth, expand }) => {
                                 ))}
                                 {auth.user.role === "admin" &&
                                     Children}
-
                             </ul>
                         </nav>
                         <div className='really-idk mx-auto text-white flex'>
@@ -176,7 +177,6 @@ const Sidebar = ({ Children, auth, expand }) => {
                         height:auto;
                         background-color:transparent;
                         overflow:hiddin;
-
                     }
                     .mmLi li{
                         display:flex;
@@ -191,21 +191,17 @@ const Sidebar = ({ Children, auth, expand }) => {
                         width:100%;
                         height:auto;
                         overflow:hiddin;
-
                     }
                     .mmLi ul:hover{
                         width:100%;
                         height:auto;
                     }
-                    
                     .mmLi li:hover{
                         background-color:black;
                         color:#1f2937;
                         cursor:pointer;
                     }`}
                     </style>
-
-
                 </>)}
         </>
     )

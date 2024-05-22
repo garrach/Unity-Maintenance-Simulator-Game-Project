@@ -26,7 +26,7 @@ const Pannier = ({ data }) => {
             </div>
         </div>
         {openPannier && route().current('dashboard') &&
-            <div className='absolute left-40 rounded-lg border-2 p-2 w-auto h-auto bg-gray-700'>
+            <div className='absolute -left-80 z-40 rounded-lg border-2 p-2 w-auto h-auto bg-gray-700'>
                 <h3 className='text-gray-700 dark:text-gray-300'><FontAwesomeIcon icon={faCartShopping} style={{ color: 'orange', width: '15px', height: '15px' }} className='mr-4' />Pannier</h3>
                 <div className='relative h-32 overflow-y-auto overflow-x-hidden'>
                     <table>
