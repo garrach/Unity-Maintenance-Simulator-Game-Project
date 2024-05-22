@@ -1,0 +1,1 @@
+import{j as e}from"./app-CmMHBtRm.js";function r({param:a}){return e.jsx(e.Fragment,{children:e.jsx("div",{className:"w-full",children:e.jsxs("h1",{children:[" ",a.user.name," You must purchase this Service, available in stander Plan"]})})})}export{r as default};
