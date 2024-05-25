@@ -35,7 +35,7 @@ const Contact = ({ successMessage }) => {
             Message sent successfully!
           </div>
         )}
-        <header className="bg-orange-500 text-white py-8 text-center">
+        <header className="bg-gray-800 text-white py-8 text-center">
           <h1 className="text-4xl font-bold">Contact Us</h1>
           <p className="mt-2">Reach out to us with any questions or concerns!</p>
         </header>

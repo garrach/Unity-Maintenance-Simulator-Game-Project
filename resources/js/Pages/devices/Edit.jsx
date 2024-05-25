@@ -5,7 +5,8 @@ import { Head, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 
 const Edit = ({ auth, device }) => {
-  const { data, setData, put, processing } = useForm({
+  const { data, setData, post, processing } = useForm({
+    id:device.id,
     serial_number: device.serial_number,
     type: device.type,
     installation_date: format(new Date(device.installation_date), 'yyyy-MM-dd'),
@@ -20,18 +21,21 @@ const Edit = ({ auth, device }) => {
     }));
   };
 
+  const formData = new FormData();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setData((prevData) => ({
       ...prevData,
       image: file,
     }));
-
+    formData.append('additional_data', file);
+    alert(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    put(route('devices.update', device.id)); 
+    console.log(data)
+    post(route('device.update',data));
   };
 
   return (
@@ -84,6 +88,7 @@ const Edit = ({ auth, device }) => {
                 id="image"
                 name="image"
                 accept="image/*"
+                value={formData.additional_data}
                 onChange={handleImageChange}
                 className="mt-1 p-2 border rounded-md w-full dark:text-gray-800"
               />

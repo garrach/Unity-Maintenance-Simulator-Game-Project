@@ -96,6 +96,9 @@ Route::middleware(('auth'))->group(function () {
     Route::middleware(('Admin'))->group(function () {
         Route::resource('vehicles', VehicleController::class);
         Route::resource('devices', DeviceController::class);
+        Route::post('/device/update', [DeviceController::class,'updatePic'])->name('device.update');
+        Route::delete('/device/delete', [DeviceController::class,'destroyForPan'])->name('device.delete');
+
         Route::resource('paymentPlans', PaymentPlanController::class);
         Route::resource('services', ServicesController::class);
         Route::resource('connections', ConnectionController::class);

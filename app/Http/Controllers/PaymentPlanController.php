@@ -17,7 +17,6 @@ class PaymentPlanController extends Controller
     public function index()
     {
 
-       
         $paymentPlans = PaymentPlan::all();
         $dashboards = Dashboard::all();
         $services = [count($paymentPlans)];
@@ -25,8 +24,8 @@ class PaymentPlanController extends Controller
             $paymentPlan = $paymentPlans[$i];
             $services[$i] = $paymentPlan->services;
         }
-       
-        
+
+
             return Inertia::render('PaymentPlans/Index',
             ['paymentPlans' => $paymentPlans,
                 'services' => $services,

@@ -9,7 +9,7 @@ export default function Guest({ children }) {
 
     return (
         <>
-        <Navbar layer="z-10 border-2 border-indigo-500"/>
+        <Navbar layer="z-10 border-2 border-gray-300"/>
         <div className="flex sm:justify-center items-center p-0 bg-gray-100 dark:bg-gray-900">
            <div style={{ maxWidth: '100%' }} className="w-full bg-gray-100 dark:bg-gray-800 overflow-hidden sm:rounded-lg">
            <div className='w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg h-screen'>
@@ -25,11 +25,11 @@ export default function Guest({ children }) {
 
                 </div>
             </div>
-               {children} 
-               
+               {children}
+
            </div>
            </div>
-           
+
            <style>
                {`
                .this-a{
@@ -41,6 +41,6 @@ export default function Guest({ children }) {
            </style>
        </div>
         </>
-        
+
     );
 }

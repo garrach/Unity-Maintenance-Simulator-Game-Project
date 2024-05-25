@@ -18,7 +18,7 @@ if(!offline){
 
   });
 }
-   
+
     const db = mongoose.connection;
     await db;
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -33,21 +33,27 @@ if(!offline){
 }
 
 async function connectToSqlDatabase(){
-// Create MySQL connection
+    try {
+        // Create MySQL connection
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  password: '',
-  database: 'carmaintain'
-});
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    database: 'carmaintain'
+  });
 
-// Connect to MySQL
-connection.connect(err => {
-  if (err) throw err;
-  console.log('Connected to MySQL database');
-});
+  // Connect to MySQL
+  connection.connect(err => {
+    if (err) return;
+    console.log('Connected to MySQL database');
+  });
+  return connection;
 
-return connection;
+
+    } catch (error) {
+        return;
+    }
+
 }
 
 

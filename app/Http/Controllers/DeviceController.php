@@ -11,6 +11,9 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Purchase;
+
 
 class DeviceController extends Controller
 {
@@ -75,23 +78,23 @@ class DeviceController extends Controller
 
         $comments = $device->comments;
         $reviews = $device->review;
-    
+
         // Initialize an array to collect unique users and their related reviews/comments
         $users = [];
-    
+
         // Collect users from comments and map their comments
         foreach ($comments as $comment) {
             $users[$comment->id] = $comment->user->id;
         }
-    
+
         // Convert the users array to an indexed array to suit your JavaScript code
         $comments = $comments->toArray();
-    
+
         // Prepare the data for encoding
         $userDeviceData = base64_encode(json_encode([
             'comments' => $comments,
         ]));
-    
+
         // Return the data to the Inertia view
         return Inertia::render('devices/Show', [
             'device' => $device,
@@ -100,7 +103,7 @@ class DeviceController extends Controller
             'userInfo' => $userDeviceData
         ]);
     }
-    
+
 
     public function edit(Device $device)
     {
@@ -140,6 +143,34 @@ class DeviceController extends Controller
         return redirect()->route('devices.index')->with('success', 'Device updated successfully.');
     }
 
+    public function updatePic(Request $request)
+    {
+
+        $imageFile=$request->file('image');
+        $hash_value = hash_file('sha256', $imageFile->path());
+        $fileName = $hash_value . '.' . $imageFile->getClientOriginalExtension();
+        $filePath = $fileName;
+
+        $existingImagePath=null;
+        if (Storage::exists($filePath)) {
+            $existingImagePath = Storage::url($filePath);
+
+        }else {
+        $imagePath = Storage::putFileAs('public/images/', $imageFile, $fileName);
+        $device=Device::where('id',$request->id)->first();
+        $device->update([
+            'image'=>'storage/images/'.$fileName,
+        ]);
+        }
+        return redirect()->route('devices.index')->with('success', 'Device deleted successfully.');
+    }
+    public function destroyForPan(Request $request)
+    {
+
+        $pan=Purchase::where('id',$request->id);
+        $pan->delete();
+        return redirect()->route('dashboard')->with('success', 'pan deleted successfully.');
+    }
     public function destroy(Device $device)
     {
         $device->delete();

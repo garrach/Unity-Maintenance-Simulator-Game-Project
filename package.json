@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "npx vite ",
         "build": "npx vite build",
-        "php": "php artisan serve",
+        "php": "cd /d C:/Users/garra/Downloads/Unity-Maintenance-Simulator-Game-Project/Unity-Maintenance-Simulator-Game-Project && php artisan serve",
         "express": "nodemon server.cjs",
         "expressProd": "node server.cjs",
         "vite:client": "nodemon /resources/js/Pages/client.cjs",
@@ -12,6 +12,7 @@
         "start": "npx concurrently \"npm run php\" \"npm run express\" \"npm run dev\"",
         "pro": "npx concurrently \"npm run expressProd\" \"npx vite build\" \"php artisan serve\"",
         "prodBuild": "npx concurrently \"npm run expressProd\" \"php artisan serve\"",
+        "prodBuildphp": "npx concurrently \"php artisan serve\"",
         "start:express": "npm run express",
         "start:vite": "npm run dev"
     },
