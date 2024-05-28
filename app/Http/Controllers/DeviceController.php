@@ -67,8 +67,7 @@ class DeviceController extends Controller
         $device->installation_date = $request->installation_date;
         $device->image = $imagePath; // Save the image path in the database
         $device->save();
-
-        return redirect()->route('devices.index')->with('success', 'Device created successfully.');
+        return;
     }
 
     public function show(Device $device)

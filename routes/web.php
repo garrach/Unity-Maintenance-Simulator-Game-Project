@@ -28,6 +28,7 @@ use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\UnityDevicesController;
 use App\Http\Controllers\UnityDataMonitorController;
 use App\Http\Controllers\SubAgentController;
+use App\Http\Controllers\RadarController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,7 @@ Route::middleware(('auth'))->group(function () {
 
     //client and Admin and Employees
 
+
     Route::resource('assetBundles', AssetBundlesController::class);
     Route::get('/leaderboard',[LeaderboardController::class, 'index'])->name('leaderboard');
     Route::get('/data-monitoring',[UnityDataMonitorController::class, 'index'])->name('data-monitoring');
@@ -79,6 +81,7 @@ Route::middleware(('auth'))->group(function () {
     Route::get('/userAccount/{id?}', [ProfileController::class, 'show'])->name('userAccount.show');
     Route::get('/userAccount/user/{id?}', [ProfileController::class, 'editUser'])->name('userAccount.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/myprogress', [LeaderboardController::class, 'userprogress'])->name('myprogress');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/role', [ProfileController::class, 'updateRole'])->name('role.update');
@@ -98,6 +101,9 @@ Route::middleware(('auth'))->group(function () {
         Route::resource('devices', DeviceController::class);
         Route::post('/device/update', [DeviceController::class,'updatePic'])->name('device.update');
         Route::delete('/device/delete', [DeviceController::class,'destroyForPan'])->name('device.delete');
+
+        Route::post('/assign-device',[RadarController::class, 'assigntoDevice'])->name('assignToDevice');
+        Route::post('/assign-update',[RadarController::class, 'updateAssignToDevice'])->name('assignToDevice.update');
 
         Route::resource('paymentPlans', PaymentPlanController::class);
         Route::resource('services', ServicesController::class);

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const mysql = require('mysql');
+const util =require('util');
+const mysql =require('mysql');
 
 async function connectToDatabase(offline) {
   try {
@@ -31,32 +32,30 @@ if(!offline){
     throw error;
   }
 }
-
-async function connectToSqlDatabase(){
+async function connectToSqlDatabase() {
     try {
-        // Create MySQL connection
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'carmaintain'
-  });
+      // Create MySQL connection
+      const connection = mysql.createConnection({
+        host: '127.0.0.1',
+        user: 'root',
+        password: '',
+        database: 'carmaintain'
+      });
 
-  // Connect to MySQL
-  connection.connect(err => {
-    if (err) return;
-    console.log('Connected to MySQL database');
-  });
-  return connection;
+      // Promisify the connection.connect method
+      const connect = util.promisify(connection.connect).bind(connection);
 
+      // Connect to MySQL
+      await connect();
+      console.log('Connected to MySQL database');
 
+      return connection;
     } catch (error) {
-        return;
+      console.error('Error connecting to MySQL:', error);
+      throw error;
     }
-
-}
-
-
+  }
 module.exports = {
-  connectToDatabase,connectToSqlDatabase
+  connectToDatabase,
+  connectToSqlDatabase
 };

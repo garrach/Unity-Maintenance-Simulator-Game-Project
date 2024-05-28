@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Userexpcoin;
 use App\Models\PaymentPlan;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -52,6 +53,13 @@ class RegisteredUserController extends Controller
 
         $plan=PaymentPlan::all()->first();
         $user->plans()->attach($plan);
+
+        Userexpcoin::create([
+            'user_id'=>$user->id,
+            'experience'=>0,
+            'coins'=>1000,
+        ]);
+
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);

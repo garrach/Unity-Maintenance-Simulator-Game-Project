@@ -3,6 +3,7 @@ const { handleDeviceMessages } = require('../handlers/DevicesHandler.cjs');
 const { handleConnectionMessages } = require('../handlers/ConnectionHandler.cjs');
 const { handleLogin } = require('../handlers/LoginHandler.cjs');
 
+const stripe = require('stripe')('sk_test_51PLLuPDnbt4VPoAUd3dodHnya54xj5uG0wIBUB7JCE3XM8qkYfRB9PTEEAhNMOOuRWzPHEaPG7brZSqUtDIrxS2x00QyCXPxZX');
 
 const { getConnectionById,
   getVehicleById,
@@ -146,20 +147,20 @@ function configureRoutes(app, db) {
       try {
         const resp = await Add_placement(req.body, db);
         res.send({ type: 'UserApiRegistedPlacement', message: 'New Placement registered ', data: {} })
-      } catch (error) { 
+      } catch (error) {
         res.send({ type: 'fatal', message: 'Error adding New Placement', data: {} })
       }
 
     })
     app.get('/api/get-key', async (req, res) => {
       try {
-    
+
         // Fetch the API key for the provided user ID
         const key = await getAPiKey(req.query.ID, db);
-    
+
         // If a key is found, send it back as a response
         if (key && key.userKey) {
-          res.send({ userApiKey: btoa(key.userKey) }); 
+          res.send({ userApiKey: btoa(key.userKey) });
         } else {
           // If no key is found, send an appropriate message
           res.status(404).send({ error: 'API key not found for the provided user ID' });
@@ -170,7 +171,7 @@ function configureRoutes(app, db) {
         res.status(500).send({ error: 'Internal Server Error' });
       }
     });
-    
+
     app.post('/api/get-key',async (req,res)=>{
 
       try {
@@ -180,8 +181,28 @@ function configureRoutes(app, db) {
         res.send({userApiKey:error});
         return;
       }
-      
+
     })
+
+    app.post('/create-payment-intent', async (req, res) => {
+        const { amount, currency, paymentMethodType } = req.body;
+
+        try {
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount,
+                currency,
+                payment_method_types: [paymentMethodType],
+            });
+
+            res.status(200).send({
+                clientSecret: paymentIntent.client_secret,
+            });
+        } catch (err) {
+            res.status(500).send({ error: err.message });
+        }
+    });
+
+
   } catch (error) {
     console.log(error)
   }

@@ -20,16 +20,6 @@ class UsersController extends Controller
         foreach ($users as $user) {
             $userExp = Userexpcoin::where('user_id', $user->id)->first();
             $exparr[$user->id]=Userexpcoin::all()->skip($i)->take(1);
-
-            if (!$userExp) {
-                $exp[$user->id]=Userexpcoin::create([
-                    'user_id' => $user->id,
-                    'experience' => 0, 
-                    'coins' => 1000, 
-                ]);
-                $exp[$user->id]->save();
-            }
-            $i++;
         }
 
         return Inertia::render('users', [

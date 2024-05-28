@@ -49,7 +49,6 @@ const Sidebar = ({ Children, auth, expand }) => {
     }
     return (
         <>
-            {console.log(listPaidServices.current)}
             {ssi ? (
                 <>
                     <aside className="dark:text-white glass-container text-gray-800 sm:w-56 ">
@@ -64,8 +63,8 @@ const Sidebar = ({ Children, auth, expand }) => {
                                             <span>
                                                 {feature.name}
                                             </span>
-                                            {Object.values(listPaidServices.current).map((value) => (
-                                                feature.name === value.name ? <div>
+                                            {Object.values(listPaidServices.current).map((value,index2) => (
+                                                feature.name === value.name ? <div key={index2}>
                                                     <span style={{ padding: '4px', fontSize: '11px' }} className='ml-2 uppercase rounded bg-orange-500' >purchased</span>
                                                 </div> : ''
                                             ))}

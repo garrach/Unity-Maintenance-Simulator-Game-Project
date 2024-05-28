@@ -10,7 +10,10 @@ class Device extends Model
     use HasFactory;
 
     protected $fillable = ['serial_number', 'type', 'installation_date','image'];
-
+    public function addonRequests()
+    {
+        return $this->hasMany(AddonRequest::class);
+    }
     public function vehicles()
     {
         return $this->belongsTo(Vehicle::class);
@@ -20,13 +23,13 @@ class Device extends Model
     {
         return $this->belongsTo(Connection::class);
     }
-    
+
 
     public function purchases()
     {
         return $this->hasmany(Purchase::class);
     }
-    
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

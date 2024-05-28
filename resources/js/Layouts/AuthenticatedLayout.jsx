@@ -124,7 +124,7 @@ export default function Authenticated({ user, header, children, webSocket}) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link href={route('dashboard')}>My Progress</Dropdown.Link>
+                                        <Dropdown.Link href={route('myprogress')}>My Progress</Dropdown.Link>
                                         <Dropdown.Link href={route('myaccount', ['user' == { user }])}>My Account</Dropdown.Link>
                                         <Dropdown.Link href={route('services.index')}>My Services</Dropdown.Link>
 
@@ -269,7 +269,7 @@ export default function Authenticated({ user, header, children, webSocket}) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('dashboard')}>My Progress</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('myprogress')}>My Progress</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('myaccount', ['user' == { user }])}>My Account</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('services.index')}>My Services</ResponsiveNavLink>
                             {user.role === "admin" && <ResponsiveNavLink href={route('paymentPlans.index')}>PaymentPlan</ResponsiveNavLink>}

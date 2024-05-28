@@ -9,5 +9,8 @@ class AddonRequest extends Model
 {
     use HasFactory;
     protected $fillable = ['device_id', 'user_id'];
-
+    public function device()
+    {
+        return $this->belongsTo(Device::class);
+    }
 }

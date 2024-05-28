@@ -45,7 +45,6 @@ const Pannier = ({ data, user }) => {
                     />
                 </div>
             </div>
-            {console.log(data)}
             {openPannier && route().current("dashboard") && (
                 <div className="absolute -left-80 z-40 rounded-lg border-2 p-2 w-auto h-auto bg-gray-700">
                     <h3 className="text-gray-700 dark:text-gray-300">
